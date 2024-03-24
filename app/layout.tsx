@@ -1,7 +1,10 @@
 import type { Metadata } from 'next'
-import './globals.css'
-import { alegreya, rubik, rubikGlitch } from './fonts'
-import { cn } from '@/lib/utils'
+import { alegreya, rubik, rubikGlitch } from './styles/fonts'
+import { cn } from '@/app/lib/utils'
+
+import './styles/globals.css'
+import Header from '@/app/components/Header'
+import Footer from './components/Footer'
 
 export const metadata: Metadata = {
   title: 'The Good for Nothings Club',
@@ -19,7 +22,11 @@ export default function RootLayout({
       lang='en'
       className={cn(alegreya.variable, rubik.variable, rubikGlitch.variable)}
     >
-      <body>{children}</body>
+      <body>
+        <Header />
+        {children}
+        <Footer />
+      </body>
     </html>
   )
 }
