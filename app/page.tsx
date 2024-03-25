@@ -1,4 +1,5 @@
-import Image from 'next/image'
+import InstagramFeedEmbed from './components/InstagramFeedEmbed'
+import SpotifyPlaylistEmbed from './components/SpotifyPlaylistEmbed'
 
 export default function Home() {
   return (
@@ -41,6 +42,10 @@ export default function Home() {
           <h2 className='pt-6 text-[32px] leading-none tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
             Happenings
           </h2>
+          <div className='mt-12 grid grid-cols-1 gap-6 md:mt-24 md:gap-12 lg:grid-cols-2'>
+            <InstagramFeedEmbed />
+            <SpotifyPlaylistEmbed />
+          </div>
         </div>
       </section>
     </main>
