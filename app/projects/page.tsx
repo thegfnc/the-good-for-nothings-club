@@ -1,3 +1,7 @@
 export default async function Projects() {
-  return <h1>Projects</h1>
+  return (
+    <main>
+      <h1>Projects</h1>
+    </main>
+  )
 }

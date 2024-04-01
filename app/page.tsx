@@ -98,15 +98,7 @@ export default async function Home() {
                       })}
                     </p>
                     <p>
-                      <em>
-                        {member.roles
-                          .map(role =>
-                            role
-                              .replace(/([a-z])([A-Z])/g, '$1 $2') // spit camel case into words
-                              .toLowerCase()
-                          )
-                          .join(', ')}
-                      </em>
+                      <em>{member.roles.join(', ').toLowerCase()}</em>
                     </p>
                   </div>
                 </li>
