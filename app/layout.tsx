@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { alegreya, rubik, rubikGlitch } from './styles/fonts'
 import { cn } from '@/app/lib/utils'
+import { Analytics } from '@vercel/analytics/react'
 
 import './styles/globals.css'
 import Header from '@/app/components/Header'
@@ -26,6 +27,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        <Analytics />
       </body>
     </html>
   )
