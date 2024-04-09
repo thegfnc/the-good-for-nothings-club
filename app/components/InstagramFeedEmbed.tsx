@@ -1,10 +1,20 @@
 'use client'
 
+import Script from 'next/script'
+import { useEffect } from 'react'
+
 export default function InstagramFeedEmbed() {
+  useEffect(() => {
+    if (window && window.instgrm) {
+      window.instgrm.Embeds.process()
+    }
+  }, [])
+
   return (
-    <div
-      dangerouslySetInnerHTML={{
-        __html: `
+    <>
+      <div
+        dangerouslySetInnerHTML={{
+          __html: `
           <blockquote
             class="instagram-media"
             data-instgrm-permalink="https://www.instagram.com/thegfnc/?utm_source=ig_embed&amp;utm_campaign=loading"
@@ -273,9 +283,10 @@ export default function InstagramFeedEmbed() {
                 >) • Instagram photos and videos
               </p>
             </div>
-          </blockquote>
-          <script async src="//www.instagram.com/embed.js"></script>`,
-      }}
-    />
+          </blockquote>`,
+        }}
+      />
+      <Script src='//www.instagram.com/embed.js' />
+    </>
   )
 }
