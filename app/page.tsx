@@ -58,14 +58,14 @@ export default async function Home() {
       </section>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
         <div className='mx-auto max-w-[1792px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
-          <h2 className='pt-6 text-[32px] leading-none tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
+          <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
             Projects
           </h2>
         </div>
       </section>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
         <div className='mx-auto max-w-[1792px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
-          <h2 className='pt-6 text-[32px] leading-none tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
+          <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
             Members
           </h2>
           <div className='mt-12 md:mt-24'>
@@ -84,9 +84,7 @@ export default async function Home() {
                     placeholder={member.profilePicture.asset.metadata.lqip}
                     className={`h-[312px] border-2 border-black object-cover sm:h-[468px]`}
                   />
-                  <h3 className='mt-6 text-[32px] leading-none'>
-                    {member.fullName}
-                  </h3>
+                  <h3 className='mt-6 text-[32px]'>{member.fullName}</h3>
                   <div className='text-xl leading-tight'>
                     <p className='mt-4'>
                       Member #{String(member.memberNumber).padStart(3, '0')} -
@@ -109,7 +107,7 @@ export default async function Home() {
       </section>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
         <div className='mx-auto max-w-[1792px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
-          <h2 className='pt-6 text-[32px] leading-none tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
+          <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
             Happenings
           </h2>
           <div className='mt-12 grid grid-cols-1 gap-6 md:mt-24 md:gap-12 lg:grid-cols-2'>

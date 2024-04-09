@@ -59,5 +59,6 @@
     @apply font-sans;
     @apply font-black;
     @apply uppercase;
+    @apply leading-none;
   }
 }

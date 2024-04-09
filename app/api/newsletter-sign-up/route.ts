@@ -1,5 +1,5 @@
 import { Resend } from 'resend'
-import { z, ZodError } from 'zod'
+import { z } from 'zod'
 
 const NewsletterSignUp = z.object({
   email: z.string().email(),

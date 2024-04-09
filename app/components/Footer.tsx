@@ -1,10 +1,9 @@
 'use client'
 
-import Link from 'next/link'
-import { FaGithub, FaInstagram, FaSpotify } from 'react-icons/fa'
 import { Input } from './ui/Input'
 import { Button } from './ui/Button'
 import { useRef } from 'react'
+import SocialMediaLinks from './SocialMediaLinks'
 
 export default function Footer() {
   const ref = useRef<HTMLInputElement>(null)
@@ -35,12 +34,7 @@ export default function Footer() {
           <div className=''>Subscribe to our newsletter</div>
           <div className='flex w-full max-w-96 flex-grow'>
             <Input placeholder='Enter your email' ref={ref} />
-            <Button
-              className='text-xs font-normal tracking-[2px]'
-              onClick={handleSubmit}
-            >
-              Subscribe
-            </Button>
+            <Button onClick={handleSubmit}>Subscribe</Button>
           </div>
         </div>
         <div className='mt-10 flex flex-col-reverse items-center justify-between gap-6 md:flex-row'>
@@ -48,29 +42,7 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} The Good for Nothings Club LLC.
             All rights reserved.
           </div>
-          <div className='flex gap-4 text-2xl'>
-            <Link
-              href='https://www.instagram.com/thegfnc/'
-              target='_blank'
-              className='transition-opacity hover:opacity-60 active:opacity-100'
-            >
-              <FaInstagram />
-            </Link>
-            <Link
-              href='https://open.spotify.com/user/31l4gvropwokzlmzymegi3vqa7py?si=c5fce32011494e91'
-              target='_blank'
-              className='transition-opacity hover:opacity-60 active:opacity-100'
-            >
-              <FaSpotify />
-            </Link>
-            <Link
-              href='https://github.com/thegfnc'
-              target='_blank'
-              className='transition-opacity hover:opacity-60 active:opacity-100'
-            >
-              <FaGithub />
-            </Link>
-          </div>
+          <SocialMediaLinks />
         </div>
       </div>
     </footer>
