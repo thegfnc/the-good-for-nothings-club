@@ -15,19 +15,11 @@ import {
   FormLabel,
   FormMessage,
 } from '../components/ui/Form'
-
-const formSchema = z.object({
-  name: z.string().max(256),
-  email: z.string().email(),
-  phone: z.string().max(256).optional(),
-  website: z.string().url().optional(),
-  subject: z.string().max(256),
-  message: z.string().max(5000),
-})
+import { contactUsSchema } from '../data/schemas'
 
 export default function ContactForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof contactUsSchema>>({
+    resolver: zodResolver(contactUsSchema),
     defaultValues: {
       name: '',
       email: '',
@@ -38,8 +30,20 @@ export default function ContactForm() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof contactUsSchema>) {
+    const response = await fetch('/api/contact-us', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ...values }),
+    })
+
+    if (response.ok) {
+      console.log('Success!')
+    } else {
+      console.error('Failed to send contact us')
+    }
   }
 
   return (

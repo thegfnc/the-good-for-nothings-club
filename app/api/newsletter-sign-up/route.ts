@@ -1,9 +1,5 @@
+import { newsletterSignUpSchema } from '@/app/data/schemas'
 import { Resend } from 'resend'
-import { z } from 'zod'
-
-const NewsletterSignUp = z.object({
-  email: z.string().email(),
-})
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -11,7 +7,7 @@ export async function POST(request: Request) {
   const body = await request.json()
 
   try {
-    NewsletterSignUp.parse(body)
+    newsletterSignUpSchema.parse(body)
   } catch (error) {
     return Response.json(
       { error },
@@ -36,5 +32,5 @@ export async function POST(request: Request) {
     )
   }
 
-  return Response.json({ subscribed: true })
+  return Response.json({ success: true })
 }

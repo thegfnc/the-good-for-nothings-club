@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import ContactForm from './ContactForm'
+import ContactForm from './ContactUsForm'
 import SocialMediaLinks from '../components/SocialMediaLinks'
 import Map from '../components/Map'
 
