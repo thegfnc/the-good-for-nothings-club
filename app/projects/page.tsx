@@ -44,7 +44,7 @@ export default async function Projects({ searchParams }: ProjectsProps) {
                 <li key={item.name}>
                   <Link
                     className={cn(
-                      'block px-6 py-5 font-sans text-xl font-black uppercase leading-tight transition-colors hover:bg-black hover:text-white active:bg-black/80',
+                      'block px-6 py-5 font-sans text-xl font-black uppercase leading-tight transition-colors hover:bg-black hover:text-white hover:no-underline active:bg-black/80',
                       item.type === type ? 'bg-black text-white' : 'text-black'
                     )}
                     href={
