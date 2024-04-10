@@ -3,7 +3,34 @@ import InstagramFeedEmbed from './components/InstagramFeedEmbed'
 import SpotifyPlaylistEmbed from './components/SpotifyPlaylistEmbed'
 import { sanityFetch, urlFor } from './data/client'
 import { Suspense } from 'react'
-import { GFNC_member } from './types'
+import { GFNC_member, GFNC_project } from './types'
+import Link from 'next/link'
+import { PortableText } from '@portabletext/react'
+
+const FEATURED_PROJECTS_QUERY = `
+  *[_type == 'GFNC_project' && featured == true] | order(dateCompleted desc) {
+    _id,
+    title,
+    clientName,
+    slug,
+    type,
+    mainImage {
+      asset-> {
+        url,
+        metadata {
+          lqip,
+          dimensions {
+            aspectRatio,
+            height,
+            width
+          }
+        }
+      },
+      caption
+    },
+    summary
+  }
+`
 
 const MEMBERS_QUERY = `
   *[_type == 'GFNC_member'] | order(startDate) {
@@ -30,10 +57,16 @@ const MEMBERS_QUERY = `
 `
 
 export default async function Home() {
-  const membersData = await sanityFetch<GFNC_member[]>({
-    query: MEMBERS_QUERY,
-    tags: ['GFNC_member'],
-  })
+  const [featuredProjectsData, membersData] = await Promise.all([
+    sanityFetch<GFNC_project[]>({
+      query: FEATURED_PROJECTS_QUERY,
+      tags: ['GFNC_project'],
+    }),
+    sanityFetch<GFNC_member[]>({
+      query: MEMBERS_QUERY,
+      tags: ['GFNC_member'],
+    }),
+  ])
 
   return (
     <main>
@@ -61,6 +94,50 @@ export default async function Home() {
           <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
             Projects
           </h2>
+          <div className='mt-12 md:mt-24'>
+            <ul className='flex flex-col gap-12 md:gap-24'>
+              {featuredProjectsData.map(project => (
+                <li key={project._id} className='flex flex-col gap-6 md:gap-8'>
+                  <Link href={`/projects/${project.slug.current}`}>
+                    <Image
+                      src={urlFor(project.mainImage).width(2000).url()}
+                      width={project.mainImage.asset.metadata.dimensions.width}
+                      height={
+                        project.mainImage.asset.metadata.dimensions.height
+                      }
+                      alt={project.mainImage.caption}
+                      placeholder={project.mainImage.asset.metadata.lqip}
+                      className={`aspect-video w-full border-2 border-black object-cover`}
+                    />
+                  </Link>
+                  <div className='grid grid-cols-1 gap-4 lg:grid-cols-2 '>
+                    <div className='flex flex-col gap-1 md:gap-2'>
+                      <Link
+                        href={`/projects/${project.slug.current}`}
+                        className='text-[28px] leading-none md:text-5xl '
+                      >
+                        <h3>{project.title}</h3>
+                      </Link>
+                      <h4 className='text-base font-semibold md:text-xl'>
+                        {project.clientName}
+                      </h4>
+                    </div>
+                    <div className='text-xl'>
+                      <PortableText value={project.summary} />
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div>
+          <Link
+            className='block w-full border-b-2 border-black bg-background py-4 text-center font-sans text-sm font-black uppercase md:border-x-2 md:py-8 md:text-base'
+            href='/projects'
+          >
+            View All
+          </Link>
         </div>
       </section>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>

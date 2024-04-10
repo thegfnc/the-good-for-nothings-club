@@ -25,7 +25,7 @@ export default async function Contact() {
                 <div>
                   <Link
                     href='mailto:hello@thegoodfornothings.club'
-                    className='text-2xl underline-offset-2 hover:underline'
+                    className='text-2xl'
                   >
                     hello@thegoodfornothings.club
                   </Link>

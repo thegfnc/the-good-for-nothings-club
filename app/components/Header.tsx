@@ -6,26 +6,23 @@ export default function Header() {
       <div className='m-auto grid max-w-[1792px] grid-cols-2 border-b-2 border-black bg-background md:grid-cols-4 md:border-2'>
         <Link
           href='/'
-          className='border-b-2 border-r-2 border-black px-4 py-5 underline-offset-2 hover:underline md:border-b-0 md:px-8 md:py-8'
+          className='border-b-2 border-r-2 border-black px-4 py-5 md:border-b-0 md:px-8 md:py-8'
         >
           G.F.N.C.
         </Link>
         <Link
           href='/projects'
-          className='border-b-2 border-black px-4 py-5 underline-offset-2 hover:underline md:border-b-0 md:border-r-2 md:px-8 md:py-8'
+          className='border-b-2 border-black px-4 py-5 md:border-b-0 md:border-r-2 md:px-8 md:py-8'
         >
           Projects
         </Link>
         <Link
           href='https://shop.thegoodfornothings.club/'
-          className='border-r-2 border-black px-4 py-5 underline-offset-2 hover:underline md:px-8 md:py-8'
+          className='border-r-2 border-black px-4 py-5 md:px-8 md:py-8'
         >
           Shop
         </Link>
-        <Link
-          href='/contact'
-          className='px-4 py-5 underline-offset-2 hover:underline md:px-8 md:py-8'
-        >
+        <Link href='/contact' className='px-4 py-5 md:px-8 md:py-8'>
           Contact
         </Link>
       </div>

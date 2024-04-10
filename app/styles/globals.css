@@ -61,4 +61,9 @@
     @apply uppercase;
     @apply leading-none;
   }
+
+  a:hover {
+    @apply underline;
+    @apply underline-offset-2;
+  }
 }
