@@ -13,14 +13,12 @@ const FEATURED_PROJECTS_QUERY = `
     title,
     clientName,
     slug,
-    type,
     mainImage {
       asset-> {
         url,
         metadata {
           lqip,
           dimensions {
-            aspectRatio,
             height,
             width
           }
@@ -42,7 +40,6 @@ const MEMBERS_QUERY = `
         metadata {
           lqip,
           dimensions {
-            aspectRatio,
             height,
             width
           }
