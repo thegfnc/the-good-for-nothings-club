@@ -29,6 +29,7 @@ export type GFNC_project = {
   slug: {
     current: string
   }
+  dateCompleted: string
   type: string
   mainImage: {
     asset: {

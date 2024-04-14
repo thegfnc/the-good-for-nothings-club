@@ -1,9 +1,9 @@
 'use client'
 
 import Script from 'next/script'
-import { useEffect } from 'react'
+import { memo, useEffect } from 'react'
 
-export default function InstagramFeedEmbed() {
+export default memo(function InstagramFeedEmbed() {
   useEffect(() => {
     if (window && window.instgrm) {
       window.instgrm.Embeds.process()
@@ -289,4 +289,4 @@ export default function InstagramFeedEmbed() {
       <Script src='//www.instagram.com/embed.js' />
     </>
   )
-}
+})

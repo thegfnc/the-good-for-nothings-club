@@ -128,9 +128,9 @@ export default async function Home() {
             </ul>
           </div>
         </div>
-        <div>
+        <div className='border-b-2 border-black bg-background md:border-x-2'>
           <Link
-            className='block w-full border-b-2 border-black bg-background py-4 text-center font-sans text-sm font-black uppercase md:border-x-2 md:py-8 md:text-base'
+            className='block w-full py-4 text-center font-sans text-sm font-black uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
             href='/projects'
           >
             View All

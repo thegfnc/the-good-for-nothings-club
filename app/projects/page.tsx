@@ -1,26 +1,25 @@
 import Link from 'next/link'
 import { cn } from '../lib/utils'
+import { sanityFetch } from '../data/client'
+import { GFNC_project } from '../types'
+import Image from 'next/image'
+import { PortableText } from 'next-sanity'
 
 const menuItems = [
   {
     name: 'All',
-    type: 'all',
   },
   {
     name: 'Web',
-    type: 'web',
   },
   {
     name: 'Video',
-    type: 'video',
   },
   {
     name: 'Photo',
-    type: 'photo',
   },
   {
     name: 'Audio',
-    type: 'audio',
   },
 ]
 
@@ -28,8 +27,59 @@ type ProjectsProps = {
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
+const PROJECTION = `
+  _id,
+  title,
+  clientName,
+  slug,
+  type,
+  dateCompleted,
+  mainImage {
+    asset-> {
+      url,
+      metadata {
+        lqip,
+        dimensions {
+          height,
+          width
+        }
+      }
+    },
+    caption
+  },
+  summary
+`
+
+const ALL_PROJECTS_QUERY = `
+  *[_type == 'GFNC_project'] | order(dateCompleted desc) {
+    ${PROJECTION}
+  }
+`
+
+const FILTERED_PROJECTS_QUERY = `
+  *[_type == 'GFNC_project' && type == $type] | order(dateCompleted desc) {
+    ${PROJECTION}
+  }
+`
+
 export default async function Projects({ searchParams }: ProjectsProps) {
-  const { type = 'all' } = searchParams
+  // If the search params type is empty or the type is not in the menu items,
+  // set the type to the default type
+  const isDefaultType =
+    !searchParams.type ||
+    !menuItems.find(item => item.name === searchParams.type)
+
+  // If the search params type is the default type, set the type to the
+  // first menu item, otherwise set the type to the search param type
+  const type = isDefaultType ? menuItems[0].name : searchParams.type
+
+  const [projectsData] = await Promise.all([
+    sanityFetch<GFNC_project[]>({
+      query: isDefaultType ? ALL_PROJECTS_QUERY : FILTERED_PROJECTS_QUERY,
+      tags: ['GFNC_project'],
+      params: isDefaultType ? {} : { type },
+    }),
+  ])
 
   return (
     <main>
@@ -44,21 +94,77 @@ export default async function Projects({ searchParams }: ProjectsProps) {
                 <li key={item.name}>
                   <Link
                     className={cn(
-                      'block px-6 py-5 font-sans text-xl font-black uppercase leading-tight transition-colors hover:bg-black hover:text-white hover:no-underline active:bg-black/80',
-                      item.type === type ? 'bg-black text-white' : 'text-black'
+                      'block px-6 py-5 font-sans text-xl font-black uppercase leading-tight transition-colors hover:no-underline',
+                      item.name === type
+                        ? 'bg-black text-white hover:bg-black'
+                        : 'text-black hover:bg-black/10 active:bg-black/20'
                     )}
                     href={
-                      item.type !== 'all'
-                        ? `/projects?type=${item.type}`
+                      item.name !== menuItems[0].name
+                        ? `/projects?type=${item.name}`
                         : '/projects'
                     }
+                    scroll={false}
                   >
                     {item.name}
                   </Link>
                 </li>
               ))}
             </ul>
-            <div className='grid grid-cols-1 gap-24 pt-12'>Projects List</div>
+            <div className='mt-16 flex flex-col gap-16'>
+              {projectsData.map(project => (
+                <div
+                  key={project._id}
+                  className='grid grid-cols-1 gap-6 lg:grid-cols-2'
+                >
+                  <Link href={`/projects/${project.slug.current}`}>
+                    <Image
+                      src={project.mainImage.asset.url}
+                      width={project.mainImage.asset.metadata.dimensions.width}
+                      height={
+                        project.mainImage.asset.metadata.dimensions.height
+                      }
+                      alt={project.mainImage.caption}
+                      placeholder={project.mainImage.asset.metadata.lqip}
+                      className={`aspect-video w-full border-2 border-black object-cover`}
+                    />
+                  </Link>
+                  <div className='space-y-4'>
+                    <div className='flex items-center gap-2 font-sans text-sm font-bold uppercase'>
+                      <span>{project.type}</span>
+                      <span>·</span>
+                      <span>
+                        {new Date(project.dateCompleted).toLocaleDateString(
+                          'en-US',
+                          {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric',
+                            timeZone: 'UTC',
+                          }
+                        )}
+                      </span>
+                    </div>
+                    <div>
+                      <Link
+                        href={`/projects/${project.slug.current}`}
+                        className='block'
+                      >
+                        <h2 className='text-balance text-[32px] sm:text-[40px]'>
+                          {project.title}
+                        </h2>
+                      </Link>
+                      <h3 className='text-lg font-medium sm:text-xl'>
+                        – {project.clientName}
+                      </h3>
+                    </div>
+                    <div className='text-2xl leading-tight'>
+                      <PortableText value={project.summary} />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
