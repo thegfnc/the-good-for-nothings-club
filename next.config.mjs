@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -9,6 +10,11 @@ const nextConfig = {
         pathname: '/images/ojzttvlq/production/**',
       },
     ],
+  },
+
+  // https://nextjs.org/docs/app/api-reference/next-config-js/redirects
+  async redirects() {
+    return []
   },
 }
 

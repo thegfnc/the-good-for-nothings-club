@@ -29,8 +29,8 @@ export type GFNC_project = {
   slug: {
     current: string
   }
-  dateCompleted: string
   type: string
+  dateCompleted: string
   mainImage: {
     asset: {
       url: string
@@ -46,4 +46,6 @@ export type GFNC_project = {
     caption: string
   }
   summary: TypedObject[]
+  overview: TypedObject[]
+  caseStudy: TypedObject[]
 }

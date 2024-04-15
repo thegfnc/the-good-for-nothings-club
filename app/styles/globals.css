@@ -60,10 +60,17 @@
     @apply font-black;
     @apply uppercase;
     @apply leading-none;
+    @apply text-balance;
   }
 
   a:hover {
     @apply underline;
     @apply underline-offset-2;
+  }
+
+  .portable-text {
+    p:not(:first-child) {
+      margin-top: 1.5rem;
+    }
   }
 }

@@ -126,7 +126,7 @@ export default async function Projects({ searchParams }: ProjectsProps) {
                       }
                       alt={project.mainImage.caption}
                       placeholder={project.mainImage.asset.metadata.lqip}
-                      className={`aspect-video w-full border-2 border-black object-cover`}
+                      className={`aspect-video w-full border-2 border-black object-cover transition-all hover:brightness-90 active:brightness-[80%]`}
                     />
                   </Link>
                   <div className='space-y-4'>
@@ -150,7 +150,7 @@ export default async function Projects({ searchParams }: ProjectsProps) {
                         href={`/projects/${project.slug.current}`}
                         className='block'
                       >
-                        <h2 className='text-balance text-[32px] sm:text-[40px]'>
+                        <h2 className='text-[32px] sm:text-[40px]'>
                           {project.title}
                         </h2>
                       </Link>
@@ -158,7 +158,7 @@ export default async function Projects({ searchParams }: ProjectsProps) {
                         – {project.clientName}
                       </h3>
                     </div>
-                    <div className='text-2xl leading-tight'>
+                    <div className='portable-text text-2xl leading-tight'>
                       <PortableText value={project.summary} />
                     </div>
                   </div>

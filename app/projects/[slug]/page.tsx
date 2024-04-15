@@ -3,6 +3,8 @@ import { sanityFetch, urlFor } from '../../data/client'
 import { GFNC_project } from '../../types'
 import Image from 'next/image'
 import { PortableText } from 'next-sanity'
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
 
 type ProjectProps = {
   params: {
@@ -31,9 +33,29 @@ const PROJECT_SLUG_QUERY = `
       },
       caption
     },
-    summary
+    overview,
+    caseStudy[] {
+      ...,
+      _type == 'image' => {
+        ...,
+        asset-> {
+          url,
+          metadata {
+            lqip,
+            dimensions {
+              height,
+              width
+            }
+          }
+        }
+      },
+    }
   }
 `
+
+const MediaPlayer = dynamic(() => import('@/app/components/MediaPlayer'), {
+  ssr: false,
+})
 
 export default async function Project({ params }: ProjectProps) {
   const { slug } = params
@@ -46,68 +68,95 @@ export default async function Project({ params }: ProjectProps) {
     }),
   ])
 
+  const project = projectData[0]
+
   return (
     <main>
-      <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
-        <div className='mx-auto max-w-[1792px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
-          <h1 className='pt-6 text-[32px] leading-none tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
-            Projects
-          </h1>
-          <div className='mb-10 mt-10 sm:mt-12 md:mt-24'>
-            <div className='mt-16 flex flex-col gap-16'>
-              {projectData.map(project => (
-                <div
-                  key={project._id}
-                  className='grid grid-cols-1 gap-6 lg:grid-cols-2'
-                >
-                  <Link href={`/projects/${project.slug.current}`}>
-                    <Image
-                      src={urlFor(project.mainImage).width(2000).url()}
-                      width={project.mainImage.asset.metadata.dimensions.width}
-                      height={
-                        project.mainImage.asset.metadata.dimensions.height
-                      }
-                      alt={project.mainImage.caption}
-                      placeholder={project.mainImage.asset.metadata.lqip}
-                      className={`aspect-video w-full border-2 border-black object-cover`}
-                    />
-                  </Link>
-                  <div className='space-y-4'>
-                    <div className='flex items-center gap-2 font-sans text-sm font-bold uppercase'>
-                      <span>{project.type}</span>
-                      <span>·</span>
-                      <span>
-                        {new Date(project.dateCompleted).toLocaleDateString(
-                          'en-US',
-                          {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric',
-                            timeZone: 'UTC',
-                          }
-                        )}
-                      </span>
-                    </div>
-                    <div>
-                      <Link
-                        href={`/projects/${project.slug.current}`}
-                        className='block'
-                      >
-                        <h2 className='text-balance text-[32px] sm:text-[40px]'>
-                          {project.title}
-                        </h2>
-                      </Link>
-                      <h3 className='text-lg font-medium sm:text-xl'>
-                        – {project.clientName}
-                      </h3>
-                    </div>
-                    <div className='text-2xl leading-tight'>
-                      <PortableText value={project.summary} />
-                    </div>
-                  </div>
-                </div>
-              ))}
+      <section className='md:px-8 xl:px-16'>
+        <div className='mx-auto max-w-[1792px] border-b-2 border-black bg-background md:border-x-2'>
+          <div className='space-y-8 px-12 py-24 text-center'>
+            <h1 className='text-[96px] leading-none tracking-[-0.04em]'>
+              {project.title}
+            </h1>
+            <h2 className='font-serif text-[64px] font-normal normal-case italic'>
+              {project.clientName}
+            </h2>
+          </div>
+          <div className='flex items-center justify-center border-y-2 border-black'>
+            <Image
+              src={urlFor(project.mainImage).width(2000).url()}
+              width={project.mainImage.asset.metadata.dimensions.width}
+              height={project.mainImage.asset.metadata.dimensions.height}
+              alt={project.mainImage.caption}
+              placeholder={project.mainImage.asset.metadata.lqip}
+              className={`w-full`}
+            />
+          </div>
+          <div className='m-12 flex justify-between gap-12'>
+            <div className='space-y-6'>
+              <h3>Overview</h3>
+              <div className='portable-text space-y-4 text-3xl'>
+                <PortableText value={project.overview} />
+              </div>
             </div>
+            <div className='w-full max-w-[300px] space-y-12'>
+              <div className='space-y-6'>
+                <h3>Project Type</h3>
+                <div className='flex'>
+                  <Link
+                    href={`/projects?type=${project.type}`}
+                    className='block rounded-full bg-black px-4 py-3 font-sans text-white transition-colors hover:bg-black/80 hover:no-underline active:bg-black/70'
+                  >
+                    {project.type}
+                  </Link>
+                </div>
+              </div>
+              <div className='space-y-6'>
+                <h3>Date Completed</h3>
+                <div className='text-2xl leading-none'>
+                  {new Date(project.dateCompleted).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                    timeZone: 'UTC',
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='portable-text border-t-2 border-black p-12'>
+            <PortableText
+              value={project.caseStudy}
+              components={{
+                types: {
+                  image: ({ value }) => (
+                    <Image
+                      src={urlFor(value).width(2000).url()}
+                      width={value.asset.metadata.dimensions.width}
+                      height={value.asset.metadata.dimensions.height}
+                      alt={value.caption}
+                      placeholder={value.asset.metadata.lqip}
+                      className={`w-full`}
+                    />
+                  ),
+                  embedUrl: ({ value }) => {
+                    return (
+                      <div className='flex aspect-video justify-center'>
+                        <MediaPlayer url={value.url} />
+                      </div>
+                    )
+                  },
+                  embedCode: ({ value }) => (
+                    <Suspense>
+                      <div
+                        dangerouslySetInnerHTML={{ __html: value.code.code }}
+                        className='flex justify-center'
+                      />
+                    </Suspense>
+                  ),
+                },
+              }}
+            />
           </div>
         </div>
       </section>

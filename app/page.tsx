@@ -104,7 +104,7 @@ export default async function Home() {
                       }
                       alt={project.mainImage.caption}
                       placeholder={project.mainImage.asset.metadata.lqip}
-                      className={`aspect-video w-full border-2 border-black object-cover`}
+                      className={`aspect-video w-full border-2 border-black object-cover transition-all hover:brightness-90 active:brightness-[80%]`}
                     />
                   </Link>
                   <div className='grid grid-cols-1 gap-4 lg:grid-cols-2 '>
@@ -119,7 +119,7 @@ export default async function Home() {
                         {project.clientName}
                       </h4>
                     </div>
-                    <div className='text-xl'>
+                    <div className='portable-text text-xl'>
                       <PortableText value={project.summary} />
                     </div>
                   </div>
