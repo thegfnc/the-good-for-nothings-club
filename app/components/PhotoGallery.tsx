@@ -59,7 +59,7 @@ export default function PhotoGallery({ photos }: PhotoGalleryProps) {
               height={photo.asset.metadata.dimensions.height}
               alt={photo.caption}
               placeholder={photo.asset.metadata.lqip}
-              className={`w-full transition-all duration-1000 hover:scale-105`}
+              className={`w-full cursor-pointer transition-all duration-1000 hover:scale-105`}
               onClick={() => setLighboxIndex(index)}
             />
           </div>
