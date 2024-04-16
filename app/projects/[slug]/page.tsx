@@ -115,7 +115,7 @@ export default async function Project({ params }: ProjectProps) {
           <div className='mx-4 my-6 flex flex-col justify-between gap-6 md:mx-12 md:my-12 md:gap-12 lg:flex-row'>
             <div className='space-y-2 md:space-y-6'>
               <h3>Overview</h3>
-              <div className='portable-text mds:text-[24px] space-y-4 text-[20px] leading-[1.17] lg:text-[24px] xl:text-[28px] 2xl:text-[32px] 2xl:leading-tight'>
+              <div className='portable-text space-y-4 text-[20px] leading-[1.17] md:text-[24px] lg:text-[24px] xl:text-[28px] 2xl:text-[32px] 2xl:leading-tight'>
                 <PortableText value={project.overview} />
               </div>
             </div>
@@ -133,7 +133,7 @@ export default async function Project({ params }: ProjectProps) {
               </div>
               <div className='space-y-2 md:space-y-6'>
                 <h3>Date Completed</h3>
-                <div className='text-2xl leading-none'>
+                <div className='text-[20px] leading-none md:text-[24px] lg:text-[24px] xl:text-[28px] 2xl:text-[32px]'>
                   {new Date(project.dateCompleted).toLocaleDateString('en-US', {
                     month: 'short',
                     day: 'numeric',
@@ -150,7 +150,7 @@ export default async function Project({ params }: ProjectProps) {
             </div>
           )}
           {project.caseStudy && (
-            <div className='portable-text border-t-2 border-black p-12'>
+            <div className='portable-text border-t-2 border-black px-4 py-6 md:px-12 md:py-12'>
               <PortableText
                 value={project.caseStudy}
                 components={{
