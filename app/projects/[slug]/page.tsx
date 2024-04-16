@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { PortableText } from 'next-sanity'
 import dynamic from 'next/dynamic'
 import { Suspense } from 'react'
+import PhotoGallery from '@/app/components/PhotoGallery'
 
 type ProjectProps = {
   params: {
@@ -34,6 +35,22 @@ const PROJECT_SLUG_QUERY = `
       caption
     },
     overview,
+    photoGallery[] {
+      ...,
+      _type == 'image' => {
+        ...,
+        asset-> {
+          url,
+          metadata {
+            lqip,
+            dimensions {
+              height,
+              width
+            }
+          }
+        }
+      },
+    },
     caseStudy[] {
       ...,
       _type == 'image' => {
@@ -54,6 +71,10 @@ const PROJECT_SLUG_QUERY = `
 `
 
 const MediaPlayer = dynamic(() => import('@/app/components/MediaPlayer'), {
+  ssr: false,
+})
+
+const Masonry = dynamic(() => import('@/app/components/Masonry'), {
   ssr: false,
 })
 
@@ -124,40 +145,47 @@ export default async function Project({ params }: ProjectProps) {
               </div>
             </div>
           </div>
-          <div className='portable-text border-t-2 border-black p-12'>
-            <PortableText
-              value={project.caseStudy}
-              components={{
-                types: {
-                  image: ({ value }) => (
-                    <Image
-                      src={urlFor(value).width(2000).url()}
-                      width={value.asset.metadata.dimensions.width}
-                      height={value.asset.metadata.dimensions.height}
-                      alt={value.caption}
-                      placeholder={value.asset.metadata.lqip}
-                      className={`w-full`}
-                    />
-                  ),
-                  embedUrl: ({ value }) => {
-                    return (
-                      <div className='flex aspect-video justify-center'>
-                        <MediaPlayer url={value.url} />
-                      </div>
-                    )
-                  },
-                  embedCode: ({ value }) => (
-                    <Suspense>
-                      <div
-                        dangerouslySetInnerHTML={{ __html: value.code.code }}
-                        className='flex justify-center'
+          {project.photoGallery && (
+            <div className='border-t-2 border-black p-12'>
+              <PhotoGallery photos={project.photoGallery} />
+            </div>
+          )}
+          {project.caseStudy && (
+            <div className='portable-text border-t-2 border-black p-12'>
+              <PortableText
+                value={project.caseStudy}
+                components={{
+                  types: {
+                    image: ({ value }) => (
+                      <Image
+                        src={urlFor(value).width(2000).url()}
+                        width={value.asset.metadata.dimensions.width}
+                        height={value.asset.metadata.dimensions.height}
+                        alt={value.caption}
+                        placeholder={value.asset.metadata.lqip}
+                        className={`w-full`}
                       />
-                    </Suspense>
-                  ),
-                },
-              }}
-            />
-          </div>
+                    ),
+                    embedUrl: ({ value }) => {
+                      return (
+                        <div className='flex aspect-video justify-center'>
+                          <MediaPlayer url={value.url} />
+                        </div>
+                      )
+                    },
+                    embedCode: ({ value }) => (
+                      <Suspense>
+                        <div
+                          dangerouslySetInnerHTML={{ __html: value.code.code }}
+                          className='flex justify-center'
+                        />
+                      </Suspense>
+                    ),
+                  },
+                }}
+              />
+            </div>
+          )}
         </div>
       </section>
     </main>

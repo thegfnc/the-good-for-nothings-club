@@ -1,4 +1,5 @@
 import { TypedObject } from '@portabletext/types'
+import { SanityAssetDocument } from 'next-sanity'
 
 export type GFNC_member = {
   _id: string
@@ -47,5 +48,6 @@ export type GFNC_project = {
   }
   summary: TypedObject[]
   overview: TypedObject[]
+  photoGallery: SanityAssetDocument[]
   caseStudy: TypedObject[]
 }
