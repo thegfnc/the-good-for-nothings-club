@@ -95,11 +95,11 @@ export default async function Project({ params }: ProjectProps) {
     <main>
       <section className='md:px-8 xl:px-16'>
         <div className='mx-auto max-w-[1792px] border-b-2 border-black bg-background md:border-x-2'>
-          <div className='space-y-8 px-12 py-24 text-center'>
-            <h1 className='text-[96px] leading-none tracking-[-0.04em]'>
+          <div className='space-y-4 px-4 py-12 text-center lg:space-y-8 lg:px-12 lg:py-24'>
+            <h1 className='text-[48px] leading-none tracking-[-0.04em] lg:text-[96px]'>
               {project.title}
             </h1>
-            <h2 className='font-serif text-[64px] font-normal normal-case italic'>
+            <h2 className='font-serif text-[32px] font-normal normal-case italic leading-none lg:text-[64px]'>
               {project.clientName}
             </h2>
           </div>
@@ -113,15 +113,15 @@ export default async function Project({ params }: ProjectProps) {
               className={`w-full`}
             />
           </div>
-          <div className='m-12 flex justify-between gap-12'>
-            <div className='space-y-6'>
+          <div className='mx-4 my-6 flex flex-col justify-between gap-6 md:mx-12 md:my-12 md:gap-12 lg:flex-row'>
+            <div className='space-y-2 md:space-y-6'>
               <h3>Overview</h3>
-              <div className='portable-text space-y-4 text-3xl'>
+              <div className='portable-text mds:text-[24px] space-y-4 text-[20px] leading-[1.17] lg:text-[24px] xl:text-[28px] 2xl:text-[32px] 2xl:leading-tight'>
                 <PortableText value={project.overview} />
               </div>
             </div>
-            <div className='w-full max-w-[300px] space-y-12'>
-              <div className='space-y-6'>
+            <div className='w-full max-w-[300px] space-y-6 md:space-y-12'>
+              <div className='space-y-2 md:space-y-6'>
                 <h3>Project Type</h3>
                 <div className='flex'>
                   <Link
@@ -132,7 +132,7 @@ export default async function Project({ params }: ProjectProps) {
                   </Link>
                 </div>
               </div>
-              <div className='space-y-6'>
+              <div className='space-y-2 md:space-y-6'>
                 <h3>Date Completed</h3>
                 <div className='text-2xl leading-none'>
                   {new Date(project.dateCompleted).toLocaleDateString('en-US', {
@@ -146,7 +146,7 @@ export default async function Project({ params }: ProjectProps) {
             </div>
           </div>
           {project.photoGallery && (
-            <div className='border-t-2 border-black p-12'>
+            <div className='border-t-2 border-black px-4 py-6 md:px-12 md:py-12'>
               <PhotoGallery photos={project.photoGallery} />
             </div>
           )}

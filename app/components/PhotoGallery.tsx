@@ -11,10 +11,10 @@ type PhotoGalleryProps = {
 
 export default function PhotoGallery({ photos }: PhotoGalleryProps) {
   return (
-    <Masonry gap='32px'>
+    <Masonry className='gap-4 md:gap-8'>
       {photos.map(photo => (
         <Image
-          key={photo._id}
+          key={photo._key}
           src={urlFor(photo).width(1400).url()}
           width={photo.asset.metadata.dimensions.width}
           height={photo.asset.metadata.dimensions.height}

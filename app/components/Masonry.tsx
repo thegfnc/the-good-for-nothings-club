@@ -11,6 +11,7 @@ import {
   useMemo,
   useState,
 } from 'react'
+import { cn } from '../lib/utils'
 
 const DEFAULT_COLUMNS_COUNT = 1
 
@@ -60,7 +61,6 @@ type MasonryProps = {
   columnsCountBreakPoints?: Record<string, number>
   children: ReactNode
   columnsCount?: number
-  gap?: string
   className?: string
 }
 
@@ -71,7 +71,7 @@ export default function Masonry({
     1280: 3,
   },
   children,
-  gap = '0',
+  className,
 }: MasonryProps) {
   const windowWidth = useWindowWidth()
 
@@ -96,14 +96,18 @@ export default function Masonry({
 
   return (
     <div
-      style={{ gap }}
-      className='flex w-full flex-row items-stretch justify-center'
+      className={cn(
+        'flex w-full flex-row items-stretch justify-center',
+        className
+      )}
     >
       {getColumns(children, columnsCount).map((column, i) => (
         <div
           key={i}
-          style={{ gap }}
-          className='flex w-0 flex-1 flex-col content-stretch justify-start'
+          className={cn(
+            'flex w-0 flex-1 flex-col content-stretch justify-start',
+            className
+          )}
         >
           {column.map(item => item)}
         </div>
