@@ -3,7 +3,7 @@ import { FaGithub, FaInstagram, FaSpotify } from 'react-icons/fa'
 
 export default function SocialMediaLinks() {
   return (
-    <div className='flex gap-4 text-2xl'>
+    <div className='flex gap-4'>
       <Link
         href='https://www.instagram.com/thegfnc/'
         target='_blank'

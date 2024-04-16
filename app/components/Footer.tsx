@@ -42,7 +42,9 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} The Good for Nothings Club LLC.
             All rights reserved.
           </div>
-          <SocialMediaLinks />
+          <div className='text-2xl'>
+            <SocialMediaLinks />
+          </div>
         </div>
       </div>
     </footer>

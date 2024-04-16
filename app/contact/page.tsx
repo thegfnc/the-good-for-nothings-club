@@ -33,7 +33,7 @@ export default async function Contact() {
               </div>
               <div className='space-y-6'>
                 <h3 className='text-[32px]'>Social</h3>
-                <div>
+                <div className='text-[32px]'>
                   <SocialMediaLinks />
                 </div>
               </div>
