@@ -95,18 +95,22 @@ export default async function Home() {
             <ul className='flex flex-col gap-12 md:gap-24'>
               {featuredProjectsData.map(project => (
                 <li key={project._id} className='flex flex-col gap-6 md:gap-8'>
-                  <Link href={`/projects/${project.slug.current}`}>
-                    <Image
-                      src={urlFor(project.mainImage).width(2000).url()}
-                      width={project.mainImage.asset.metadata.dimensions.width}
-                      height={
-                        project.mainImage.asset.metadata.dimensions.height
-                      }
-                      alt={project.mainImage.caption}
-                      placeholder={project.mainImage.asset.metadata.lqip}
-                      className={`aspect-video w-full border-2 border-black object-cover transition-all hover:brightness-90 active:brightness-[80%]`}
-                    />
-                  </Link>
+                  <div className='overflow-hidden border-2 border-black'>
+                    <Link href={`/projects/${project.slug.current}`}>
+                      <Image
+                        src={urlFor(project.mainImage).width(2000).url()}
+                        width={
+                          project.mainImage.asset.metadata.dimensions.width
+                        }
+                        height={
+                          project.mainImage.asset.metadata.dimensions.height
+                        }
+                        alt={project.mainImage.caption}
+                        placeholder={project.mainImage.asset.metadata.lqip}
+                        className={`aspect-video w-full object-cover transition-all duration-1000 hover:scale-105`}
+                      />
+                    </Link>
+                  </div>
                   <div className='grid grid-cols-1 gap-4 lg:grid-cols-2 '>
                     <div className='flex flex-col gap-1 md:gap-2'>
                       <Link
