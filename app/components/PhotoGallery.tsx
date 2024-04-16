@@ -1,16 +1,18 @@
 'use client'
 
 import 'yet-another-react-lightbox/styles.css'
+import 'yet-another-react-lightbox/plugins/counter.css'
 
-import dynamic from 'next/dynamic'
-import Image from 'next/image'
-import { urlFor } from '../data/client'
-import { SanityAssetDocument } from 'next-sanity'
 import { useState } from 'react'
+import Image from 'next/image'
 import Lightbox, {
   RenderSlideProps,
   useLightboxState,
 } from 'yet-another-react-lightbox'
+import Zoom from 'yet-another-react-lightbox/plugins/zoom'
+import Counter from 'yet-another-react-lightbox/plugins/counter'
+import { SanityAssetDocument } from 'next-sanity'
+import { urlFor } from '../data/client'
 import Masonry from './Masonry'
 
 type PhotoGalleryProps = {
@@ -67,6 +69,7 @@ export default function PhotoGallery({ photos }: PhotoGalleryProps) {
         open={lightboxIndex > -1}
         close={() => setLighboxIndex(-1)}
         index={lightboxIndex}
+        plugins={[Counter, Zoom]}
         slides={photos.map(photo => ({
           src: urlFor(photo).width(2400).url(),
           alt: photo.caption,
@@ -74,6 +77,12 @@ export default function PhotoGallery({ photos }: PhotoGalleryProps) {
           width: photo.asset.metadata.dimensions.width,
           placeholder: photo.asset.metadata.lqip,
         }))}
+        counter={{
+          container: {
+            className: 'font-sans',
+            style: { top: 'auto', bottom: 0, left: 'auto', right: 0 },
+          },
+        }}
         render={{
           slide: ({ slide, rect, offset }) => (
             <LightboxSlide
@@ -83,6 +92,8 @@ export default function PhotoGallery({ photos }: PhotoGalleryProps) {
               photos={photos}
             />
           ),
+          iconZoomIn: () => null,
+          iconZoomOut: () => null,
         }}
       />
     </>
