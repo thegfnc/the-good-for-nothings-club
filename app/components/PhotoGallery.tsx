@@ -1,15 +1,46 @@
 'use client'
 
+import 'yet-another-react-lightbox/styles.css'
+
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import Masonry from './Masonry'
 import { urlFor } from '../data/client'
 import { SanityAssetDocument } from 'next-sanity'
 import { useState } from 'react'
-import Lightbox from 'yet-another-react-lightbox'
-import 'yet-another-react-lightbox/styles.css'
+import Lightbox, {
+  RenderSlideProps,
+  useLightboxState,
+} from 'yet-another-react-lightbox'
+import Masonry from './Masonry'
 
 type PhotoGalleryProps = {
   photos: SanityAssetDocument[]
+}
+
+const LightboxSlide = ({
+  slide,
+  rect,
+  photos,
+}: RenderSlideProps & PhotoGalleryProps) => {
+  const { currentIndex } = useLightboxState()
+  if (!slide.height || !slide.width) return null
+
+  const width = Math.min(rect.width, (rect.height / slide.height) * slide.width)
+
+  const height = Math.min(
+    rect.height,
+    (rect.width / slide.width) * slide.height
+  )
+
+  return (
+    <Image
+      src={slide.src}
+      width={width}
+      height={height}
+      alt={slide.alt || ''}
+      placeholder={photos[currentIndex].asset.metadata.lqip}
+    />
+  )
 }
 
 export default function PhotoGallery({ photos }: PhotoGalleryProps) {
@@ -37,11 +68,22 @@ export default function PhotoGallery({ photos }: PhotoGalleryProps) {
         close={() => setLighboxIndex(-1)}
         index={lightboxIndex}
         slides={photos.map(photo => ({
-          src: urlFor(photo).width(2000).url(),
+          src: urlFor(photo).width(2400).url(),
           alt: photo.caption,
           height: photo.asset.metadata.dimensions.height,
           width: photo.asset.metadata.dimensions.width,
+          placeholder: photo.asset.metadata.lqip,
         }))}
+        render={{
+          slide: ({ slide, rect, offset }) => (
+            <LightboxSlide
+              slide={slide}
+              rect={rect}
+              offset={offset}
+              photos={photos}
+            />
+          ),
+        }}
       />
     </>
   )

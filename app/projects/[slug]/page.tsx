@@ -5,7 +5,6 @@ import Image from 'next/image'
 import { PortableText } from 'next-sanity'
 import dynamic from 'next/dynamic'
 import { Suspense } from 'react'
-import PhotoGallery from '@/app/components/PhotoGallery'
 
 type ProjectProps = {
   params: {
@@ -74,7 +73,7 @@ const MediaPlayer = dynamic(() => import('@/app/components/MediaPlayer'), {
   ssr: false,
 })
 
-const Masonry = dynamic(() => import('@/app/components/Masonry'), {
+const PhotoGallery = dynamic(() => import('@/app/components/PhotoGallery'), {
   ssr: false,
 })
 
