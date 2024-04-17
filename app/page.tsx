@@ -70,6 +70,7 @@ export default async function Home() {
     <main>
       <section className='py-14 text-center md:px-8 md:py-20 xl:px-16'>
         <div className='mx-auto max-w-[1792px]'>
+          <h1 className='visually-hidden'>Good For Nothings</h1>
           <HeroBanner />
         </div>
       </section>
