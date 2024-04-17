@@ -24,9 +24,6 @@ const config = {
         sansGlitch: ['var(--font-rubik-glitch)', ...fontFamily.sans],
         serif: ['var(--font-alegreya)', ...fontFamily.serif],
       },
-      fontSize: {
-        'hero-banner-heading': 'var(--hero-banner-heading-size)',
-      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

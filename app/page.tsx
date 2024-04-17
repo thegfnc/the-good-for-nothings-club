@@ -6,6 +6,7 @@ import { Suspense } from 'react'
 import { GFNC_member, GFNC_project } from './types'
 import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
+import HeroBanner from './components/HeroBanner'
 
 const FEATURED_PROJECTS_QUERY = `
   *[_type == 'GFNC_project' && featured == true] | order(dateCompleted desc) {
@@ -67,12 +68,9 @@ export default async function Home() {
 
   return (
     <main>
-      <section className='py-16 text-center md:px-8 md:py-24 xl:px-16'>
+      <section className='py-14 text-center md:px-8 md:py-20 xl:px-16'>
         <div className='mx-auto max-w-[1792px]'>
-          <h1 className='text-hero-banner-heading leading-[83.33%] tracking-[-0.06em]'>
-            <span>Good For</span>
-            <br /> <span className='font-sansGlitch font-normal'>Nothings</span>
-          </h1>
+          <HeroBanner />
         </div>
       </section>
       <section className='md:px-8 xl:px-16'>
