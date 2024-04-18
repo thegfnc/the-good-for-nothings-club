@@ -4,7 +4,7 @@ import { GFNC_project } from '../../types'
 import Image from 'next/image'
 import { PortableText } from 'next-sanity'
 import dynamic from 'next/dynamic'
-import { Suspense } from 'react'
+import { Suspense, memo } from 'react'
 
 type ProjectProps = {
   params: {
@@ -198,14 +198,14 @@ export default async function Project({ params }: ProjectProps) {
                         <MediaPlayer url={value.url} />
                       </div>
                     ),
-                    embedCode: ({ value }) => (
+                    embedCode: memo(({ value }) => (
                       <Suspense>
                         <div
                           dangerouslySetInnerHTML={{ __html: value.code.code }}
                           className='flex justify-center'
                         />
                       </Suspense>
-                    ),
+                    )),
                   },
                 }}
               />
