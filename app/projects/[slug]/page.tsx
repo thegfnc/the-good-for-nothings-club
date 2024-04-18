@@ -168,17 +168,19 @@ export default async function Project({ params }: ProjectProps) {
                 value={project.caseStudy}
                 components={{
                   types: {
-                    image: ({ value }) => (
-                      <Image
-                        src={urlFor(value).width(2000).url()}
-                        width={value.asset.metadata.dimensions.width}
-                        height={value.asset.metadata.dimensions.height}
-                        alt={value.caption}
-                        placeholder={value.asset.metadata.lqip}
-                        className={`w-full`}
-                      />
-                    ),
-                    videoFile: ({ value }) => {
+                    image: function CaseStudyImage({ value }) {
+                      return (
+                        <Image
+                          src={urlFor(value).width(2000).url()}
+                          width={value.asset.metadata.dimensions.width}
+                          height={value.asset.metadata.dimensions.height}
+                          alt={value.caption}
+                          placeholder={value.asset.metadata.lqip}
+                          className={`w-full`}
+                        />
+                      )
+                    },
+                    videoFile: function CaseStudyVideoFile({ value }) {
                       return (
                         <div className='flex aspect-video justify-center'>
                           <MediaPlayer
@@ -193,19 +195,25 @@ export default async function Project({ params }: ProjectProps) {
                         </div>
                       )
                     },
-                    embedUrl: ({ value }) => (
-                      <div className='flex aspect-video justify-center'>
-                        <MediaPlayer url={value.url} />
-                      </div>
-                    ),
-                    embedCode: memo(({ value }) => (
-                      <Suspense>
-                        <div
-                          dangerouslySetInnerHTML={{ __html: value.code.code }}
-                          className='flex justify-center'
-                        />
-                      </Suspense>
-                    )),
+                    embedUrl: function CaseStudyEmbedUrl({ value }) {
+                      return (
+                        <div className='flex aspect-video justify-center'>
+                          <MediaPlayer url={value.url} />
+                        </div>
+                      )
+                    },
+                    embedCode: memo(function CaseStudyEmbedCode({ value }) {
+                      return (
+                        <Suspense>
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: value.code.code,
+                            }}
+                            className='flex justify-center'
+                          />
+                        </Suspense>
+                      )
+                    }),
                   },
                 }}
               />
