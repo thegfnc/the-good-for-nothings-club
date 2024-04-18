@@ -179,12 +179,11 @@ export default async function Project({ params }: ProjectProps) {
                       />
                     ),
                     videoFile: ({ value }) => {
-                      console.log(value)
                       return (
                         <div className='flex aspect-video justify-center'>
                           <MediaPlayer
                             url={value.asset.url}
-                            playing={value.autoPlay}
+                            playing={value.playing}
                             controls={value.controls}
                             loop={value.loop}
                             playsinline={true}
