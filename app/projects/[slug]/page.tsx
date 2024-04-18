@@ -65,6 +65,19 @@ const PROJECT_SLUG_QUERY = `
           }
         }
       },
+      _type == 'videoFile' => {
+        ...,
+        asset-> {
+          url,
+          metadata {
+            lqip,
+            dimensions {
+              height,
+              width
+            }
+          }
+        }
+      },
     }
   }
 `
@@ -165,13 +178,27 @@ export default async function Project({ params }: ProjectProps) {
                         className={`w-full`}
                       />
                     ),
-                    embedUrl: ({ value }) => {
+                    videoFile: ({ value }) => {
+                      console.log(value)
                       return (
                         <div className='flex aspect-video justify-center'>
-                          <MediaPlayer url={value.url} />
+                          <MediaPlayer
+                            url={value.asset.url}
+                            playing={value.autoPlay}
+                            controls={value.controls}
+                            loop={value.loop}
+                            playsinline={true}
+                            volume={0}
+                            muted={true}
+                          />
                         </div>
                       )
                     },
+                    embedUrl: ({ value }) => (
+                      <div className='flex aspect-video justify-center'>
+                        <MediaPlayer url={value.url} />
+                      </div>
+                    ),
                     embedCode: ({ value }) => (
                       <Suspense>
                         <div
