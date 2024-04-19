@@ -70,11 +70,6 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/projects/jeff-rosenstock-hellmode-tour-2023',
-        destination: '/projects/jeff-rosenstock-hellmode-tour-2023',
-        permanent: true,
-      },
-      {
         source: '/projects/laundry-day',
         destination: '/projects/chris-donahue-laundry-day',
         permanent: true,
