@@ -25,6 +25,7 @@ export type GFNC_member = {
 
 export type GFNC_project = {
   _id: string
+  _updatedAt: string
   title: string
   clientName: string
   slug: {
