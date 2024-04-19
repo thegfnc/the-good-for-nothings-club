@@ -3,6 +3,26 @@ import Link from 'next/link'
 import ContactForm from './ContactUsForm'
 import SocialMediaLinks from '../components/SocialMediaLinks'
 import Map from '../components/Map'
+import { Metadata, ResolvingMetadata } from 'next'
+
+export async function generateMetadata(
+  params: {},
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { openGraph } = await parent
+  const pathname = '/contact'
+
+  return {
+    title: 'Contact',
+    alternates: {
+      canonical: pathname,
+    },
+    openGraph: {
+      ...openGraph,
+      url: pathname,
+    },
+  }
+}
 
 export default async function Contact() {
   return (

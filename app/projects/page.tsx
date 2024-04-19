@@ -4,6 +4,7 @@ import { sanityFetch, urlFor } from '../data/client'
 import { GFNC_project } from '../types'
 import Image from 'next/image'
 import { PortableText } from 'next-sanity'
+import { Metadata, ResolvingMetadata } from 'next'
 
 const menuItems = [
   {
@@ -61,6 +62,25 @@ const FILTERED_PROJECTS_QUERY = `
     ${PROJECTION}
   }
 `
+
+export async function generateMetadata(
+  params: {},
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { openGraph } = await parent
+  const pathname = '/projects'
+
+  return {
+    title: 'Projects',
+    alternates: {
+      canonical: pathname,
+    },
+    openGraph: {
+      ...openGraph,
+      url: pathname,
+    },
+  }
+}
 
 export default async function Projects({ searchParams }: ProjectsProps) {
   // If the search params type is empty or the type is not in the menu items,

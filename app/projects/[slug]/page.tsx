@@ -3,10 +3,18 @@ import { sanityFetch, urlFor } from '../../data/client'
 import { GFNC_project } from '../../types'
 import Image from 'next/image'
 import { PortableText } from 'next-sanity'
+import { toPlainText } from '@portabletext/toolkit'
 import dynamic from 'next/dynamic'
 import { Suspense, memo } from 'react'
+import { Metadata, ResolvingMetadata } from 'next'
 
 type ProjectProps = {
+  params: {
+    slug: string
+  }
+}
+
+type GenerateMetadataParams = {
   params: {
     slug: string
   }
@@ -33,6 +41,7 @@ const PROJECT_SLUG_QUERY = `
       },
       caption
     },
+    summary,
     overview,
     photoGallery[] {
       ...,
@@ -89,6 +98,36 @@ const MediaPlayer = dynamic(() => import('@/app/components/MediaPlayer'), {
 const PhotoGallery = dynamic(() => import('@/app/components/PhotoGallery'), {
   ssr: false,
 })
+
+export async function generateMetadata(
+  { params: { slug } }: GenerateMetadataParams,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { openGraph } = await parent
+  const pathname = '/projects/' + slug
+
+  const [projectData] = await Promise.all([
+    sanityFetch<GFNC_project[]>({
+      query: PROJECT_SLUG_QUERY,
+      tags: ['GFNC_project'],
+      params: { slug },
+    }),
+  ])
+
+  const project = projectData[0]
+
+  return {
+    title: `${project.title} – ${project.clientName}`,
+    description: toPlainText(project.summary),
+    alternates: {
+      canonical: pathname,
+    },
+    openGraph: {
+      ...openGraph,
+      url: pathname,
+    },
+  }
+}
 
 export default async function Project({ params }: ProjectProps) {
   const { slug } = params
