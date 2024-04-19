@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import ContactForm from './ContactUsForm'
+import ContactUsForm from './ContactUsForm'
 import SocialMediaLinks from '../components/SocialMediaLinks'
 import Map from '../components/Map'
 import { Metadata, ResolvingMetadata } from 'next'
@@ -36,7 +36,7 @@ export default async function Contact() {
             <div>
               <h3 className='text-[32px]'>Say Hello</h3>
               <div className='mt-6'>
-                <ContactForm />
+                <ContactUsForm />
               </div>
             </div>
             <div className='space-y-12'>

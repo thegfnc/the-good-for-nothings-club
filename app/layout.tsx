@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: {
       template: '%s | The Good for Nothings Club',
-      default: 'Creaters club from ATX | The Good for Nothings Club',
+      default: 'Creators club from ATX | The Good for Nothings Club',
     },
     description:
       'The Good for Nothings Club is a creators club from ATX made up of designers, engineers, filmmakers, musicians, and writers. Good for nothings. Great at everything.',

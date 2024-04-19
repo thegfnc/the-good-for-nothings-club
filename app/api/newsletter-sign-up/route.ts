@@ -32,5 +32,12 @@ export async function POST(request: Request) {
     )
   }
 
+  resend.emails.send({
+    from: `GFNC Newsletter Sign Up Form <no-reply@updates.thegoodfornothings.club>`,
+    to: ['hello@thegoodfornothings.club'],
+    subject: 'Newsletter Sign up @ https://www.thegoodfornothings.club/',
+    text: `You just got a new mailing list sign up!\n\nEmail: ${body.email}`,
+  })
+
   return Response.json({ success: true })
 }

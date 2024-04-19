@@ -15,9 +15,11 @@ import {
   FormLabel,
   FormMessage,
 } from '../components/ui/Form'
+import { Alert, AlertDescription, AlertTitle } from '../components/ui/Alert'
 import { contactUsSchema } from '../data/schemas'
+import { Check, Loader2 } from 'lucide-react'
 
-export default function ContactForm() {
+export default function ContactUsForm() {
   const form = useForm<z.infer<typeof contactUsSchema>>({
     resolver: zodResolver(contactUsSchema),
     defaultValues: {
@@ -46,7 +48,18 @@ export default function ContactForm() {
     }
   }
 
-  return (
+  const { isSubmitting, isSubmitSuccessful } = form.formState
+
+  return isSubmitSuccessful ? (
+    <Alert>
+      <Check className='h-4 w-4' />
+      <AlertTitle>Success</AlertTitle>
+      <AlertDescription>
+        Thank you for contacting us. We will get back to you as soon as
+        possible.
+      </AlertDescription>
+    </Alert>
+  ) : (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
         <FormField
@@ -165,7 +178,10 @@ export default function ContactForm() {
             </FormItem>
           )}
         />
-        <Button type='submit'>Submit</Button>
+        <Button type='submit' disabled={isSubmitting}>
+          {isSubmitting && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+          Submit
+        </Button>
       </form>
     </Form>
   )

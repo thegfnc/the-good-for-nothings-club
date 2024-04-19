@@ -106,7 +106,7 @@ export default async function Home() {
                         }
                         alt={project.mainImage.caption}
                         placeholder={project.mainImage.asset.metadata.lqip}
-                        className={`aspect-video w-full object-cover transition-all duration-1000 hover:scale-105`}
+                        className={`aspect-video w-full object-cover transition-all duration-1000 hover:scale-[1.03]`}
                       />
                     </Link>
                   </div>
