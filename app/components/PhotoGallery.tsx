@@ -5,6 +5,7 @@ import 'yet-another-react-lightbox/plugins/counter.css'
 
 import { useState } from 'react'
 import Image from 'next/image'
+import PhotoAlbum, { Photo, RenderPhotoProps } from 'react-photo-album'
 import Lightbox, {
   RenderSlideProps,
   useLightboxState,
@@ -13,10 +14,14 @@ import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import Counter from 'yet-another-react-lightbox/plugins/counter'
 import { SanityAssetDocument } from 'next-sanity'
 import { urlFor } from '../data/client'
-import Masonry from './Masonry'
+import { PlaceholderValue } from 'next/dist/shared/lib/get-img-props'
 
 type PhotoGalleryProps = {
   photos: SanityAssetDocument[]
+}
+
+type PhotoAlbumPhotoProps = Photo & {
+  placeholder: PlaceholderValue
 }
 
 const LightboxSlide = ({
@@ -45,26 +50,52 @@ const LightboxSlide = ({
   )
 }
 
+const PhotoAlbumPhoto = ({
+  photo,
+  imageProps,
+  wrapperStyle,
+}: RenderPhotoProps<PhotoAlbumPhotoProps>) => {
+  return (
+    <div className='overflow-hidden' style={wrapperStyle}>
+      <Image
+        src={photo.src}
+        width={photo.width}
+        height={photo.height}
+        alt={photo.alt || ''}
+        placeholder={photo.placeholder}
+        className={`w-full cursor-pointer transition-all duration-1000 hover:scale-105`}
+        onClick={imageProps.onClick}
+      />
+    </div>
+  )
+}
+
 export default function PhotoGallery({ photos }: PhotoGalleryProps) {
   const [lightboxIndex, setLighboxIndex] = useState(-1)
 
+  const photoAlbumPhotos = photos.map(photo => ({
+    src: urlFor(photo).width(1400).url(),
+    alt: photo.caption,
+    width: photo.asset.metadata.dimensions.width,
+    height: photo.asset.metadata.dimensions.height,
+    placeholder: photo.asset.metadata.lqip,
+  }))
+
   return (
     <>
-      <Masonry className='gap-4 md:gap-8'>
-        {photos.map((photo, index) => (
-          <div key={photo._key} className='overflow-hidden'>
-            <Image
-              src={urlFor(photo).width(1400).url()}
-              width={photo.asset.metadata.dimensions.width}
-              height={photo.asset.metadata.dimensions.height}
-              alt={photo.caption}
-              placeholder={photo.asset.metadata.lqip}
-              className={`w-full cursor-pointer transition-all duration-1000 hover:scale-105`}
-              onClick={() => setLighboxIndex(index)}
-            />
-          </div>
-        ))}
-      </Masonry>
+      <PhotoAlbum
+        photos={photoAlbumPhotos}
+        layout='masonry'
+        columns={containerWidth => {
+          if (containerWidth > 1280) return 3
+          if (containerWidth > 768) return 2
+          return 1
+        }}
+        spacing={containerWidth => (containerWidth > 768 ? 32 : 16)}
+        onClick={({ index: current }) => setLighboxIndex(current)}
+        defaultContainerWidth={1281}
+        renderPhoto={PhotoAlbumPhoto}
+      />
       <Lightbox
         open={lightboxIndex > -1}
         close={() => setLighboxIndex(-1)}
