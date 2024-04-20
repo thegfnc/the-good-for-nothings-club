@@ -20,7 +20,7 @@ type PhotoGalleryProps = {
   photos: SanityAssetDocument[]
 }
 
-type PhotoAlbumPhotoProps = Photo & {
+type GalleryPhotoProps = Photo & {
   placeholder: PlaceholderValue
 }
 
@@ -40,25 +40,32 @@ const LightboxSlide = ({
   )
 
   return (
-    <Image
-      src={slide.src}
-      width={width}
-      height={height}
-      alt={slide.alt || ''}
-      placeholder={photos[currentIndex].asset.metadata.lqip}
-      sizes='100vw'
-      quality={100}
-    />
+    <div style={{ position: 'relative', width, height }}>
+      <Image
+        src={slide.src}
+        loading='eager'
+        draggable={false}
+        width={width}
+        height={height}
+        alt={slide.alt || ''}
+        placeholder={photos[currentIndex].asset.metadata.lqip}
+        sizes={`${Math.ceil((width / window.innerWidth) * 100)}vw`}
+        quality={100}
+        style={{
+          objectFit: 'contain',
+        }}
+      />
+    </div>
   )
 }
 
-const PhotoAlbumPhoto = ({
+const GalleryPhoto = ({
   photo,
   imageProps,
   wrapperStyle,
-}: RenderPhotoProps<PhotoAlbumPhotoProps>) => {
+}: RenderPhotoProps<GalleryPhotoProps>) => {
   return (
-    <div className='overflow-hidden' style={wrapperStyle}>
+    <div className='relative overflow-hidden' style={wrapperStyle}>
       <Image
         src={photo.src}
         width={photo.width}
@@ -98,7 +105,7 @@ export default function PhotoGallery({ photos }: PhotoGalleryProps) {
         spacing={containerWidth => (containerWidth > 768 ? 32 : 16)}
         onClick={({ index: current }) => setLighboxIndex(current)}
         defaultContainerWidth={1281}
-        renderPhoto={PhotoAlbumPhoto}
+        renderPhoto={GalleryPhoto}
       />
       <Lightbox
         open={lightboxIndex > -1}
