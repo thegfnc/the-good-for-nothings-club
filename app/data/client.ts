@@ -21,7 +21,7 @@ type SanityFetchParams = {
   tags?: string[]
 }
 
-export async function sanityFetch<QueryResponse>({
+export async function cmsFetch<QueryResponse>({
   query,
   params = {},
   tags,
@@ -34,6 +34,6 @@ export async function sanityFetch<QueryResponse>({
   })
 }
 
-export function urlFor(source: SanityImageSource) {
+export function getImageUrl(source: SanityImageSource) {
   return builder.image(source)
 }

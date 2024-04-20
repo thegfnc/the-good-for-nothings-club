@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { sanityFetch, urlFor } from '../../data/client'
+import { cmsFetch, getImageUrl } from '../../data/client'
 import { GFNC_project } from '../../types'
 import Image from 'next/image'
 import { PortableText } from 'next-sanity'
@@ -107,7 +107,7 @@ export async function generateMetadata(
   const pathname = '/projects/' + slug
 
   const [projectData] = await Promise.all([
-    sanityFetch<GFNC_project[]>({
+    cmsFetch<GFNC_project[]>({
       query: PROJECT_SLUG_QUERY,
       tags: ['GFNC_project'],
       params: { slug },
@@ -126,7 +126,7 @@ export async function generateMetadata(
       ...openGraph,
       url: pathname,
       images: [
-        urlFor(project.mainImage).width(1200).url(),
+        getImageUrl(project.mainImage).width(1200).url(),
         ...(openGraph?.images || []),
       ],
     },
@@ -137,7 +137,7 @@ export default async function Project({ params }: ProjectProps) {
   const { slug } = params
 
   const [projectData] = await Promise.all([
-    sanityFetch<GFNC_project[]>({
+    cmsFetch<GFNC_project[]>({
       query: PROJECT_SLUG_QUERY,
       tags: ['GFNC_project'],
       params: { slug },
@@ -160,7 +160,7 @@ export default async function Project({ params }: ProjectProps) {
           </div>
           <div className='flex items-center justify-center border-y-2 border-black'>
             <Image
-              src={urlFor(project.mainImage).width(2000).url()}
+              src={getImageUrl(project.mainImage).width(2000).url()}
               width={project.mainImage.asset.metadata.dimensions.width}
               height={project.mainImage.asset.metadata.dimensions.height}
               alt={project.mainImage.caption}
@@ -217,7 +217,7 @@ export default async function Project({ params }: ProjectProps) {
                     image: function CaseStudyImage({ value }) {
                       return (
                         <Image
-                          src={urlFor(value).width(2000).url()}
+                          src={getImageUrl(value).width(2000).url()}
                           width={value.asset.metadata.dimensions.width}
                           height={value.asset.metadata.dimensions.height}
                           alt={value.caption}

@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next'
-import { sanityFetch } from './data/client'
+import { cmsFetch } from './data/client'
 import { GFNC_project } from './types'
 
 const defaultPage: MetadataRoute.Sitemap[0] = {
@@ -31,7 +31,7 @@ const ALL_PROJECTS_QUERY = `
 `
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const projectsData = await sanityFetch<GFNC_project[]>({
+  const projectsData = await cmsFetch<GFNC_project[]>({
     query: ALL_PROJECTS_QUERY,
     tags: ['GFNC_project'],
   })

@@ -13,7 +13,7 @@ import Lightbox, {
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import Counter from 'yet-another-react-lightbox/plugins/counter'
 import { SanityAssetDocument } from 'next-sanity'
-import { urlFor } from '../data/client'
+import { getImageUrl } from '../data/client'
 import { PlaceholderValue } from 'next/dist/shared/lib/get-img-props'
 
 type PhotoGalleryProps = {
@@ -78,7 +78,7 @@ export default function PhotoGallery({ photos }: PhotoGalleryProps) {
   const [lightboxIndex, setLighboxIndex] = useState(-1)
 
   const photoAlbumPhotos = photos.map(photo => ({
-    src: urlFor(photo).width(1400).url(),
+    src: getImageUrl(photo).width(1400).url(),
     alt: photo.caption,
     width: photo.asset.metadata.dimensions.width,
     height: photo.asset.metadata.dimensions.height,
@@ -106,7 +106,7 @@ export default function PhotoGallery({ photos }: PhotoGalleryProps) {
         index={lightboxIndex}
         plugins={[Counter, Zoom]}
         slides={photos.map(photo => ({
-          src: urlFor(photo).width(2400).url(),
+          src: getImageUrl(photo).width(2400).url(),
           alt: photo.caption,
           height: photo.asset.metadata.dimensions.height,
           width: photo.asset.metadata.dimensions.width,

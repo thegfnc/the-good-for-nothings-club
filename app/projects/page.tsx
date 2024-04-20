@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { cn } from '../lib/utils'
-import { sanityFetch, urlFor } from '../data/client'
+import { cmsFetch, getImageUrl } from '../data/client'
 import { GFNC_project } from '../types'
 import Image from 'next/image'
 import { PortableText } from 'next-sanity'
@@ -94,7 +94,7 @@ export default async function Projects({ searchParams }: ProjectsProps) {
   const type = isDefaultType ? menuItems[0].name : searchParams.type
 
   const [projectsData] = await Promise.all([
-    sanityFetch<GFNC_project[]>({
+    cmsFetch<GFNC_project[]>({
       query: isDefaultType ? ALL_PROJECTS_QUERY : FILTERED_PROJECTS_QUERY,
       tags: ['GFNC_project'],
       params: isDefaultType ? {} : { type },
@@ -142,7 +142,7 @@ export default async function Projects({ searchParams }: ProjectsProps) {
                     <div className='overflow-hidden border-2 border-black'>
                       <Link href={`/projects/${project.slug.current}`}>
                         <Image
-                          src={urlFor(project.mainImage).width(1600).url()}
+                          src={getImageUrl(project.mainImage).width(1600).url()}
                           width={
                             project.mainImage.asset.metadata.dimensions.width
                           }

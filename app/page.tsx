@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import InstagramFeedEmbed from './components/InstagramFeedEmbed'
 import SpotifyPlaylistEmbed from './components/SpotifyPlaylistEmbed'
-import { sanityFetch, urlFor } from './data/client'
+import { cmsFetch, getImageUrl } from './data/client'
 import { Suspense } from 'react'
 import { GFNC_member, GFNC_project } from './types'
 import Link from 'next/link'
@@ -56,11 +56,11 @@ const MEMBERS_QUERY = `
 
 export default async function Home() {
   const [featuredProjectsData, membersData] = await Promise.all([
-    sanityFetch<GFNC_project[]>({
+    cmsFetch<GFNC_project[]>({
       query: FEATURED_PROJECTS_QUERY,
       tags: ['GFNC_project'],
     }),
-    sanityFetch<GFNC_member[]>({
+    cmsFetch<GFNC_member[]>({
       query: MEMBERS_QUERY,
       tags: ['GFNC_member'],
     }),
@@ -97,7 +97,7 @@ export default async function Home() {
                   <div className='overflow-hidden border-2 border-black'>
                     <Link href={`/projects/${project.slug.current}`}>
                       <Image
-                        src={urlFor(project.mainImage).width(2000).url()}
+                        src={getImageUrl(project.mainImage).width(2000).url()}
                         width={
                           project.mainImage.asset.metadata.dimensions.width
                         }
@@ -152,7 +152,7 @@ export default async function Home() {
               {membersData.map(member => (
                 <li key={member._id}>
                   <Image
-                    src={urlFor(member.profilePicture).width(1400).url()}
+                    src={getImageUrl(member.profilePicture).width(1400).url()}
                     width={
                       member.profilePicture.asset.metadata.dimensions.width
                     }
