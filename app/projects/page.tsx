@@ -132,7 +132,7 @@ export default async function Projects({ searchParams }: ProjectsProps) {
               ))}
             </ul>
             <div className='mt-16 flex flex-col gap-16'>
-              {projectsData.map(project => (
+              {projectsData.map((project, index) => (
                 <div
                   key={project._id}
                   className='grid grid-cols-1 gap-6 lg:grid-cols-2'
@@ -150,6 +150,9 @@ export default async function Projects({ searchParams }: ProjectsProps) {
                         alt={project.mainImage.caption}
                         placeholder={project.mainImage.asset.metadata.lqip}
                         className={`aspect-video w-full object-cover transition-all duration-1000 hover:scale-105`}
+                        sizes='(max-width: 1024px) 100vw, 50vw'
+                        quality={90}
+                        priority={index < 3}
                       />
                     </Link>
                   </div>

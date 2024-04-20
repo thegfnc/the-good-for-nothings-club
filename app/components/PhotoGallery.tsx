@@ -46,6 +46,8 @@ const LightboxSlide = ({
       height={height}
       alt={slide.alt || ''}
       placeholder={photos[currentIndex].asset.metadata.lqip}
+      sizes='100vw'
+      quality={100}
     />
   )
 }
@@ -65,6 +67,8 @@ const PhotoAlbumPhoto = ({
         placeholder={photo.placeholder}
         className={`w-full cursor-pointer transition-all duration-1000 hover:scale-105`}
         onClick={imageProps.onClick}
+        sizes='(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw'
+        quality={90}
       />
     </div>
   )

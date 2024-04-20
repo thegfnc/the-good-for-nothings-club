@@ -166,6 +166,9 @@ export default async function Project({ params }: ProjectProps) {
               alt={project.mainImage.caption}
               placeholder={project.mainImage.asset.metadata.lqip}
               className={`w-full`}
+              sizes='100vw'
+              quality={90}
+              priority
             />
           </div>
           <div className='mx-4 my-6 flex flex-col justify-between gap-6 md:mx-12 md:my-12 md:gap-12 lg:flex-row'>
@@ -220,6 +223,8 @@ export default async function Project({ params }: ProjectProps) {
                           alt={value.caption}
                           placeholder={value.asset.metadata.lqip}
                           className={`w-full`}
+                          sizes='100vw'
+                          quality={90}
                         />
                       )
                     },

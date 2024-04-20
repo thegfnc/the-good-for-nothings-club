@@ -107,6 +107,8 @@ export default async function Home() {
                         alt={project.mainImage.caption}
                         placeholder={project.mainImage.asset.metadata.lqip}
                         className={`aspect-video w-full object-cover transition-all duration-1000 hover:scale-[1.03]`}
+                        sizes='100vw'
+                        quality={90}
                       />
                     </Link>
                   </div>
@@ -160,6 +162,8 @@ export default async function Home() {
                     alt={member.profilePicture.caption}
                     placeholder={member.profilePicture.asset.metadata.lqip}
                     className={`h-[312px] border-2 border-black object-cover sm:h-[468px]`}
+                    sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
+                    quality={90}
                   />
                   <h3 className='mt-6 text-[32px]'>{member.fullName}</h3>
                   <div className='text-xl leading-tight'>
