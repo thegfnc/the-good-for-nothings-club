@@ -69,13 +69,13 @@ export default async function Home() {
   return (
     <main>
       <section className='py-14 text-center md:px-8 md:py-20 xl:px-16'>
-        <div className='mx-auto max-w-[1792px]'>
+        <div className='mx-auto max-w-[1576px]'>
           <h1 className='visually-hidden'>Good For Nothings</h1>
           <HeroBanner />
         </div>
       </section>
       <section className='md:px-8 xl:px-16'>
-        <div className='mx-auto max-w-[1792px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
+        <div className='mx-auto max-w-[1576px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
           <p className='text-2xl leading-tight sm:text-[32px] 2xl:text-[48px] 2xl:leading-[1.16]'>
             <em>The Good for Nothings Club</em> is a creators club from Austin,
             TX made up of designers, engineers, filmmakers, musicians, and
@@ -86,7 +86,7 @@ export default async function Home() {
         </div>
       </section>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
-        <div className='mx-auto max-w-[1792px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
+        <div className='mx-auto max-w-[1576px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
           <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
             Projects
           </h2>
@@ -143,7 +143,7 @@ export default async function Home() {
         </div>
       </section>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
-        <div className='mx-auto max-w-[1792px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
+        <div className='mx-auto max-w-[1576px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
           <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
             Members
           </h2>
@@ -187,7 +187,7 @@ export default async function Home() {
         </div>
       </section>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
-        <div className='mx-auto max-w-[1792px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
+        <div className='mx-auto max-w-[1576px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
           <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
             Happenings
           </h2>
