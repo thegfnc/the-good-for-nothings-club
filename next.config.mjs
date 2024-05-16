@@ -13,6 +13,10 @@ const nextConfig = {
     ],
   },
 
+  experimental: {
+    instrumentationHook: true,
+  },
+
   // https://nextjs.org/docs/app/api-reference/next-config-js/redirects
   // migration from webflow
   async redirects() {
