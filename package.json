@@ -18,7 +18,7 @@
     "@sanity/client": "^6.18.2",
     "@sanity/image-url": "^1.0.2",
     "@sanity/react-loader": "^1.9.19",
-    "@sentry/nextjs": "^8.1.0",
+    "@sentry/nextjs": "^8.2.1",
     "@vercel/analytics": "^1.2.2",
     "@vis.gl/react-google-maps": "^1.0.0",
     "class-variance-authority": "^0.7.0",
