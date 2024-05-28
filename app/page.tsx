@@ -148,7 +148,7 @@ export default async function Home() {
             Members
           </h2>
           <div className='mt-12 md:mt-24'>
-            <ul className='grid grid-cols-1 gap-12 md:gap-8 lg:grid-cols-2 xl:grid-cols-3'>
+            <ul className='grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-8 xl:grid-cols-4'>
               {membersData.map(member => (
                 <li key={member._id}>
                   <Image
@@ -161,7 +161,7 @@ export default async function Home() {
                     }
                     alt={member.profilePicture.caption}
                     placeholder={member.profilePicture.asset.metadata.lqip}
-                    className={`h-[312px] border-2 border-black object-cover sm:h-[468px]`}
+                    className={`h-[600px] border-2 border-black object-cover md:h-auto`}
                     sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
                     quality={90}
                   />
