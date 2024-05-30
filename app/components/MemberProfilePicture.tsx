@@ -35,6 +35,7 @@ export default function MemberProfilePicture({
         className={`h-[600px] border-2 border-black object-cover md:h-auto ${isHovering ? 'hidden' : 'block'}`}
         sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
         quality={90}
+        priority={true}
       />
       <Image
         src={hoverProfilePictureUrl}
@@ -45,6 +46,7 @@ export default function MemberProfilePicture({
         className={`h-[600px] border-2 border-black object-cover md:h-auto ${isHovering ? 'block' : 'hidden'}`}
         sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
         quality={90}
+        priority={true}
       />
       <h3 className='mt-6 text-[32px]'>{member.fullName}</h3>
       <div className='text-xl leading-tight'>
