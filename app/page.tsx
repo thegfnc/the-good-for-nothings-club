@@ -7,6 +7,7 @@ import { GFNC_member, GFNC_project } from './types'
 import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
 import HeroBanner from './components/HeroBanner'
+import MemberProfilePicture from './components/MemberProfilePicture'
 
 const FEATURED_PROJECTS_QUERY = `
   *[_type == 'GFNC_project' && featured == true] | order(dateCompleted desc) {
@@ -36,6 +37,19 @@ const MEMBERS_QUERY = `
     _id,
     fullName,
     profilePicture {
+      asset-> {
+        url,
+        metadata {
+          lqip,
+          dimensions {
+            height,
+            width
+          }
+        }
+      },
+      caption
+    },
+    hoverProfilePicture {
       asset-> {
         url,
         metadata {
@@ -150,37 +164,7 @@ export default async function Home() {
           <div className='mt-12 md:mt-24'>
             <ul className='grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-8 xl:grid-cols-4'>
               {membersData.map(member => (
-                <li key={member._id}>
-                  <Image
-                    src={getImageUrl(member.profilePicture).width(1400).url()}
-                    width={
-                      member.profilePicture.asset.metadata.dimensions.width
-                    }
-                    height={
-                      member.profilePicture.asset.metadata.dimensions.height
-                    }
-                    alt={member.profilePicture.caption}
-                    placeholder={member.profilePicture.asset.metadata.lqip}
-                    className={`h-[600px] border-2 border-black object-cover md:h-auto`}
-                    sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
-                    quality={90}
-                  />
-                  <h3 className='mt-6 text-[32px]'>{member.fullName}</h3>
-                  <div className='text-xl leading-tight'>
-                    <p className='mt-4'>
-                      Member #{String(member.memberNumber).padStart(3, '0')} -
-                      since{' '}
-                      {new Date(member.startDate).toLocaleDateString('en-US', {
-                        month: 'short',
-                        year: 'numeric',
-                        timeZone: 'UTC',
-                      })}
-                    </p>
-                    <p>
-                      <em>{member.roles.join(', ').toLowerCase()}</em>
-                    </p>
-                  </div>
-                </li>
+                <MemberProfilePicture key={member._id} member={member} />
               ))}
             </ul>
           </div>
