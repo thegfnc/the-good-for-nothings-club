@@ -14,23 +14,35 @@ export default function MemberProfilePicture({
 }: MemberProfilePictureProps) {
   const [isHovering, setIsHovering] = useState(false)
 
-  const imageAsset = isHovering
-    ? member.hoverProfilePicture
-    : member.profilePicture
+  const { profilePicture, hoverProfilePicture } = member
 
-  const imageUrl = getImageUrl(imageAsset).width(1400).url()
+  const profilePictureUrl = getImageUrl(profilePicture).width(1400).url()
+  const hoverProfilePictureUrl = getImageUrl(hoverProfilePicture)
+    .width(1400)
+    .url()
 
   return (
-    <li>
+    <li
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
       <Image
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
-        src={imageUrl}
-        width={imageAsset.asset.metadata.dimensions.width}
-        height={imageAsset.asset.metadata.dimensions.height}
-        alt={imageAsset.caption}
-        placeholder={imageAsset.asset.metadata.lqip}
-        className={`h-[600px] border-2 border-black object-cover md:h-auto`}
+        src={profilePictureUrl}
+        width={profilePicture.asset.metadata.dimensions.width}
+        height={profilePicture.asset.metadata.dimensions.height}
+        alt={profilePicture.caption}
+        placeholder={profilePicture.asset.metadata.lqip}
+        className={`h-[600px] border-2 border-black object-cover md:h-auto ${isHovering ? 'hidden' : 'block'}`}
+        sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
+        quality={90}
+      />
+      <Image
+        src={hoverProfilePictureUrl}
+        width={hoverProfilePicture.asset.metadata.dimensions.width}
+        height={hoverProfilePicture.asset.metadata.dimensions.height}
+        alt={hoverProfilePicture.caption}
+        // placeholder={hoverProfilePicture.asset.metadata.lqip}
+        className={`h-[600px] border-2 border-black object-cover md:h-auto ${isHovering ? 'block' : 'hidden'}`}
         sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
         quality={90}
       />
