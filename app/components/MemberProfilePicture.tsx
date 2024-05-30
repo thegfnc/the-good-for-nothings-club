@@ -41,7 +41,7 @@ export default function MemberProfilePicture({
         width={hoverProfilePicture.asset.metadata.dimensions.width}
         height={hoverProfilePicture.asset.metadata.dimensions.height}
         alt={hoverProfilePicture.caption}
-        // placeholder={hoverProfilePicture.asset.metadata.lqip}
+        placeholder={hoverProfilePicture.asset.metadata.lqip}
         className={`h-[600px] border-2 border-black object-cover md:h-auto ${isHovering ? 'block' : 'hidden'}`}
         sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
         quality={90}
