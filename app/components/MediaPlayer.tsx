@@ -11,6 +11,7 @@ type MediaPlayerProps = {
   playsinline?: boolean
   volume?: number
   muted?: boolean
+  className?: string
 }
 
 export default function MediaPlayer({
@@ -19,22 +20,25 @@ export default function MediaPlayer({
   controls = false,
   loop = false,
   playsinline = false,
-  volume = 1,
+  volume = 0,
   muted = false,
+  className = '',
 }: MediaPlayerProps) {
   return (
     <Suspense>
-      <ReactPlayer
-        url={url}
-        playing={playing}
-        controls={controls}
-        loop={loop}
-        playsinline={playsinline}
-        volume={0}
-        muted={muted}
-        width='100%'
-        height='100%'
-      />
+      <div className={className}>
+        <ReactPlayer
+          url={url}
+          playing={playing}
+          controls={controls}
+          loop={loop}
+          playsinline={playsinline}
+          volume={volume}
+          muted={muted}
+          width='100%'
+          height='100%'
+        />
+      </div>
     </Suspense>
   )
 }

@@ -7,6 +7,7 @@ import { toPlainText } from '@portabletext/toolkit'
 import dynamic from 'next/dynamic'
 import { Suspense, memo } from 'react'
 import { Metadata, ResolvingMetadata } from 'next'
+import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 
 type ProjectProps = {
   params: {
@@ -28,18 +29,34 @@ const PROJECT_SLUG_QUERY = `
     slug,
     type,
     dateCompleted,
-    mainImage {
-      asset-> {
-        url,
-        metadata {
-          lqip,
-          dimensions {
-            height,
-            width
+    mainMedia[] {
+      ...,
+      _type == 'image' => {
+        ...,
+        asset-> {
+          url,
+          metadata {
+            lqip,
+            dimensions {
+              height,
+              width
+            }
           }
         }
       },
-      caption
+      _type == 'videoFile' => {
+        ...,
+        asset-> {
+          url,
+          metadata {
+            lqip,
+            dimensions {
+              height,
+              width
+            }
+          }
+        }
+      },
     },
     summary,
     overview,
@@ -115,6 +132,9 @@ export async function generateMetadata(
   ])
 
   const project = projectData[0]
+  const mainImage = project.mainMedia.find(
+    mainMedia => mainMedia._type === 'image'
+  ) as SanityImageSource
 
   return {
     title: `${project.title} – ${project.clientName}`,
@@ -125,7 +145,7 @@ export async function generateMetadata(
     openGraph: {
       ...openGraph,
       url: pathname,
-      images: [getImageUrl(project.mainImage).width(1200).url()],
+      images: [getImageUrl(mainImage).width(1200).url()],
     },
   }
 }
@@ -143,6 +163,12 @@ export default async function Project({ params }: ProjectProps) {
 
   const project = projectData[0]
 
+  const mainMedia =
+    project.mainMedia.find(mainMedia => mainMedia._type === 'videoFile') ||
+    project.mainMedia.find(mainMedia => mainMedia._type === 'image')
+
+  if (!mainMedia) return null
+
   return (
     <main>
       <section className='md:px-8 xl:px-16'>
@@ -156,17 +182,30 @@ export default async function Project({ params }: ProjectProps) {
             </h2>
           </div>
           <div className='flex items-center justify-center border-y-2 border-black'>
-            <Image
-              src={getImageUrl(project.mainImage).width(2000).url()}
-              width={project.mainImage.asset.metadata.dimensions.width}
-              height={project.mainImage.asset.metadata.dimensions.height}
-              alt={project.mainImage.caption}
-              placeholder={project.mainImage.asset.metadata.lqip}
-              className={`w-full`}
-              sizes='100vw'
-              quality={90}
-              priority
-            />
+            {mainMedia._type === 'videoFile' ? (
+              <MediaPlayer
+                url={mainMedia.asset.url}
+                playing={mainMedia.playing}
+                controls={mainMedia.controls}
+                loop={mainMedia.loop}
+                playsinline={true}
+                volume={0}
+                muted={true}
+                className={`pointer-events-none aspect-video w-full`}
+              />
+            ) : (
+              <Image
+                src={getImageUrl(mainMedia).width(1600).url()}
+                width={mainMedia.asset.metadata.dimensions.width}
+                height={mainMedia.asset.metadata.dimensions.height}
+                alt={mainMedia.caption}
+                placeholder={mainMedia.asset.metadata.lqip}
+                className={`w-full`}
+                sizes='100vw'
+                quality={90}
+                priority
+              />
+            )}
           </div>
           <div className='mx-4 my-6 flex flex-col justify-between gap-6 md:mx-12 md:my-12 md:gap-12 lg:flex-row'>
             <div className='space-y-2 md:space-y-6'>

@@ -1,37 +1,38 @@
 import { TypedObject } from '@portabletext/types'
 import { SanityAssetDocument } from 'next-sanity'
 
+export type Image = {
+  _type: 'image'
+  asset: {
+    url: string
+    metadata: {
+      lqip: `data:image/${string}`
+      dimensions: {
+        aspectRatio: number
+        height: number
+        width: number
+      }
+    }
+  }
+  caption: string
+}
+
+type VideoFile = {
+  _type: 'videoFile'
+  asset: {
+    url: string
+  }
+  caption: string
+  controls: boolean
+  loop: boolean
+  playing: boolean
+}
+
 export type GFNC_member = {
   _id: string
   fullName: string
-  profilePicture: {
-    asset: {
-      url: string
-      metadata: {
-        lqip: `data:image/${string}`
-        dimensions: {
-          aspectRatio: number
-          height: number
-          width: number
-        }
-      }
-    }
-    caption: string
-  }
-  hoverProfilePicture: {
-    asset: {
-      url: string
-      metadata: {
-        lqip: `data:image/${string}`
-        dimensions: {
-          aspectRatio: number
-          height: number
-          width: number
-        }
-      }
-    }
-    caption: string
-  }
+  profilePicture: Image
+  hoverProfilePicture: Image
   roles: string[]
   startDate: string
   memberNumber: number
@@ -47,20 +48,7 @@ export type GFNC_project = {
   }
   type: string
   dateCompleted: string
-  mainImage: {
-    asset: {
-      url: string
-      metadata: {
-        lqip: `data:image/${string}`
-        dimensions: {
-          aspectRatio: number
-          height: number
-          width: number
-        }
-      }
-    }
-    caption: string
-  }
+  mainMedia: Array<Image | VideoFile>
   summary: TypedObject[]
   overview: TypedObject[]
   photoGallery: SanityAssetDocument[]

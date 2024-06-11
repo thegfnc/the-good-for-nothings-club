@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
 import HeroBanner from './components/HeroBanner'
 import MemberProfilePicture from './components/MemberProfilePicture'
+import MediaPlayer from './components/MediaPlayer'
 
 const FEATURED_PROJECTS_QUERY = `
   *[_type == 'GFNC_project' && featured == true] | order(dateCompleted desc) {
@@ -15,18 +16,34 @@ const FEATURED_PROJECTS_QUERY = `
     title,
     clientName,
     slug,
-    mainImage {
-      asset-> {
-        url,
-        metadata {
-          lqip,
-          dimensions {
-            height,
-            width
+    mainMedia[] {
+      ...,
+      _type == 'image' => {
+        ...,
+        asset-> {
+          url,
+          metadata {
+            lqip,
+            dimensions {
+              height,
+              width
+            }
           }
         }
       },
-      caption
+      _type == 'videoFile' => {
+        ...,
+        asset-> {
+          url,
+          metadata {
+            lqip,
+            dimensions {
+              height,
+              width
+            }
+          }
+        }
+      },
     },
     summary
   }
@@ -106,44 +123,72 @@ export default async function Home() {
           </h2>
           <div className='mt-12 md:mt-24'>
             <ul className='flex flex-col gap-12 md:gap-24'>
-              {featuredProjectsData.map(project => (
-                <li key={project._id} className='flex flex-col gap-6 md:gap-8'>
-                  <div className='overflow-hidden border-2 border-black'>
-                    <Link href={`/projects/${project.slug.current}`}>
-                      <Image
-                        src={getImageUrl(project.mainImage).width(2000).url()}
-                        width={
-                          project.mainImage.asset.metadata.dimensions.width
-                        }
-                        height={
-                          project.mainImage.asset.metadata.dimensions.height
-                        }
-                        alt={project.mainImage.caption}
-                        placeholder={project.mainImage.asset.metadata.lqip}
-                        className={`aspect-video w-full object-cover transition-all duration-1000 hover:scale-[1.03]`}
-                        sizes='100vw'
-                        quality={90}
-                      />
-                    </Link>
-                  </div>
-                  <div className='grid grid-cols-1 gap-4 lg:grid-cols-2 '>
-                    <div className='flex flex-col gap-1 md:gap-2'>
-                      <Link
-                        href={`/projects/${project.slug.current}`}
-                        className='text-[28px] leading-none md:text-5xl '
-                      >
-                        <h3>{project.title}</h3>
-                      </Link>
-                      <h4 className='text-base font-semibold md:text-xl'>
-                        {project.clientName}
-                      </h4>
+              {featuredProjectsData.map(project => {
+                const mainMedia =
+                  project.mainMedia.find(
+                    mainMedia => mainMedia._type === 'videoFile'
+                  ) ||
+                  project.mainMedia.find(
+                    mainMedia => mainMedia._type === 'image'
+                  )
+
+                if (!mainMedia) return null
+
+                return (
+                  <li
+                    key={project._id}
+                    className='flex flex-col gap-6 md:gap-8'
+                  >
+                    <div className='overflow-hidden border-2 border-black'>
+                      <div className='relative'>
+                        {mainMedia._type === 'videoFile' ? (
+                          <MediaPlayer
+                            url={mainMedia.asset.url}
+                            playing={mainMedia.playing}
+                            controls={mainMedia.controls}
+                            loop={mainMedia.loop}
+                            playsinline={true}
+                            volume={0}
+                            muted={true}
+                            className={`pointer-events-none aspect-video w-full`}
+                          />
+                        ) : (
+                          <Image
+                            src={getImageUrl(mainMedia).width(2000).url()}
+                            width={mainMedia.asset.metadata.dimensions.width}
+                            height={mainMedia.asset.metadata.dimensions.height}
+                            alt={mainMedia.caption}
+                            placeholder={mainMedia.asset.metadata.lqip}
+                            className={`aspect-video w-full object-cover`}
+                            sizes='100vw'
+                            quality={90}
+                          />
+                        )}
+                        <Link
+                          href={`/projects/${project.slug.current}`}
+                          className='absolute left-0 top-0 h-full w-full bg-black opacity-0 transition-opacity duration-500 hover:opacity-15 active:opacity-30'
+                        ></Link>
+                      </div>
                     </div>
-                    <div className='portable-text text-xl'>
-                      <PortableText value={project.summary} />
+                    <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
+                      <div className='flex flex-col gap-1 md:gap-2'>
+                        <Link
+                          href={`/projects/${project.slug.current}`}
+                          className='text-[28px] leading-none md:text-5xl'
+                        >
+                          <h3>{project.title}</h3>
+                        </Link>
+                        <h4 className='text-base font-semibold md:text-xl'>
+                          {project.clientName}
+                        </h4>
+                      </div>
+                      <div className='portable-text text-xl'>
+                        <PortableText value={project.summary} />
+                      </div>
                     </div>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                )
+              })}
             </ul>
           </div>
         </div>
