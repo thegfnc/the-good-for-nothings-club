@@ -118,8 +118,6 @@ export default async function Projects({ searchParams }: ProjectsProps) {
     }),
   ])
 
-  console.log(projectsData[0].mainMedia[0])
-
   return (
     <main>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
