@@ -21,6 +21,8 @@ export default function MemberProfilePicture({
     .width(1400)
     .url()
 
+  const objectPosition = `${(profilePicture.hotspot?.x || 1) * 100}% ${(profilePicture.hotspot?.y || 1) * 100}%`
+
   return (
     <li
       onMouseEnter={() => setIsHovering(true)}
@@ -32,7 +34,10 @@ export default function MemberProfilePicture({
         height={profilePicture.asset.metadata.dimensions.height}
         alt={profilePicture.caption}
         placeholder={profilePicture.asset.metadata.lqip}
-        className={`h-[600px] border-2 border-black object-cover md:h-auto ${isHovering ? 'hidden' : 'block'}`}
+        className={`aspect-square border-2 border-black object-cover md:h-auto xl:aspect-auto ${isHovering ? 'hidden' : 'block'}`}
+        style={{
+          objectPosition,
+        }}
         sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
         quality={90}
         priority={true}
@@ -43,7 +48,10 @@ export default function MemberProfilePicture({
         height={hoverProfilePicture.asset.metadata.dimensions.height}
         alt={hoverProfilePicture.caption}
         placeholder={hoverProfilePicture.asset.metadata.lqip}
-        className={`h-[600px] border-2 border-black object-cover md:h-auto ${isHovering ? 'block' : 'hidden'}`}
+        className={`aspect-square border-2 border-black object-cover md:h-auto xl:aspect-auto ${isHovering ? 'block' : 'hidden'}`}
+        style={{
+          objectPosition,
+        }}
         sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
         quality={90}
         priority={true}

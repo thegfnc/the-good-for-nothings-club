@@ -64,6 +64,10 @@ const MEMBERS_QUERY = `
           }
         }
       },
+      hotspot {
+        x,
+        y,
+      },
       caption
     },
     hoverProfilePicture {
@@ -96,6 +100,8 @@ export default async function Home() {
       tags: ['GFNC_member'],
     }),
   ])
+
+  console.log(JSON.stringify(membersData, null, 2))
 
   return (
     <main>

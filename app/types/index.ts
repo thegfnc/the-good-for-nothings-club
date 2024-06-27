@@ -14,6 +14,10 @@ export type Image = {
       }
     }
   }
+  hotspot?: {
+    x: number
+    y: number
+  }
   caption: string
 }
 
