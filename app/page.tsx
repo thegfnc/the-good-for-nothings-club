@@ -101,8 +101,6 @@ export default async function Home() {
     }),
   ])
 
-  console.log(JSON.stringify(membersData, null, 2))
-
   return (
     <main>
       <section className='py-14 text-center md:px-8 md:py-20 xl:px-16'>
