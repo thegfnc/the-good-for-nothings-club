@@ -15,7 +15,7 @@
     "@portabletext/types": "^2.0.13",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.0.2",
-    "@sanity/client": "^6.20.2",
+    "@sanity/client": "^6.21.0",
     "@sanity/image-url": "^1.0.2",
     "@sanity/react-loader": "^1.10.4",
     "@sentry/nextjs": "^8.17.0",
@@ -23,7 +23,7 @@
     "@vis.gl/react-google-maps": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "lucide-react": "^0.407.0",
+    "lucide-react": "^0.408.0",
     "next": "^14.2.5",
     "next-sanity": "^9.4.2",
     "react": "^18.3.1",
@@ -46,11 +46,11 @@
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.5",
     "eslint-config-prettier": "^9.1.0",
-    "knip": "^5.25.1",
+    "knip": "^5.26.0",
     "postcss": "^8.4.39",
-    "prettier": "^3.3.2",
+    "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.5",
-    "tailwindcss": "^3.4.4",
+    "tailwindcss": "^3.4.5",
     "typescript": "^5.5.3"
   }
 }
