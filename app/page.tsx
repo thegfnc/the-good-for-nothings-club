@@ -158,14 +158,18 @@ export default async function Home() {
                           />
                         ) : (
                           <Image
-                            src={getImageUrl(mainMedia).width(2000).url()}
+                            src={getImageUrl(mainMedia)
+                              .width(2000)
+                              .quality(90)
+                              .url()}
                             width={mainMedia.asset.metadata.dimensions.width}
                             height={mainMedia.asset.metadata.dimensions.height}
                             alt={mainMedia.caption}
                             placeholder={mainMedia.asset.metadata.lqip}
                             className={`aspect-video w-full object-cover`}
+                            unoptimized
                             // sizes='100vw'
-                            quality={90}
+                            // quality={90}
                           />
                         )}
                         <Link

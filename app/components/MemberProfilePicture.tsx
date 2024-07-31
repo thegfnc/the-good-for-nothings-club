@@ -16,9 +16,14 @@ export default function MemberProfilePicture({
 
   const { profilePicture, hoverProfilePicture } = member
 
-  const profilePictureUrl = getImageUrl(profilePicture).width(1400).url()
+  const profilePictureUrl = getImageUrl(profilePicture)
+    .width(1400)
+    .quality(90)
+    .url()
+
   const hoverProfilePictureUrl = getImageUrl(hoverProfilePicture)
     .width(1400)
+    .quality(90)
     .url()
 
   const objectPosition = `${(profilePicture.hotspot?.x || 1) * 100}% ${(profilePicture.hotspot?.y || 1) * 100}%`
@@ -38,9 +43,10 @@ export default function MemberProfilePicture({
         style={{
           objectPosition,
         }}
-        // sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
-        quality={90}
         priority={true}
+        unoptimized
+        // sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
+        // quality={90}
       />
       <Image
         src={hoverProfilePictureUrl}
@@ -52,9 +58,10 @@ export default function MemberProfilePicture({
         style={{
           objectPosition,
         }}
-        // sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
-        quality={90}
         priority={true}
+        unoptimized
+        // sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
+        // quality={90}
       />
       <h3 className='mt-6 text-[32px]'>{member.fullName}</h3>
       <div className='text-xl leading-tight'>

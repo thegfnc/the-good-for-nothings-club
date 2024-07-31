@@ -195,15 +195,16 @@ export default async function Project({ params }: ProjectProps) {
               />
             ) : (
               <Image
-                src={getImageUrl(mainMedia).width(1600).url()}
+                src={getImageUrl(mainMedia).width(1600).quality(90).url()}
                 width={mainMedia.asset.metadata.dimensions.width}
                 height={mainMedia.asset.metadata.dimensions.height}
                 alt={mainMedia.caption}
                 placeholder={mainMedia.asset.metadata.lqip}
                 className={`w-full`}
-                // sizes='100vw'
-                quality={90}
                 priority
+                unoptimized
+                // sizes='100vw'
+                // quality={90}
               />
             )}
           </div>
@@ -253,14 +254,15 @@ export default async function Project({ params }: ProjectProps) {
                     image: function CaseStudyImage({ value }) {
                       return (
                         <Image
-                          src={getImageUrl(value).width(2000).url()}
+                          src={getImageUrl(value).width(2000).quality(90).url()}
                           width={value.asset.metadata.dimensions.width}
                           height={value.asset.metadata.dimensions.height}
                           alt={value.caption}
                           placeholder={value.asset.metadata.lqip}
                           className={`w-full`}
+                          unoptimized
                           // sizes='100vw'
-                          quality={90}
+                          // quality={90}
                         />
                       )
                     },
