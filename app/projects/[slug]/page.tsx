@@ -199,10 +199,10 @@ export default async function Project({ params }: ProjectProps) {
                 width={mainMedia.asset.metadata.dimensions.width}
                 height={mainMedia.asset.metadata.dimensions.height}
                 alt={mainMedia.caption}
-                placeholder={mainMedia.asset.metadata.lqip}
                 className={`w-full`}
                 priority
                 unoptimized
+                // placeholder={mainMedia.asset.metadata.lqip}
                 // sizes='100vw'
                 // quality={90}
               />
@@ -258,9 +258,9 @@ export default async function Project({ params }: ProjectProps) {
                           width={value.asset.metadata.dimensions.width}
                           height={value.asset.metadata.dimensions.height}
                           alt={value.caption}
-                          placeholder={value.asset.metadata.lqip}
                           className={`w-full`}
                           unoptimized
+                          // placeholder={value.asset.metadata.lqip}
                           // sizes='100vw'
                           // quality={90}
                         />

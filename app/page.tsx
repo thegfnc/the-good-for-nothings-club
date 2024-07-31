@@ -165,9 +165,9 @@ export default async function Home() {
                             width={mainMedia.asset.metadata.dimensions.width}
                             height={mainMedia.asset.metadata.dimensions.height}
                             alt={mainMedia.caption}
-                            placeholder={mainMedia.asset.metadata.lqip}
                             className={`aspect-video w-full object-cover`}
                             unoptimized
+                            // placeholder={mainMedia.asset.metadata.lqip}
                             // sizes='100vw'
                             // quality={90}
                           />

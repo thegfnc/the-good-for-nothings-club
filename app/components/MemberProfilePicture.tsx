@@ -38,13 +38,13 @@ export default function MemberProfilePicture({
         width={profilePicture.asset.metadata.dimensions.width}
         height={profilePicture.asset.metadata.dimensions.height}
         alt={profilePicture.caption}
-        placeholder={profilePicture.asset.metadata.lqip}
         className={`aspect-square border-2 border-black object-cover md:h-auto xl:aspect-auto ${isHovering ? 'hidden' : 'block'}`}
         style={{
           objectPosition,
         }}
         priority={true}
         unoptimized
+        // placeholder={profilePicture.asset.metadata.lqip}
         // sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
         // quality={90}
       />
@@ -53,13 +53,13 @@ export default function MemberProfilePicture({
         width={hoverProfilePicture.asset.metadata.dimensions.width}
         height={hoverProfilePicture.asset.metadata.dimensions.height}
         alt={hoverProfilePicture.caption}
-        placeholder={hoverProfilePicture.asset.metadata.lqip}
         className={`aspect-square border-2 border-black object-cover md:h-auto xl:aspect-auto ${isHovering ? 'block' : 'hidden'}`}
         style={{
           objectPosition,
         }}
         priority={true}
         unoptimized
+        // placeholder={hoverProfilePicture.asset.metadata.lqip}
         // sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
         // quality={90}
       />
