@@ -52,9 +52,9 @@ const LightboxSlide = ({
           objectFit: 'contain',
         }}
         unoptimized
+        placeholder={photos[currentIndex].asset.metadata.lqip}
         // sizes={`${Math.ceil((width / window.innerWidth) * 100)}vw`}
         // quality={100}
-        // placeholder={photos[currentIndex].asset.metadata.lqip}
       />
     </div>
   )
@@ -75,9 +75,9 @@ const GalleryPhoto = ({
         className={`w-full cursor-pointer transition-all duration-1000 hover:scale-105`}
         onClick={imageProps.onClick}
         unoptimized
+        placeholder={photo.placeholder}
         // sizes='(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw'
         // quality={90}
-        // placeholder={photo.placeholder}
       />
     </div>
   )
@@ -87,7 +87,7 @@ export default function PhotoGallery({ photos }: PhotoGalleryProps) {
   const [lightboxIndex, setLighboxIndex] = useState(-1)
 
   const photoAlbumPhotos = photos.map(photo => ({
-    src: getImageUrl(photo).width(1400).url(),
+    src: getImageUrl(photo).width(1400).quality(90).url(),
     alt: photo.caption,
     width: photo.asset.metadata.dimensions.width,
     height: photo.asset.metadata.dimensions.height,
@@ -115,7 +115,7 @@ export default function PhotoGallery({ photos }: PhotoGalleryProps) {
         index={lightboxIndex}
         plugins={[Counter, Zoom]}
         slides={photos.map(photo => ({
-          src: getImageUrl(photo).width(2400).url(),
+          src: getImageUrl(photo).width(2400).quality(90).url(),
           alt: photo.caption,
           height: photo.asset.metadata.dimensions.height,
           width: photo.asset.metadata.dimensions.width,

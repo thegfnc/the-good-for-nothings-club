@@ -145,7 +145,7 @@ export async function generateMetadata(
     openGraph: {
       ...openGraph,
       url: pathname,
-      images: [getImageUrl(mainImage).width(1200).url()],
+      images: [getImageUrl(mainImage).width(1200).quality(90).url()],
     },
   }
 }
