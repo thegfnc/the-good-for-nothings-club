@@ -194,9 +194,8 @@ export default async function Projects({ searchParams }: ProjectsProps) {
                               className={`aspect-video w-full object-cover`}
                               priority={index < 3}
                               unoptimized
+                              placeholder={mainMedia.asset.metadata.lqip}
                               // sizes='(max-width: 1024px) 100vw, 50vw'
-                              // quality={90}
-                              // placeholder={mainMedia.asset.metadata.lqip}
                             />
                           )}
                           <Link
