@@ -43,8 +43,8 @@ export default function MemberProfilePicture({
           objectPosition,
         }}
         priority={true}
-        sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
-        quality={90}
+        // sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
+        // quality={90}
         // placeholder={profilePicture.asset.metadata.lqip}
       />
       <Image
@@ -57,8 +57,8 @@ export default function MemberProfilePicture({
           objectPosition,
         }}
         priority={true}
-        sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
-        quality={90}
+        // sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
+        // quality={90}
         // placeholder={hoverProfilePicture.asset.metadata.lqip}
       />
       <h3 className='mt-6 text-[32px]'>{member.fullName}</h3>
