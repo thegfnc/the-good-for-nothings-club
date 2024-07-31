@@ -201,7 +201,7 @@ export default async function Project({ params }: ProjectProps) {
                 alt={mainMedia.caption}
                 placeholder={mainMedia.asset.metadata.lqip}
                 className={`w-full`}
-                sizes='100vw'
+                // sizes='100vw'
                 quality={90}
                 priority
               />
@@ -259,7 +259,7 @@ export default async function Project({ params }: ProjectProps) {
                           alt={value.caption}
                           placeholder={value.asset.metadata.lqip}
                           className={`w-full`}
-                          sizes='100vw'
+                          // sizes='100vw'
                           quality={90}
                         />
                       )
