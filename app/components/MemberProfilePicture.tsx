@@ -43,6 +43,7 @@ export default function MemberProfilePicture({
           objectPosition,
         }}
         priority={true}
+        unoptimized
         // sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
         // quality={90}
         // placeholder={profilePicture.asset.metadata.lqip}
@@ -57,6 +58,7 @@ export default function MemberProfilePicture({
           objectPosition,
         }}
         priority={true}
+        unoptimized
         // sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
         // quality={90}
         // placeholder={hoverProfilePicture.asset.metadata.lqip}

@@ -51,6 +51,7 @@ const LightboxSlide = ({
         style={{
           objectFit: 'contain',
         }}
+        unoptimized
         // sizes={`${Math.ceil((width / window.innerWidth) * 100)}vw`}
         // quality={100}
         // placeholder={photos[currentIndex].asset.metadata.lqip}
@@ -73,6 +74,7 @@ const GalleryPhoto = ({
         alt={photo.alt || ''}
         className={`w-full cursor-pointer transition-all duration-1000 hover:scale-105`}
         onClick={imageProps.onClick}
+        unoptimized
         // sizes='(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw'
         // quality={90}
         // placeholder={photo.placeholder}
