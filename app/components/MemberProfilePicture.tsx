@@ -38,7 +38,7 @@ export default function MemberProfilePicture({
         style={{
           objectPosition,
         }}
-        sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
+        // sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
         quality={90}
         priority={true}
       />
@@ -52,7 +52,7 @@ export default function MemberProfilePicture({
         style={{
           objectPosition,
         }}
-        sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
+        // sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
         quality={90}
         priority={true}
       />
