@@ -168,7 +168,7 @@ export default async function Projects({ searchParams }: ProjectsProps) {
                     <div>
                       {/* ^ div prevents grid item from filling height of row in the event text is taller than image */}
                       <div className='overflow-hidden border-2 border-black'>
-                        <div className='relative'>
+                        <div className='relative transition-all duration-1000 hover:scale-[1.05]'>
                           {mainMedia._type === 'videoFile' ? (
                             <MediaPlayer
                               url={mainMedia.asset.url}
@@ -200,7 +200,7 @@ export default async function Projects({ searchParams }: ProjectsProps) {
                           )}
                           <Link
                             href={`/projects/${project.slug.current}`}
-                            className='absolute left-0 top-0 h-full w-full bg-black opacity-0 transition-opacity duration-500 hover:opacity-15 active:opacity-30'
+                            className='absolute left-0 top-0 h-full w-full bg-black opacity-0 transition-opacity duration-500 hover:opacity-10 active:opacity-20'
                           ></Link>
                         </div>
                       </div>
