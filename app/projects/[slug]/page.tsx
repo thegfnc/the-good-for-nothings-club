@@ -34,6 +34,7 @@ const PROJECT_SLUG_QUERY = `
       _type == 'image' => {
         ...,
         asset-> {
+          extension,
           url,
           metadata {
             lqip,
@@ -195,7 +196,11 @@ export default async function Project({ params }: ProjectProps) {
               />
             ) : (
               <Image
-                src={getImageUrl(mainMedia).width(1600).quality(90).url()}
+                src={
+                  mainMedia.asset.extension === 'gif'
+                    ? getImageUrl(mainMedia).url()
+                    : getImageUrl(mainMedia).width(1600).quality(90).url()
+                }
                 width={mainMedia.asset.metadata.dimensions.width}
                 height={mainMedia.asset.metadata.dimensions.height}
                 alt={mainMedia.caption}

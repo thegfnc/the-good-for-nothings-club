@@ -4,6 +4,7 @@ import { SanityAssetDocument } from 'next-sanity'
 export type Image = {
   _type: 'image'
   asset: {
+    extension: string
     url: string
     metadata: {
       lqip: `data:image/${string}`
