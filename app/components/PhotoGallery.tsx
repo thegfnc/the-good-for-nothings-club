@@ -22,6 +22,7 @@ type PhotoGalleryProps = {
 
 type GalleryPhotoProps = Photo & {
   placeholder: PlaceholderValue
+  alt: string
 }
 
 const LightboxSlide = ({
