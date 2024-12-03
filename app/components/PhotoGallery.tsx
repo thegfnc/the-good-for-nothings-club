@@ -67,14 +67,14 @@ const LightboxSlide = ({
 
 const GalleryPhoto = (
   { onClick }: RenderPhotoProps,
-  { photo, width, height }: RenderPhotoContext<GalleryPhotoProps>
+  { photo, width, height, index }: RenderPhotoContext<GalleryPhotoProps>
 ) => {
   return (
-    <div className='relative overflow-hidden'>
+    <div className='relative overflow-hidden' key={index}>
       <Image
         src={photo.src}
-        width={photo.width}
-        height={photo.height}
+        width={width}
+        height={height}
         alt={photo.alt || ''}
         className={`w-full cursor-pointer transition-all duration-1000 hover:scale-105`}
         onClick={onClick}
