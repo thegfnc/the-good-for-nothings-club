@@ -1,11 +1,16 @@
 'use client'
 
+import 'react-photo-album/masonry.css'
 import 'yet-another-react-lightbox/styles.css'
 import 'yet-another-react-lightbox/plugins/counter.css'
 
 import { useState } from 'react'
 import Image from 'next/image'
-import PhotoAlbum, { Photo, RenderPhotoProps } from 'react-photo-album'
+import MasonryPhotoAlbum, {
+  Photo,
+  RenderPhotoContext,
+  RenderPhotoProps,
+} from 'react-photo-album'
 import Lightbox, {
   RenderSlideProps,
   useLightboxState,
@@ -60,20 +65,19 @@ const LightboxSlide = ({
   )
 }
 
-const GalleryPhoto = ({
-  photo,
-  imageProps,
-  wrapperStyle,
-}: RenderPhotoProps<GalleryPhotoProps>) => {
+const GalleryPhoto = (
+  { onClick }: RenderPhotoProps,
+  { photo, width, height }: RenderPhotoContext<GalleryPhotoProps>
+) => {
   return (
-    <div className='relative overflow-hidden' style={wrapperStyle}>
+    <div className='relative overflow-hidden'>
       <Image
         src={photo.src}
         width={photo.width}
         height={photo.height}
         alt={photo.alt || ''}
         className={`w-full cursor-pointer transition-all duration-1000 hover:scale-105`}
-        onClick={imageProps.onClick}
+        onClick={onClick}
         placeholder={photo.placeholder}
         unoptimized
         // sizes='(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw'
@@ -95,7 +99,7 @@ export default function PhotoGallery({ photos }: PhotoGalleryProps) {
 
   return (
     <>
-      <PhotoAlbum
+      <MasonryPhotoAlbum
         photos={photoAlbumPhotos}
         layout='masonry'
         columns={containerWidth => {
@@ -106,7 +110,7 @@ export default function PhotoGallery({ photos }: PhotoGalleryProps) {
         spacing={containerWidth => (containerWidth > 768 ? 32 : 16)}
         onClick={({ index: current }) => setLighboxIndex(current)}
         defaultContainerWidth={1281}
-        renderPhoto={GalleryPhoto}
+        render={{ photo: GalleryPhoto }}
       />
       <Lightbox
         open={lightboxIndex > -1}
