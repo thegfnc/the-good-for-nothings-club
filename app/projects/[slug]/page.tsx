@@ -10,15 +10,15 @@ import { Metadata, ResolvingMetadata } from 'next'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 
 type ProjectProps = {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 type GenerateMetadataParams = {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 const PROJECT_SLUG_QUERY = `
@@ -109,18 +109,18 @@ const PROJECT_SLUG_QUERY = `
   }
 `
 
-const MediaPlayer = dynamic(() => import('@/app/components/MediaPlayer'), {
-  ssr: false,
-})
+const MediaPlayer = dynamic(() => import('@/app/components/MediaPlayer'))
 
-const PhotoGallery = dynamic(() => import('@/app/components/PhotoGallery'), {
-  ssr: false,
-})
+const PhotoGallery = dynamic(() => import('@/app/components/PhotoGallery'))
 
 export async function generateMetadata(
-  { params: { slug } }: GenerateMetadataParams,
+  props: GenerateMetadataParams,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  const params = await props.params
+
+  const { slug } = params
+
   const { openGraph } = await parent
   const pathname = '/projects/' + slug
 
@@ -151,7 +151,8 @@ export async function generateMetadata(
   }
 }
 
-export default async function Project({ params }: ProjectProps) {
+export default async function Project(props: ProjectProps) {
+  const params = await props.params
   const { slug } = params
 
   const [projectData] = await Promise.all([

@@ -26,7 +26,7 @@ const menuItems = [
 ]
 
 type ProjectsProps = {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 const PROJECTION = `
@@ -100,7 +100,8 @@ export async function generateMetadata(
   }
 }
 
-export default async function Projects({ searchParams }: ProjectsProps) {
+export default async function Projects(props: ProjectsProps) {
+  const searchParams = await props.searchParams;
   // If the search params type is empty or the type is not in the menu items,
   // set the type to the default type
   const isDefaultType =
