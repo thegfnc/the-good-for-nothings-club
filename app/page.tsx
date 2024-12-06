@@ -219,7 +219,7 @@ export default async function Home() {
             Members
           </h2>
           <div className='mt-12 md:mt-24'>
-            <ul className='grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-8 xl:grid-cols-4'>
+            <ul className='grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-8 xl:grid-cols-3'>
               {membersData.map(member => (
                 <MemberProfilePicture key={member._id} member={member} />
               ))}
