@@ -1,14 +1,14 @@
 import Image from 'next/image'
-import InstagramFeedEmbed from './components/InstagramFeedEmbed'
-import SpotifyPlaylistEmbed from './components/SpotifyPlaylistEmbed'
+import InstagramFeedEmbed from '../components/InstagramFeedEmbed'
+import SpotifyPlaylistEmbed from '../components/SpotifyPlaylistEmbed'
 import { cmsFetch, getImageUrl } from './data/client'
 import { Suspense } from 'react'
 import { GFNC_member, GFNC_project } from './types'
 import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
-import HeroBanner from './components/HeroBanner'
-import MemberProfilePicture from './components/MemberProfilePicture'
-import MediaPlayer from './components/MediaPlayer'
+import HeroBanner from '../components/HeroBanner'
+import MemberProfilePicture from '../components/MemberProfilePicture'
+import MediaPlayer from '../components/MediaPlayer'
 
 const FEATURED_PROJECTS_QUERY = `
   *[_type == 'GFNC_project' && featured == true] | order(dateCompleted desc) {
@@ -105,13 +105,13 @@ export default async function Home() {
   return (
     <main>
       <section className='py-14 text-center md:px-8 md:py-20 xl:px-16'>
-        <div className='mx-auto max-w-[1576px]'>
+        <div className='mx-auto max-w-(--page-max-width)'>
           <h1 className='visually-hidden'>Good For Nothings</h1>
           <HeroBanner />
         </div>
       </section>
       <section className='md:px-8 xl:px-16'>
-        <div className='mx-auto max-w-[1576px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
+        <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
           <p className='text-2xl leading-tight sm:text-[32px] 2xl:text-[48px] 2xl:leading-[1.16]'>
             <em>The Good for Nothings Club</em> is a creators club from Austin,
             TX made up of designers, engineers, filmmakers, musicians, and
@@ -122,7 +122,7 @@ export default async function Home() {
         </div>
       </section>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
-        <div className='mx-auto max-w-[1576px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
+        <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
           <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
             Projects
           </h2>
@@ -178,7 +178,7 @@ export default async function Home() {
                         )}
                         <Link
                           href={`/projects/${project.slug.current}`}
-                          className='absolute left-0 top-0 h-full w-full bg-black opacity-0 transition-opacity duration-500 hover:opacity-10 active:opacity-20'
+                          className='absolute top-0 left-0 h-full w-full bg-black opacity-0 transition-opacity duration-500 hover:opacity-10 active:opacity-20'
                         ></Link>
                       </div>
                     </div>
@@ -204,7 +204,7 @@ export default async function Home() {
             </ul>
           </div>
         </div>
-        <div className='mx-auto max-w-[1576px] border-b-2 border-black bg-background md:border-x-2'>
+        <div className='bg-background mx-auto max-w-(--page-max-width) border-b-2 border-black md:border-x-2'>
           <Link
             className='block w-full py-4 text-center font-sans text-sm font-black uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
             href='/projects'
@@ -214,7 +214,7 @@ export default async function Home() {
         </div>
       </section>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
-        <div className='mx-auto max-w-[1576px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
+        <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
           <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
             Members
           </h2>
@@ -228,7 +228,7 @@ export default async function Home() {
         </div>
       </section>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
-        <div className='mx-auto max-w-[1576px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
+        <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
           <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
             Happenings
           </h2>

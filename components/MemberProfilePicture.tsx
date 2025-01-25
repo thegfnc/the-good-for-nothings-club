@@ -1,8 +1,8 @@
 'use client'
 
 import Image from 'next/image'
-import { getImageUrl } from '../data/client'
-import { GFNC_member } from '../types'
+import { getImageUrl } from '../app/data/client'
+import { GFNC_member } from '../app/types'
 import { useState } from 'react'
 
 type MemberProfilePictureProps = {

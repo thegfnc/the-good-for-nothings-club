@@ -1,11 +1,11 @@
 import Link from 'next/link'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 import { cmsFetch, getImageUrl } from '../data/client'
 import { GFNC_project } from '../types'
 import Image from 'next/image'
 import { PortableText } from 'next-sanity'
 import { Metadata, ResolvingMetadata } from 'next'
-import MediaPlayer from '../components/MediaPlayer'
+import MediaPlayer from '../../components/MediaPlayer'
 
 const menuItems = [
   {
@@ -101,7 +101,7 @@ export async function generateMetadata(
 }
 
 export default async function Projects(props: ProjectsProps) {
-  const searchParams = await props.searchParams;
+  const searchParams = await props.searchParams
   // If the search params type is empty or the type is not in the menu items,
   // set the type to the default type
   const isDefaultType =
@@ -123,17 +123,17 @@ export default async function Projects(props: ProjectsProps) {
   return (
     <main>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
-        <div className='mx-auto max-w-[1576px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
+        <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
           <h1 className='pt-6 text-[32px] leading-none tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
             Projects
           </h1>
-          <div className='mb-10 mt-10 sm:mt-12 md:mt-24'>
+          <div className='mt-10 mb-10 sm:mt-12 md:mt-24'>
             <ul className='flex overflow-x-scroll border-y-2 border-black'>
               {menuItems.map(item => (
                 <li key={item.name}>
                   <Link
                     className={cn(
-                      'block px-6 py-5 font-sans text-xl font-black uppercase leading-tight transition-colors hover:no-underline',
+                      'block px-6 py-5 font-sans text-xl leading-tight font-black uppercase transition-colors hover:no-underline',
                       item.name === type
                         ? 'bg-black text-white hover:bg-black'
                         : 'text-black hover:bg-black/10 active:bg-black/20'
@@ -206,7 +206,7 @@ export default async function Projects(props: ProjectsProps) {
                           )}
                           <Link
                             href={`/projects/${project.slug.current}`}
-                            className='absolute left-0 top-0 h-full w-full bg-black opacity-0 transition-opacity duration-500 hover:opacity-10 active:opacity-20'
+                            className='absolute top-0 left-0 h-full w-full bg-black opacity-0 transition-opacity duration-500 hover:opacity-10 active:opacity-20'
                           ></Link>
                         </div>
                       </div>
