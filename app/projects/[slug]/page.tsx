@@ -15,12 +15,6 @@ type ProjectProps = {
   }>
 }
 
-type GenerateMetadataParams = {
-  params: Promise<{
-    slug: string
-  }>
-}
-
 const PROJECT_SLUG_QUERY = `
   *[_type == 'GFNC_project' && slug.current == $slug] {
     _id,
@@ -114,7 +108,7 @@ const MediaPlayer = dynamic(() => import('@/app/components/MediaPlayer'))
 const PhotoGallery = dynamic(() => import('@/app/components/PhotoGallery'))
 
 export async function generateMetadata(
-  props: GenerateMetadataParams,
+  props: ProjectProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const params = await props.params
