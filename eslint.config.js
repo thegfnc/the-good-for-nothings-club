@@ -10,4 +10,7 @@ const compat = new FlatCompat({
   recommendedConfig: js.configs.recommended,
   allConfig: js.configs.all,
 })
-export default [...compat.extends('next/core-web-vitals', 'prettier')]
+
+const configs = [...compat.extends('next/core-web-vitals', 'prettier')]
+
+export default configs

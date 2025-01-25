@@ -49,13 +49,13 @@ function NewsletterSignUpForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className='flex w-full max-w-96 flex-grow'
+        className='flex w-full max-w-96 grow'
       >
         <FormField
           name='email'
           control={form.control}
           render={({ field }) => (
-            <FormItem className='flex-grow'>
+            <FormItem className='grow'>
               <FormControl>
                 <Input
                   type='email'
