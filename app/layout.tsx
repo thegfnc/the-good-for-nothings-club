@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import { alegreya, rubik, rubikGlitch } from './styles/fonts'
-import { cn } from '@/app/lib/utils'
+import { cn } from '@/lib/utils'
 import { Analytics } from '@vercel/analytics/react'
 
 import './styles/globals.css'
-import Header from '@/app/components/Header'
-import Footer from './components/Footer'
+import Header from '@/components/Header'
+import Footer from '../components/Footer'
 import Script from 'next/script'
 
 export async function generateMetadata(): Promise<Metadata> {

@@ -14,6 +14,7 @@
     "@portabletext/react": "^3.2.0",
     "@portabletext/toolkit": "^2.0.16",
     "@portabletext/types": "^2.0.13",
+    "@radix-ui/react-dialog": "^1.1.5",
     "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-slot": "^1.0.2",
     "@sanity/client": "^6.27.1",
@@ -35,7 +36,6 @@
     "react-player": "^2.16.0",
     "resend": "^4.1.1",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss-animate": "^1.0.7",
     "yet-another-react-lightbox": "^3.21.7",
     "zod": "^3.23.8"
   },
