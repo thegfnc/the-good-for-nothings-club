@@ -1,11 +1,9 @@
 import Link from 'next/link'
 import { cn } from '../../lib/utils'
-import { cmsFetch, getImageUrl } from '../data/client'
+import { cmsFetch } from '../data/client'
 import { GFNC_project } from '../types'
-import Image from 'next/image'
-import { PortableText } from 'next-sanity'
 import { Metadata, ResolvingMetadata } from 'next'
-import MediaPlayer from '../../components/MediaPlayer'
+import ProjectCard from '@/components/ProjectCard'
 
 const menuItems = [
   {
@@ -124,10 +122,10 @@ export default async function Projects(props: ProjectsProps) {
     <main>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
         <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
-          <h1 className='pt-6 text-[32px] leading-none tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
+          <h1 className='pt-6 text-[32px] leading-none tracking-[-0.04em] md:pt-8 md:text-[48px] lg:text-[96px]'>
             Projects
           </h1>
-          <div className='mt-10 mb-10 sm:mt-12 md:mt-24'>
+          <div className='mt-10 mb-10 sm:mt-12 md:mt-20'>
             <ul className='flex overflow-x-scroll border-y-2 border-black'>
               {menuItems.map(item => (
                 <li key={item.name}>
@@ -150,101 +148,14 @@ export default async function Projects(props: ProjectsProps) {
                 </li>
               ))}
             </ul>
-            <div className='mt-16 flex flex-col gap-16'>
+            <div className='mt-16 grid grid-cols-1 gap-x-12 gap-y-20 md:grid-cols-2'>
               {projectsData.map((project, index) => {
-                const mainMedia =
-                  project.mainMedia.find(
-                    mainMedia => mainMedia._type === 'videoFile'
-                  ) ||
-                  project.mainMedia.find(
-                    mainMedia => mainMedia._type === 'image'
-                  )
-
-                if (!mainMedia) return null
-
                 return (
-                  <div
+                  <ProjectCard
                     key={project._id}
-                    className='grid grid-cols-1 gap-6 lg:grid-cols-2'
-                  >
-                    <div>
-                      {/* ^ div prevents grid item from filling height of row in the event text is taller than image */}
-                      <div className='overflow-hidden border-2 border-black'>
-                        <div className='relative transition-all duration-1000 hover:scale-[1.05]'>
-                          {mainMedia._type === 'videoFile' ? (
-                            <MediaPlayer
-                              url={mainMedia.asset.url}
-                              playing={mainMedia.playing}
-                              controls={mainMedia.controls}
-                              loop={mainMedia.loop}
-                              playsinline={true}
-                              volume={0}
-                              muted={true}
-                              className={`pointer-events-none aspect-video w-full`}
-                            />
-                          ) : (
-                            <Image
-                              src={
-                                mainMedia.asset.extension === 'gif'
-                                  ? getImageUrl(mainMedia).url()
-                                  : getImageUrl(mainMedia)
-                                      .width(1600)
-                                      .quality(90)
-                                      .url()
-                              }
-                              width={mainMedia.asset.metadata.dimensions.width}
-                              height={
-                                mainMedia.asset.metadata.dimensions.height
-                              }
-                              alt={mainMedia.caption}
-                              className={`aspect-video w-full object-cover object-top`}
-                              priority={index < 3}
-                              unoptimized
-                              placeholder={mainMedia.asset.metadata.lqip}
-                              // sizes='(max-width: 1024px) 100vw, 50vw'
-                            />
-                          )}
-                          <Link
-                            href={`/projects/${project.slug.current}`}
-                            className='absolute top-0 left-0 h-full w-full bg-black opacity-0 transition-opacity duration-500 hover:opacity-10 active:opacity-20'
-                          ></Link>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='space-y-4'>
-                      <div className='flex items-center gap-2 font-sans text-sm font-bold uppercase'>
-                        <span>{project.type}</span>
-                        <span>·</span>
-                        <span>
-                          {new Date(project.dateCompleted).toLocaleDateString(
-                            'en-US',
-                            {
-                              month: 'short',
-                              day: 'numeric',
-                              year: 'numeric',
-                              timeZone: 'UTC',
-                            }
-                          )}
-                        </span>
-                      </div>
-                      <div>
-                        <Link
-                          href={`/projects/${project.slug.current}`}
-                          className='block'
-                        >
-                          <h2 className='text-[32px] sm:text-[40px]'>
-                            {project.title}
-                          </h2>
-                        </Link>
-                        <h3 className='text-lg font-medium sm:text-xl'>
-                          – {project.clientName}
-                        </h3>
-                      </div>
-                      <div className='portable-text text-2xl leading-tight'>
-                        <PortableText value={project.summary} />
-                      </div>
-                    </div>
-                  </div>
+                    project={project}
+                    priority={index < 3}
+                  />
                 )
               })}
             </div>
