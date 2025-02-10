@@ -51,7 +51,9 @@ export type GFNC_project = {
   slug: {
     current: string
   }
-  type: string
+  type: 'Web' | 'Video' | 'Photo' | 'Audio'
+  status: 'In Progress' | 'Completed' | 'Paused' | 'Canceled'
+  dateStarted: string
   dateCompleted: string
   mainMedia: Array<Image | VideoFile>
   summary: TypedObject[]
