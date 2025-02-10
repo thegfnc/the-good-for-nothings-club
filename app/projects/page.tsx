@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { cn } from '../../lib/utils'
-import { cmsFetch } from '../data/client'
-import { GFNC_project } from '../types'
+import { cmsFetch } from '../../data/client'
+import { GFNC_project } from '../../types'
 import { Metadata, ResolvingMetadata } from 'next'
 import ProjectCard from '@/components/ProjectCard'
 

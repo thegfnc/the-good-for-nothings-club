@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { cmsFetch, getImageUrl } from '../../data/client'
-import { GFNC_project } from '../../types'
+import { cmsFetch, getImageUrl } from '../../../data/client'
+import { GFNC_project } from '../../../types'
 import Image from 'next/image'
 import { PortableText } from 'next-sanity'
 import { toPlainText } from '@portabletext/toolkit'

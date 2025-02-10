@@ -1,4 +1,4 @@
-import { newsletterSignUpSchema } from '@/app/data/schemas'
+import { newsletterSignUpSchema } from '@/data/schemas'
 import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)

@@ -1,7 +1,7 @@
-import { GFNC_project } from '@/app/types'
+import { GFNC_project } from '@/types'
 import MediaPlayer from './MediaPlayer'
 import Image from 'next/image'
-import { getImageUrl } from '@/app/data/client'
+import { getImageUrl } from '@/data/client'
 import Link from 'next/link'
 import { PortableText } from 'next-sanity'
 

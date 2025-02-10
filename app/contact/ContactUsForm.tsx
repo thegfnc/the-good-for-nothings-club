@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from '../../components/ui/Form'
 import { Alert, AlertDescription, AlertTitle } from '../../components/ui/Alert'
-import { contactUsSchema } from '../data/schemas'
+import { contactUsSchema } from '../../data/schemas'
 import { Check, Loader2 } from 'lucide-react'
 
 export default function ContactUsForm() {

@@ -18,7 +18,7 @@ import Lightbox, {
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import Counter from 'yet-another-react-lightbox/plugins/counter'
 import { SanityAssetDocument } from 'next-sanity'
-import { getImageUrl } from '../app/data/client'
+import { getImageUrl } from '../data/client'
 import { PlaceholderValue } from 'next/dist/shared/lib/get-img-props'
 
 type PhotoGalleryProps = {

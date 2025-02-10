@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
-import { alegreya, rubik, rubikGlitch } from './styles/fonts'
+import { alegreya, rubik, rubikGlitch } from '../styles/fonts'
 import { cn } from '@/lib/utils'
 import { Analytics } from '@vercel/analytics/react'
 
-import './styles/globals.css'
+import '../styles/globals.css'
 import Header from '@/components/Header'
 import Footer from '../components/Footer'
 import Script from 'next/script'
