@@ -6,7 +6,8 @@ import { GFNC_member, GFNC_project } from '../types'
 import Link from 'next/link'
 import HeroBanner from '../components/HeroBanner'
 import MemberProfilePicture from '../components/MemberProfilePicture'
-import { ArrowRight } from 'lucide-react'
+import { ImArrowRight } from 'react-icons/im'
+
 import ProjectCard from '@/components/ProjectCard'
 
 const FEATURED_PROJECTS_QUERY = `
@@ -127,7 +128,7 @@ export default async function Home() {
             href='/about'
           >
             <span>Learn More</span>{' '}
-            <ArrowRight className='h-4 w-4 transition-transform duration-500 group-hover:translate-x-1' />
+            <ImArrowRight className='h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1' />
           </Link>
         </div>
       </section>
@@ -150,7 +151,7 @@ export default async function Home() {
             href='/projects'
           >
             <span>View All Projects</span>
-            <ArrowRight className='h-4 w-4 transition-transform duration-500 group-hover:translate-x-1' />
+            <ImArrowRight className='h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1' />
           </Link>
         </div>
       </section>
@@ -173,7 +174,7 @@ export default async function Home() {
             href='/about'
           >
             <span>Learn More</span>
-            <ArrowRight className='h-4 w-4 transition-transform duration-500 group-hover:translate-x-1' />
+            <ImArrowRight className='h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1' />
           </Link>
         </div>
       </section>

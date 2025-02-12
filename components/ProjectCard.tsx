@@ -21,11 +21,11 @@ export default function ProjectCard({
   if (!mainMedia) return null
 
   return (
-    <div key={project._id} className='grid grid-cols-1 gap-6'>
+    <div key={project._id} className='group grid grid-cols-1 gap-6'>
       <div>
         {/* ^ div prevents grid item from filling height of row in the event text is taller than image */}
         <div className='overflow-hidden border-2 border-black'>
-          <div className='relative transition-all duration-1000 hover:scale-[1.05]'>
+          <div className='relative transition-all duration-1000 group-hover:scale-[1.05]'>
             {mainMedia._type === 'videoFile' ? (
               <MediaPlayer
                 url={mainMedia.asset.url}
@@ -51,12 +51,11 @@ export default function ProjectCard({
                 priority={priority}
                 unoptimized
                 placeholder={mainMedia.asset.metadata.lqip}
-                // sizes='(max-width: 1024px) 100vw, 50vw'
               />
             )}
             <Link
               href={`/projects/${project.slug.current}`}
-              className='absolute top-0 left-0 h-full w-full bg-black opacity-0 transition-opacity duration-500 hover:opacity-10 active:opacity-20'
+              className='absolute top-0 left-0 h-full w-full bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10 active:opacity-20'
             ></Link>
           </div>
         </div>
@@ -73,14 +72,13 @@ export default function ProjectCard({
               timeZone: 'UTC',
             })}
           </span>
+          <span>·</span>
+          <span>{project.clientName}</span>
         </div>
         <div>
           <Link href={`/projects/${project.slug.current}`} className='block'>
             <h2 className='text-[32px] sm:text-[40px]'>{project.title}</h2>
           </Link>
-          <h3 className='text-lg font-medium sm:text-xl'>
-            – {project.clientName}
-          </h3>
         </div>
         <div className='portable-text text-2xl leading-tight'>
           <PortableText value={project.summary} />

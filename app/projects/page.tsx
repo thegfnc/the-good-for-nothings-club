@@ -248,14 +248,14 @@ export default async function Projects(props: ProjectsProps) {
         </div>
       </section>
       <section className='mx-auto grid max-w-(--page-max-width) grid-cols-2 gap-12 pt-8 md:pt-16'>
-        <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
+        <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 pt-6 md:border-x-2 md:px-12 md:pt-12'>
           <div className='flex items-center gap-4'>
             <div className='h-5 w-5 rounded-full border-2 border-black bg-yellow-300'></div>
             <h2 className='text-[32px] leading-none tracking-[-0.04em] md:text-[48px] lg:text-[64px]'>
               Paused
             </h2>
           </div>
-          <div className='mt-12 grid grid-cols-1 gap-8'>
+          <div className='mt-12 grid max-h-[500px] grid-cols-1 gap-4 overflow-y-scroll pb-6 md:pb-12'>
             {projectsData.slice(0, 5).map(project => {
               const mainMedia = project.mainMedia.find(
                 mainMedia => mainMedia._type === 'image'
@@ -266,9 +266,9 @@ export default async function Projects(props: ProjectsProps) {
               return (
                 <div
                   key={project._id}
-                  className='flex flex-col justify-between gap-4 bg-black/10 p-4'
+                  className='flex flex-col justify-between gap-3 bg-black/10 p-4'
                 >
-                  <div className='flex items-start gap-4'>
+                  <div className='flex items-start gap-3'>
                     <Image
                       src={
                         mainMedia.asset.extension === 'gif'
@@ -282,22 +282,22 @@ export default async function Projects(props: ProjectsProps) {
                         project.type === 'Audio'
                           ? 'aspect-square'
                           : 'aspect-video',
-                        `w-16 object-cover`
+                        `w-12 object-cover`
                       )}
                       priority={false}
                       unoptimized
                       placeholder={mainMedia.asset.metadata.lqip}
                     />
-                    <div className='space-y-2'>
-                      <h2 className='text-[16px] font-bold sm:text-[20px]'>
+                    <div className='space-y-1.5'>
+                      <h2 className='text-[12px] font-bold sm:text-[16px]'>
                         {project.title}
                       </h2>
-                      <div className='portable-text font-sans text-sm leading-tight font-light tracking-wide'>
+                      <div className='portable-text font-sans text-xs leading-tight font-light tracking-wide'>
                         <PortableText value={project.summary} />
                       </div>
                     </div>
                   </div>
-                  <div className='flex items-center gap-2 font-sans text-sm font-bold uppercase'>
+                  <div className='flex items-center gap-2 font-sans text-xs font-bold uppercase'>
                     <span>{project.type}</span>
                     <span>·</span>
                     <span>
@@ -319,14 +319,14 @@ export default async function Projects(props: ProjectsProps) {
             })}
           </div>
         </div>
-        <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
+        <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 pt-6 md:border-x-2 md:px-12 md:pt-12'>
           <div className='flex items-center gap-4'>
             <div className='h-5 w-5 rounded-full border-2 border-black bg-red-300'></div>
             <h2 className='text-[32px] leading-none tracking-[-0.04em] md:text-[48px] lg:text-[64px]'>
               Canceled
             </h2>
           </div>
-          <div className='mt-12 grid grid-cols-1 gap-8'>
+          <div className='mt-12 grid max-h-[500px] grid-cols-1 gap-4 overflow-y-scroll pb-6 md:pb-12'>
             {projectsData.slice(0, 4).map(project => {
               const mainMedia = project.mainMedia.find(
                 mainMedia => mainMedia._type === 'image'
@@ -337,9 +337,9 @@ export default async function Projects(props: ProjectsProps) {
               return (
                 <div
                   key={project._id}
-                  className='flex flex-col justify-between gap-4 bg-black/10 p-4'
+                  className='flex flex-col justify-between gap-3 bg-black/10 p-4 opacity-65'
                 >
-                  <div className='flex items-start gap-4'>
+                  <div className='flex items-start gap-3'>
                     <Image
                       src={
                         mainMedia.asset.extension === 'gif'
@@ -353,22 +353,22 @@ export default async function Projects(props: ProjectsProps) {
                         project.type === 'Audio'
                           ? 'aspect-square'
                           : 'aspect-video',
-                        `w-16 object-cover`
+                        `w-12 object-cover`
                       )}
                       priority={false}
                       unoptimized
                       placeholder={mainMedia.asset.metadata.lqip}
                     />
-                    <div className='space-y-2'>
-                      <h2 className='text-[16px] font-bold sm:text-[20px]'>
+                    <div className='space-y-1.5'>
+                      <h2 className='text-[12px] font-bold sm:text-[16px]'>
                         {project.title}
                       </h2>
-                      <div className='portable-text font-sans text-sm leading-tight font-light tracking-wide'>
+                      <div className='portable-text font-sans text-xs leading-tight font-light tracking-wide'>
                         <PortableText value={project.summary} />
                       </div>
                     </div>
                   </div>
-                  <div className='flex items-center gap-2 font-sans text-sm font-bold uppercase'>
+                  <div className='flex items-center gap-2 font-sans text-xs font-bold uppercase'>
                     <span>{project.type}</span>
                     <span>·</span>
                     <span>

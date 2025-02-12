@@ -47,9 +47,10 @@ export default function InstagramFeed({ feedId }: { feedId: string }) {
       <Image
         src={post.sizes.medium.mediaUrl}
         alt={post.prunedCaption}
-        fill
-        className='object-cover'
+        width={post.sizes.medium.width}
+        height={post.sizes.medium.height}
         sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+        className='h-full w-full object-cover'
       />
     )
 
@@ -62,6 +63,7 @@ export default function InstagramFeed({ feedId }: { feedId: string }) {
           muted={true}
           autoPlay={true}
           loop={true}
+          className='h-full w-full object-cover'
         ></video>
       )
     }
@@ -76,7 +78,7 @@ export default function InstagramFeed({ feedId }: { feedId: string }) {
       >
         <figure
           key={post.id}
-          className='transition-transform duration-300 hover:scale-105'
+          className='relative h-full w-full transition-transform duration-300 hover:scale-105'
         >
           {mediaEl}
         </figure>
@@ -114,7 +116,7 @@ export default function InstagramFeed({ feedId }: { feedId: string }) {
       </div>
       <a
         href={`https://www.instagram.com/${feed.username}`}
-        className='bg-primary text-primary-foreground hover:bg-primary/90 items-center justify-center p-2 text-center font-sans text-xs tracking-[2px] whitespace-nowrap uppercase transition-colors hover:no-underline'
+        className='bg-primary text-primary-foreground hover:bg-primary/90 items-center justify-center p-3 text-center font-sans text-xs tracking-[2px] whitespace-nowrap uppercase transition-colors hover:no-underline'
         target='_blank'
       >
         Follow us on Instagram
