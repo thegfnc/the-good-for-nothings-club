@@ -13,6 +13,7 @@ export default function InstagramFeed({ feedId }: { feedId: string }) {
     async function fetchFeed() {
       try {
         const rawFeed = await fetch(`/api/instagram-feed?feedId=${feedId}`, {
+          next: { revalidate: 3600 },
           signal: controller.signal,
         })
 
@@ -87,7 +88,7 @@ export default function InstagramFeed({ feedId }: { feedId: string }) {
   })
 
   return (
-    <div className='flex flex-col justify-between bg-black/10 p-4 font-sans'>
+    <div className='flex flex-col justify-between gap-4 bg-white/75 p-4 font-sans'>
       <div className='flex'>
         <div className='w-28 shrink-0'>
           <Image
@@ -111,9 +112,7 @@ export default function InstagramFeed({ feedId }: { feedId: string }) {
           </div>
         </div>
       </div>
-      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3'>
-        {postEls}
-      </div>
+      <div className='grid grid-cols-2 gap-4 md:grid-cols-3'>{postEls}</div>
       <a
         href={`https://www.instagram.com/${feed.username}`}
         className='bg-primary text-primary-foreground hover:bg-primary/90 items-center justify-center p-3 text-center font-sans text-xs tracking-[2px] whitespace-nowrap uppercase transition-colors hover:no-underline'
