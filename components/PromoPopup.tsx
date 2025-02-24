@@ -2,7 +2,7 @@
 
 const PROMO_VERSION = 1 // Increment this to show the promo popup again
 const PROMO_POPUP_KEY = `promoPopupDismissed_V${PROMO_VERSION}`
-const POPUP_DELAY = 2000 // 3 seconds in milliseconds
+const POPUP_DELAY = 2000
 
 import {
   Dialog,
