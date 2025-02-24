@@ -209,10 +209,10 @@ export default async function Project(props: ProjectProps) {
               />
             )}
           </div>
-          <div className='mx-4 my-6 flex flex-col justify-between gap-6 md:mx-12 md:my-12 md:gap-12 lg:flex-row'>
+          <div className='mx-4 my-6 flex flex-col justify-between gap-6 md:mx-12 md:my-12 md:gap-16 lg:flex-row'>
             <div className='space-y-2 md:space-y-6'>
               <h3>Overview</h3>
-              <div className='portable-text space-y-4 text-[20px] leading-[1.17] md:text-[24px] lg:text-[24px] xl:text-[28px] 2xl:text-[32px] 2xl:leading-tight'>
+              <div className='portable-text space-y-4 text-[20px] leading-[1.17] md:text-[24px] lg:text-[24px] xl:text-[28px] 2xl:leading-tight'>
                 <PortableText value={project.overview} />
               </div>
             </div>
