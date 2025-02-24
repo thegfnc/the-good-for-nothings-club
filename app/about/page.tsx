@@ -33,7 +33,7 @@ export default async function About() {
             About
           </h1>
           <div className='mt-10 gap-24 border-t-2 border-black pt-12 sm:mt-12 md:mt-20 lg:gap-12'>
-            <div className='prose prose-xl prose-li:my-1 prose-ol:my-1 mx-auto font-sans leading-snug'>
+            <div className='prose prose-lg md:prose-xl prose-li:my-1 prose-ol:my-1 mx-auto font-sans leading-snug'>
               <h2>Overview</h2>
               <p>
                 The Good for Nothings Club is a creators club based in Austin,
