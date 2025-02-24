@@ -39,7 +39,7 @@ export default function PromoPopup() {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className='sm:max-w-2xl'>
+      <DialogContent className='max-h-screen overflow-y-scroll'>
         <DialogHeader>
           <DialogTitle>Keep It Local, Yokels</DialogTitle>
         </DialogHeader>
