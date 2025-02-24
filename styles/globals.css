@@ -1,13 +1,16 @@
 @import 'tailwindcss';
+@plugin "@tailwindcss/typography";
 
 @theme {
-  --font-sans: var(--font-rubik), ui-sans-serif, system-ui, sans-serif,
+  --font-sans:
+    var(--font-rubik), ui-sans-serif, system-ui, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-sans-glitch: var(--font-rubik-glitch), ui-sans-serif, system-ui,
-    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
-  --font-serif: var(--font-alegreya), ui-serif, Georgia, Cambria,
-    'Times New Roman', Times, serif;
+  --font-sans-glitch:
+    var(--font-rubik-glitch), ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-serif:
+    var(--font-alegreya), ui-serif, Georgia, Cambria, 'Times New Roman', Times,
+    serif;
 
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
@@ -41,6 +44,9 @@
   --radius-sm: calc(var(--radius) - 4px);
 
   --page-max-width: 1440px;
+
+  --leading-tighter: 1.2;
+  --leading-testest: 1.1;
 }
 
 @utility container {

@@ -38,32 +38,30 @@ export default function MemberProfilePicture({
         width={profilePicture.asset.metadata.dimensions.width}
         height={profilePicture.asset.metadata.dimensions.height}
         alt={profilePicture.caption}
-        className={`aspect-square border-2 border-black object-cover md:h-auto xl:aspect-auto ${isHovering ? 'hidden' : 'block'}`}
+        className={`aspect-square border-2 border-black object-cover md:h-auto lg:aspect-auto ${isHovering ? 'hidden' : 'block'}`}
         style={{
           objectPosition,
         }}
         priority={true}
         unoptimized
         placeholder={profilePicture.asset.metadata.lqip}
-        // sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
       />
       <Image
         src={hoverProfilePictureUrl}
         width={hoverProfilePicture.asset.metadata.dimensions.width}
         height={hoverProfilePicture.asset.metadata.dimensions.height}
         alt={hoverProfilePicture.caption}
-        className={`aspect-square border-2 border-black object-cover md:h-auto xl:aspect-auto ${isHovering ? 'block' : 'hidden'}`}
+        className={`aspect-square border-2 border-black object-cover md:h-auto lg:aspect-auto ${isHovering ? 'block' : 'hidden'}`}
         style={{
           objectPosition,
         }}
         priority={true}
         placeholder={hoverProfilePicture.asset.metadata.lqip}
         unoptimized
-        // sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw'
       />
-      <h3 className='mt-6 text-[32px]'>{member.fullName}</h3>
-      <div className='text-xl leading-tight'>
-        <p className='mt-4'>
+      <h3 className='mt-6 text-[24px]'>{member.fullName}</h3>
+      <div className='mt-1'>
+        <p className='text-base leading-tight'>
           Member #{String(member.memberNumber).padStart(3, '0')} - since{' '}
           {new Date(member.startDate).toLocaleDateString('en-US', {
             month: 'short',
@@ -71,7 +69,7 @@ export default function MemberProfilePicture({
             timeZone: 'UTC',
           })}
         </p>
-        <p>
+        <p className='text-base leading-tight'>
           <em>{member.roles.join(', ').toLowerCase()}</em>
         </p>
       </div>

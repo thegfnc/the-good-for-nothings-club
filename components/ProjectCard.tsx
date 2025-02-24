@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { getImageUrl } from '@/data/client'
 import Link from 'next/link'
 import { PortableText } from 'next-sanity'
+import getProjectDateString from '@/lib/getProjectDateString'
 
 type ProjectCardProps = {
   project: GFNC_project
@@ -19,6 +20,8 @@ export default function ProjectCard({
     project.mainMedia.find(mainMedia => mainMedia._type === 'image')
 
   if (!mainMedia) return null
+
+  const date = getProjectDateString(project)
 
   return (
     <div key={project._id} className='group flex flex-col gap-6'>
@@ -61,16 +64,13 @@ export default function ProjectCard({
         <div className='flex items-center gap-2 font-sans text-sm font-bold uppercase'>
           <span>{project.type}</span>
           <span>·</span>
-          <span>
-            {new Date(project.dateCompleted).toLocaleDateString('en-US', {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric',
-              timeZone: 'UTC',
-            })}
-          </span>
-          <span>·</span>
           <span>{project.clientName}</span>
+          {date && (
+            <>
+              <span>·</span>
+              <span>{date}</span>
+            </>
+          )}
         </div>
         <div>
           <Link href={`/projects/${project.slug.current}`} className='block'>

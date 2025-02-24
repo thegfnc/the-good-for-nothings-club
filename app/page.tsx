@@ -138,7 +138,7 @@ export default async function Home() {
             Projects
           </h2>
           <div className='mt-12 md:mt-20'>
-            <div className='grid grid-cols-1 gap-12 md:grid-cols-2'>
+            <div className='grid grid-cols-1 gap-12 lg:grid-cols-2'>
               {featuredProjectsData.map(project => {
                 return <ProjectCard key={project._id} project={project} />
               })}
@@ -161,7 +161,7 @@ export default async function Home() {
             Members
           </h2>
           <div className='mt-12 md:mt-20'>
-            <ul className='grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-8 xl:grid-cols-3'>
+            <ul className='grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-x-6 md:gap-y-10 lg:grid-cols-3 2xl:grid-cols-5'>
               {membersData.map(member => (
                 <MemberProfilePicture key={member._id} member={member} />
               ))}

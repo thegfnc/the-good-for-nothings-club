@@ -22,6 +22,8 @@ const PROJECT_SLUG_QUERY = `
     clientName,
     slug,
     type,
+    status,
+    dateStarted,
     dateCompleted,
     mainMedia[] {
       ...,
@@ -227,16 +229,42 @@ export default async function Project(props: ProjectProps) {
                 </div>
               </div>
               <div className='space-y-2 md:space-y-6'>
-                <h3>Date Completed</h3>
-                <div className='text-[20px] leading-none md:text-[24px] lg:text-[24px] xl:text-[28px] 2xl:text-[32px]'>
-                  {new Date(project.dateCompleted).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                    timeZone: 'UTC',
-                  })}
+                <h3>Project Status</h3>
+                <div className='flex'>
+                  <div className='block rounded-full bg-black px-4 py-3 font-sans text-white transition-colors'>
+                    {project.status}
+                  </div>
                 </div>
               </div>
+              {project.dateStarted && (
+                <div className='space-y-2 md:space-y-6'>
+                  <h3>Date Started</h3>
+                  <div className='text-[20px] leading-none md:text-[24px] lg:text-[24px] xl:text-[28px] 2xl:text-[32px]'>
+                    {new Date(project.dateStarted).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                      timeZone: 'UTC',
+                    })}
+                  </div>
+                </div>
+              )}
+              {project.dateCompleted && (
+                <div className='space-y-2 md:space-y-6'>
+                  <h3>Date Ended</h3>
+                  <div className='text-[20px] leading-none md:text-[24px] lg:text-[24px] xl:text-[28px] 2xl:text-[32px]'>
+                    {new Date(project.dateCompleted).toLocaleDateString(
+                      'en-US',
+                      {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                        timeZone: 'UTC',
+                      }
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           {project.photoGallery && (
