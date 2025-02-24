@@ -1,8 +1,5 @@
-import Link from 'next/link'
+// Wiki: https://docs.google.com/document/d/1m1WTPccEqhUBJ6RKpf0Ug5eLk1iepDCFoobRLyxTE70/edit?pli=1&tab=t.0
 
-import ContactUsForm from '../contact/ContactUsForm'
-import SocialMediaLinks from '../../components/SocialMediaLinks'
-import Map from '../../components/Map'
 import { Metadata, ResolvingMetadata } from 'next'
 
 export async function generateMetadata(
@@ -33,7 +30,7 @@ export default async function About() {
             About
           </h1>
           <div className='mt-10 gap-24 border-t-2 border-black pt-12 sm:mt-12 md:mt-20 lg:gap-12'>
-            <div className='prose prose-lg md:prose-xl prose-li:my-1 prose-ol:my-1 mx-auto font-sans leading-snug'>
+            <div className='prose prose-lg not-first-of-type:md:prose-xl prose-li:my-1 prose-ol:my-1 mx-auto font-sans leading-snug'>
               <h2>Overview</h2>
               <p>
                 The Good for Nothings Club is a creators club based in Austin,
