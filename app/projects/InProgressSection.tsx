@@ -10,7 +10,7 @@ const InProgressSection = ({ projectsData }: InProgressSectionProps) => {
     <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
       <div className='flex items-center gap-4'>
         <div className='h-5 w-5 rounded-full border-2 border-black bg-green-300'></div>
-        <h2 className='text-[32px] leading-none tracking-[-0.04em] md:text-[48px] lg:text-[64px]'>
+        <h2 className='text-[32px] leading-none font-black tracking-[-0.04em] md:text-[48px] lg:text-[64px]'>
           In Progress
         </h2>
       </div>

@@ -155,7 +155,7 @@ export default async function Projects(props: ProjectsProps) {
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
         <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
           <div className='flex flex-col items-center justify-between gap-8 pt-6 md:pt-8'>
-            <h1 className='text-[32px] leading-none tracking-[-0.04em] md:text-[48px] lg:text-[96px]'>
+            <h1 className='text-[32px] leading-none font-black tracking-[-0.04em] md:text-[48px] lg:text-[96px]'>
               Projects
             </h1>
             <ul className='flex grow justify-end overflow-x-scroll border-2 border-black'>
@@ -194,7 +194,7 @@ export default async function Projects(props: ProjectsProps) {
           <div className='bg-background mx-auto w-full max-w-(--page-max-width) border-y-2 border-black px-4 pt-6 md:border-x-2 md:px-12 md:pt-12'>
             <div className='flex items-center gap-4'>
               <div className='h-5 w-5 rounded-full border-2 border-black bg-yellow-300'></div>
-              <h2 className='text-[32px] leading-none tracking-[-0.04em] md:text-[48px] xl:text-[64px]'>
+              <h2 className='text-[32px] leading-none font-black tracking-[-0.04em] md:text-[48px] xl:text-[64px]'>
                 Paused
               </h2>
             </div>
@@ -207,7 +207,7 @@ export default async function Projects(props: ProjectsProps) {
           <div className='bg-background mx-auto w-full max-w-(--page-max-width) border-y-2 border-black px-4 pt-6 md:border-x-2 md:px-12 md:pt-12'>
             <div className='flex items-center gap-4'>
               <div className='h-5 w-5 rounded-full border-2 border-black bg-red-300'></div>
-              <h2 className='text-[32px] leading-none tracking-[-0.04em] md:text-[48px] xl:text-[64px]'>
+              <h2 className='text-[32px] leading-none font-black tracking-[-0.04em] md:text-[48px] xl:text-[64px]'>
                 Canceled
               </h2>
             </div>

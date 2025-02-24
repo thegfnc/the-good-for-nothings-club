@@ -1,6 +1,49 @@
 // Wiki: https://docs.google.com/document/d/1m1WTPccEqhUBJ6RKpf0Ug5eLk1iepDCFoobRLyxTE70/edit?pli=1&tab=t.0
 
+import MemberProfilePicture from '@/components/MemberProfilePicture'
+import { cmsFetch } from '@/data/client'
+import { GFNC_member, GFNC_project } from '@/types'
 import { Metadata, ResolvingMetadata } from 'next'
+
+const MEMBERS_QUERY = `
+  *[_type == 'GFNC_member'] | order(startDate) {
+    _id,
+    fullName,
+    profilePicture {
+      asset-> {
+        url,
+        metadata {
+          lqip,
+          dimensions {
+            height,
+            width
+          }
+        }
+      },
+      hotspot {
+        x,
+        y,
+      },
+      caption
+    },
+    hoverProfilePicture {
+      asset-> {
+        url,
+        metadata {
+          lqip,
+          dimensions {
+            height,
+            width
+          }
+        }
+      },
+      caption
+    },
+    roles,
+    startDate,
+    memberNumber
+  }
+`
 
 export async function generateMetadata(
   params: {},
@@ -22,14 +65,21 @@ export async function generateMetadata(
 }
 
 export default async function About() {
+  const [membersData] = await Promise.all([
+    cmsFetch<GFNC_member[]>({
+      query: MEMBERS_QUERY,
+      tags: ['GFNC_member'],
+    }),
+  ])
+
   return (
     <main>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
         <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
-          <h1 className='pt-6 text-center text-[32px] leading-none tracking-[-0.04em] md:pt-8 md:text-[48px] lg:text-[96px]'>
+          <h1 className='pt-6 text-center text-[32px] leading-none font-black tracking-[-0.04em] md:pt-8 md:text-[48px] lg:text-[96px]'>
             About
           </h1>
-          <div className='mt-10 gap-24 border-t-2 border-black pt-12 sm:mt-12 md:mt-20 lg:gap-12'>
+          <div className='mt-10 flex flex-col gap-24 border-t-2 border-black pt-12 sm:mt-12 md:mt-20 lg:flex-row lg:gap-12'>
             <div className='prose prose-lg not-first-of-type:md:prose-xl prose-li:my-1 prose-ol:my-1 mx-auto font-sans leading-snug'>
               <h2>Overview</h2>
               <p>
@@ -192,6 +242,16 @@ export default async function About() {
                   you&apos;re prohibitively busy or on vacation
                 </li>
               </ol>
+            </div>
+            <div className='min-w-[300px] xl:min-w-[500px]'>
+              <h2 className='text-[30px] leading-snug font-bold'>Members</h2>
+              <div className='mt-8'>
+                <ul className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:gap-x-6 md:gap-y-10 lg:grid-cols-1 xl:grid-cols-2'>
+                  {membersData.map(member => (
+                    <MemberProfilePicture key={member._id} member={member} />
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>

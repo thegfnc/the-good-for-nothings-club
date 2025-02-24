@@ -131,7 +131,7 @@
   h5,
   h6 {
     @apply font-sans;
-    @apply font-black;
+    @apply font-bold;
     @apply uppercase;
     @apply leading-none;
     @apply text-balance;

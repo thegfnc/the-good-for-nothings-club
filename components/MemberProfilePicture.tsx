@@ -59,7 +59,7 @@ export default function MemberProfilePicture({
         placeholder={hoverProfilePicture.asset.metadata.lqip}
         unoptimized
       />
-      <h3 className='mt-6 text-[24px]'>{member.fullName}</h3>
+      <h3 className='mt-4 text-[24px]'>{member.fullName}</h3>
       <div className='mt-1'>
         <p className='text-sm leading-tight'>
           Member #{String(member.memberNumber).padStart(3, '0')} - since{' '}

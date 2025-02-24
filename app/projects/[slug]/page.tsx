@@ -172,7 +172,7 @@ export default async function Project(props: ProjectProps) {
       <section className='md:px-8 xl:px-16'>
         <div className='bg-background mx-auto max-w-(--page-max-width) border-b-2 border-black md:border-x-2'>
           <div className='space-y-4 px-4 py-12 text-center lg:space-y-8 lg:px-12 lg:py-24'>
-            <h1 className='text-[48px] leading-none tracking-[-0.04em] lg:text-[96px]'>
+            <h1 className='text-[48px] leading-none font-black tracking-[-0.04em] lg:text-[96px]'>
               {project.title}
             </h1>
             <h2 className='font-serif text-[32px] leading-none font-normal normal-case italic lg:text-[64px]'>

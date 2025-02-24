@@ -134,7 +134,7 @@ export default async function Home() {
       </section>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
         <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
-          <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-8 md:text-[48px] lg:text-[84px]'>
+          <h2 className='pt-6 text-[32px] font-black tracking-[-0.04em] md:pt-8 md:text-[48px] lg:text-[84px]'>
             Projects
           </h2>
           <div className='mt-12 md:mt-20'>
@@ -157,7 +157,7 @@ export default async function Home() {
       </section>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
         <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
-          <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-8 md:text-[48px] lg:text-[84px]'>
+          <h2 className='pt-6 text-[32px] font-black tracking-[-0.04em] md:pt-8 md:text-[48px] lg:text-[84px]'>
             Members
           </h2>
           <div className='mt-12 md:mt-20'>
@@ -180,7 +180,7 @@ export default async function Home() {
       </section>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
         <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
-          <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-8 md:text-[48px] lg:text-[84px]'>
+          <h2 className='pt-6 text-[32px] font-black tracking-[-0.04em] md:pt-8 md:text-[48px] lg:text-[84px]'>
             Happenings
           </h2>
           <div className='mt-12 grid grid-cols-1 gap-6 md:mt-20 md:gap-12 lg:grid-cols-2'>
