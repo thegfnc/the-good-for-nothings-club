@@ -1,13 +1,16 @@
 @import 'tailwindcss';
+@plugin "@tailwindcss/typography";
 
 @theme {
-  --font-sans: var(--font-rubik), ui-sans-serif, system-ui, sans-serif,
+  --font-sans:
+    var(--font-rubik), ui-sans-serif, system-ui, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-sans-glitch: var(--font-rubik-glitch), ui-sans-serif, system-ui,
-    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
-  --font-serif: var(--font-alegreya), ui-serif, Georgia, Cambria,
-    'Times New Roman', Times, serif;
+  --font-sans-glitch:
+    var(--font-rubik-glitch), ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-serif:
+    var(--font-alegreya), ui-serif, Georgia, Cambria, 'Times New Roman', Times,
+    serif;
 
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
@@ -39,6 +42,11 @@
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
+
+  --page-max-width: 1440px;
+
+  --leading-tighter: 1.2;
+  --leading-testest: 1.1;
 }
 
 @utility container {
@@ -150,5 +158,82 @@
     width: 1px !important;
     padding: 0 !important;
     border: 0 !important;
+  }
+
+  @keyframes enter {
+    0% {
+      opacity: var(--tw-enter-opacity, 1);
+      transform: translate3d(
+          var(--tw-enter-translate-x, 0),
+          var(--tw-enter-translate-y, 0),
+          0
+        )
+        scale3d(
+          var(--tw-enter-scale, 1),
+          var(--tw-enter-scale, 1),
+          var(--tw-enter-scale, 1)
+        )
+        rotate(var(--tw-enter-rotate, 0));
+    }
+  }
+
+  @keyframes exit {
+    to {
+      opacity: var(--tw-exit-opacity, 1);
+      transform: translate3d(
+          var(--tw-exit-translate-x, 0),
+          var(--tw-exit-translate-y, 0),
+          0
+        )
+        scale3d(
+          var(--tw-exit-scale, 1),
+          var(--tw-exit-scale, 1),
+          var(--tw-exit-scale, 1)
+        )
+        rotate(var(--tw-exit-rotate, 0));
+    }
+  }
+
+  .data-\[motion\^\=from-\]\:animate-in[data-motion^='from-'],
+  .data-\[state\=open\]\:animate-in[data-state='open'],
+  .data-\[state\=visible\]\:animate-in[data-state='visible'] {
+    animation-name: enter;
+    animation-duration: 0.15s;
+    --tw-enter-opacity: initial;
+    --tw-enter-scale: initial;
+    --tw-enter-rotate: initial;
+    --tw-enter-translate-x: initial;
+    --tw-enter-translate-y: initial;
+  }
+
+  .data-\[motion\^\=to-\]\:animate-out[data-motion^='to-'],
+  .data-\[state\=closed\]\:animate-out[data-state='closed'],
+  .data-\[state\=hidden\]\:animate-out[data-state='hidden'] {
+    animation-name: exit;
+    animation-duration: 0.15s;
+    --tw-exit-opacity: initial;
+    --tw-exit-scale: initial;
+    --tw-exit-rotate: initial;
+    --tw-exit-translate-x: initial;
+    --tw-exit-translate-y: initial;
+  }
+
+  .data-\[state\=open\]\:fade-in-0[data-state='open'],
+  .data-\[state\=visible\]\:fade-in[data-state='visible'] {
+    --tw-enter-opacity: 0;
+  }
+
+  .data-\[motion\^\=to-\]\:fade-out[data-motion^='to-'],
+  .data-\[state\=closed\]\:fade-out-0[data-state='closed'],
+  .data-\[state\=hidden\]\:fade-out[data-state='hidden'] {
+    --tw-exit-opacity: 0;
+  }
+
+  .data-\[state\=closed\]\:slide-out-to-left[data-state='closed'] {
+    --tw-exit-translate-x: -100%;
+  }
+
+  .data-\[state\=open\]\:slide-in-from-left[data-state='open'] {
+    --tw-enter-translate-x: -100%;
   }
 }

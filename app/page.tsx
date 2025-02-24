@@ -1,14 +1,14 @@
-import Image from 'next/image'
-import InstagramFeedEmbed from './components/InstagramFeedEmbed'
-import SpotifyPlaylistEmbed from './components/SpotifyPlaylistEmbed'
-import { cmsFetch, getImageUrl } from './data/client'
+import SpotifyPlaylistEmbed from '../components/SpotifyPlaylistEmbed'
+import InstagramFeed from '@/components/InstagramFeed'
+import { cmsFetch } from '../data/client'
 import { Suspense } from 'react'
-import { GFNC_member, GFNC_project } from './types'
+import { GFNC_member, GFNC_project } from '../types'
 import Link from 'next/link'
-import { PortableText } from '@portabletext/react'
-import HeroBanner from './components/HeroBanner'
-import MemberProfilePicture from './components/MemberProfilePicture'
-import MediaPlayer from './components/MediaPlayer'
+import HeroBanner from '../components/HeroBanner'
+import MemberProfilePicture from '../components/MemberProfilePicture'
+import { ImArrowRight } from 'react-icons/im'
+
+import ProjectCard from '@/components/ProjectCard'
 
 const FEATURED_PROJECTS_QUERY = `
   *[_type == 'GFNC_project' && featured == true] | order(dateCompleted desc) {
@@ -16,6 +16,8 @@ const FEATURED_PROJECTS_QUERY = `
     title,
     clientName,
     slug,
+    type,
+    dateCompleted,
     mainMedia[] {
       ...,
       _type == 'image' => {
@@ -105,13 +107,13 @@ export default async function Home() {
   return (
     <main>
       <section className='py-14 text-center md:px-8 md:py-20 xl:px-16'>
-        <div className='mx-auto max-w-[1576px]'>
+        <div className='mx-auto max-w-(--page-max-width)'>
           <h1 className='visually-hidden'>Good For Nothings</h1>
           <HeroBanner />
         </div>
       </section>
       <section className='md:px-8 xl:px-16'>
-        <div className='mx-auto max-w-[1576px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
+        <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
           <p className='text-2xl leading-tight sm:text-[32px] 2xl:text-[48px] 2xl:leading-[1.16]'>
             <em>The Good for Nothings Club</em> is a creators club from Austin,
             TX made up of designers, engineers, filmmakers, musicians, and
@@ -120,121 +122,70 @@ export default async function Home() {
             Good for nothings. Great at everything.
           </p>
         </div>
-      </section>
-      <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
-        <div className='mx-auto max-w-[1576px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
-          <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
-            Projects
-          </h2>
-          <div className='mt-12 md:mt-24'>
-            <ul className='flex flex-col gap-12 md:gap-24'>
-              {featuredProjectsData.map(project => {
-                const mainMedia =
-                  project.mainMedia.find(
-                    mainMedia => mainMedia._type === 'videoFile'
-                  ) ||
-                  project.mainMedia.find(
-                    mainMedia => mainMedia._type === 'image'
-                  )
-
-                if (!mainMedia) return null
-
-                return (
-                  <li
-                    key={project._id}
-                    className='flex flex-col gap-6 md:gap-8'
-                  >
-                    <div className='overflow-hidden border-2 border-black'>
-                      <div className='relative transition-all duration-1000 hover:scale-[1.025]'>
-                        {mainMedia._type === 'videoFile' ? (
-                          <MediaPlayer
-                            url={mainMedia.asset.url}
-                            playing={mainMedia.playing}
-                            controls={mainMedia.controls}
-                            loop={mainMedia.loop}
-                            playsinline={true}
-                            volume={0}
-                            muted={true}
-                            className={`pointer-events-none aspect-video w-full`}
-                          />
-                        ) : (
-                          <Image
-                            src={
-                              mainMedia.asset.extension === 'gif'
-                                ? getImageUrl(mainMedia).url()
-                                : getImageUrl(mainMedia)
-                                    .width(1600)
-                                    .quality(90)
-                                    .url()
-                            }
-                            width={mainMedia.asset.metadata.dimensions.width}
-                            height={mainMedia.asset.metadata.dimensions.height}
-                            alt={mainMedia.caption}
-                            className={`aspect-video w-full object-cover object-top`}
-                            placeholder={mainMedia.asset.metadata.lqip}
-                            unoptimized
-                            // sizes='100vw'
-                          />
-                        )}
-                        <Link
-                          href={`/projects/${project.slug.current}`}
-                          className='absolute left-0 top-0 h-full w-full bg-black opacity-0 transition-opacity duration-500 hover:opacity-10 active:opacity-20'
-                        ></Link>
-                      </div>
-                    </div>
-                    <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
-                      <div className='flex flex-col gap-1 md:gap-2'>
-                        <Link
-                          href={`/projects/${project.slug.current}`}
-                          className='text-[28px] leading-none md:text-5xl'
-                        >
-                          <h3>{project.title}</h3>
-                        </Link>
-                        <h4 className='text-base font-semibold md:text-xl'>
-                          {project.clientName}
-                        </h4>
-                      </div>
-                      <div className='portable-text text-xl'>
-                        <PortableText value={project.summary} />
-                      </div>
-                    </div>
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
-        </div>
-        <div className='mx-auto max-w-[1576px] border-b-2 border-black bg-background md:border-x-2'>
+        <div className='bg-background mx-auto max-w-(--page-max-width) border-b-2 border-black md:border-x-2'>
           <Link
-            className='block w-full py-4 text-center font-sans text-sm font-black uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
-            href='/projects'
+            className='group flex w-full items-center justify-center gap-2 py-4 text-center font-sans text-sm leading-none font-black uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
+            href='/about'
           >
-            View All
+            <span>Learn More</span>{' '}
+            <ImArrowRight className='h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1' />
           </Link>
         </div>
       </section>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
-        <div className='mx-auto max-w-[1576px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
-          <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
+        <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
+          <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-8 md:text-[48px] lg:text-[84px]'>
+            Projects
+          </h2>
+          <div className='mt-12 md:mt-20'>
+            <div className='grid grid-cols-1 gap-12 lg:grid-cols-2'>
+              {featuredProjectsData.map(project => {
+                return <ProjectCard key={project._id} project={project} />
+              })}
+            </div>
+          </div>
+        </div>
+        <div className='bg-background mx-auto max-w-(--page-max-width) border-b-2 border-black md:border-x-2'>
+          <Link
+            className='group flex w-full items-center justify-center gap-2 py-4 text-center font-sans text-sm leading-none font-black uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
+            href='/projects'
+          >
+            <span>View All Projects</span>
+            <ImArrowRight className='h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1' />
+          </Link>
+        </div>
+      </section>
+      <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
+        <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
+          <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-8 md:text-[48px] lg:text-[84px]'>
             Members
           </h2>
-          <div className='mt-12 md:mt-24'>
-            <ul className='grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-8 xl:grid-cols-3'>
+          <div className='mt-12 md:mt-20'>
+            <ul className='grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-x-6 md:gap-y-10 lg:grid-cols-3 2xl:grid-cols-5'>
               {membersData.map(member => (
                 <MemberProfilePicture key={member._id} member={member} />
               ))}
             </ul>
           </div>
         </div>
+        <div className='bg-background mx-auto max-w-(--page-max-width) border-b-2 border-black md:border-x-2'>
+          <Link
+            className='group flex w-full items-center justify-center gap-2 py-4 text-center font-sans text-sm leading-none font-black uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
+            href='/about'
+          >
+            <span>Learn More</span>
+            <ImArrowRight className='h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1' />
+          </Link>
+        </div>
       </section>
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
-        <div className='mx-auto max-w-[1576px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
-          <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-12 md:text-[48px] lg:text-[96px]'>
+        <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
+          <h2 className='pt-6 text-[32px] tracking-[-0.04em] md:pt-8 md:text-[48px] lg:text-[84px]'>
             Happenings
           </h2>
-          <div className='mt-12 grid grid-cols-1 gap-6 md:mt-24 md:gap-12 lg:grid-cols-2'>
+          <div className='mt-12 grid grid-cols-1 gap-6 md:mt-20 md:gap-12 lg:grid-cols-2'>
             <Suspense fallback={<div>Loading...</div>}>
-              <InstagramFeedEmbed />
+              <InstagramFeed feedId='y09WG1s5frlBs5IYL0XM' />
               <SpotifyPlaylistEmbed />
             </Suspense>
           </div>

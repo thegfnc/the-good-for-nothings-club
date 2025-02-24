@@ -4,9 +4,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { Input } from '../components/ui/Input'
-import { Textarea } from '../components/ui/Textarea'
-import { Button } from '../components/ui/Button'
+import { Input } from '../../components/ui/Input'
+import { Textarea } from '../../components/ui/Textarea'
+import { Button } from '../../components/ui/Button'
 import {
   Form,
   FormControl,
@@ -14,9 +14,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../components/ui/Form'
-import { Alert, AlertDescription, AlertTitle } from '../components/ui/Alert'
-import { contactUsSchema } from '../data/schemas'
+} from '../../components/ui/Form'
+import { Alert, AlertDescription, AlertTitle } from '../../components/ui/Alert'
+import { contactUsSchema } from '../../data/schemas'
 import { Check, Loader2 } from 'lucide-react'
 
 export default function ContactUsForm() {

@@ -10,6 +10,18 @@ const nextConfig = {
         port: '',
         pathname: '/images/ojzttvlq/production/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'behold.pictures',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn2.behold.pictures',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 

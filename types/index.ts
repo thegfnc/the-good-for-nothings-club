@@ -43,6 +43,14 @@ export type GFNC_member = {
   memberNumber: number
 }
 
+export type GFNC_projectType = 'Web' | 'Video' | 'Photo' | 'Audio' | 'Event'
+
+export type GFNC_projectStatus =
+  | 'In Progress'
+  | 'Completed'
+  | 'Paused'
+  | 'Canceled'
+
 export type GFNC_project = {
   _id: string
   _updatedAt: string
@@ -51,8 +59,10 @@ export type GFNC_project = {
   slug: {
     current: string
   }
-  type: string
-  dateCompleted: string
+  type: GFNC_projectType
+  status: GFNC_projectStatus
+  dateStarted?: string
+  dateCompleted?: string
   mainMedia: Array<Image | VideoFile>
   summary: TypedObject[]
   overview: TypedObject[]

@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { cmsFetch, getImageUrl } from '../../data/client'
-import { GFNC_project } from '../../types'
+import { cmsFetch, getImageUrl } from '../../../data/client'
+import { GFNC_project } from '../../../types'
 import Image from 'next/image'
 import { PortableText } from 'next-sanity'
 import { toPlainText } from '@portabletext/toolkit'
@@ -22,6 +22,8 @@ const PROJECT_SLUG_QUERY = `
     clientName,
     slug,
     type,
+    status,
+    dateStarted,
     dateCompleted,
     mainMedia[] {
       ...,
@@ -103,9 +105,9 @@ const PROJECT_SLUG_QUERY = `
   }
 `
 
-const MediaPlayer = dynamic(() => import('@/app/components/MediaPlayer'))
+const MediaPlayer = dynamic(() => import('@/components/MediaPlayer'))
 
-const PhotoGallery = dynamic(() => import('@/app/components/PhotoGallery'))
+const PhotoGallery = dynamic(() => import('@/components/PhotoGallery'))
 
 export async function generateMetadata(
   props: ProjectProps,
@@ -168,12 +170,12 @@ export default async function Project(props: ProjectProps) {
   return (
     <main>
       <section className='md:px-8 xl:px-16'>
-        <div className='mx-auto max-w-[1576px] border-b-2 border-black bg-background md:border-x-2'>
+        <div className='bg-background mx-auto max-w-(--page-max-width) border-b-2 border-black md:border-x-2'>
           <div className='space-y-4 px-4 py-12 text-center lg:space-y-8 lg:px-12 lg:py-24'>
             <h1 className='text-[48px] leading-none tracking-[-0.04em] lg:text-[96px]'>
               {project.title}
             </h1>
-            <h2 className='font-serif text-[32px] font-normal normal-case italic leading-none lg:text-[64px]'>
+            <h2 className='font-serif text-[32px] leading-none font-normal normal-case italic lg:text-[64px]'>
               {project.clientName}
             </h2>
           </div>
@@ -227,16 +229,42 @@ export default async function Project(props: ProjectProps) {
                 </div>
               </div>
               <div className='space-y-2 md:space-y-6'>
-                <h3>Date Completed</h3>
-                <div className='text-[20px] leading-none md:text-[24px] lg:text-[24px] xl:text-[28px] 2xl:text-[32px]'>
-                  {new Date(project.dateCompleted).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                    timeZone: 'UTC',
-                  })}
+                <h3>Project Status</h3>
+                <div className='flex'>
+                  <div className='block rounded-full bg-black px-4 py-3 font-sans text-white transition-colors'>
+                    {project.status}
+                  </div>
                 </div>
               </div>
+              {project.dateStarted && (
+                <div className='space-y-2 md:space-y-6'>
+                  <h3>Date Started</h3>
+                  <div className='text-[20px] leading-none md:text-[24px] lg:text-[24px] xl:text-[28px] 2xl:text-[32px]'>
+                    {new Date(project.dateStarted).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                      timeZone: 'UTC',
+                    })}
+                  </div>
+                </div>
+              )}
+              {project.dateCompleted && (
+                <div className='space-y-2 md:space-y-6'>
+                  <h3>Date Ended</h3>
+                  <div className='text-[20px] leading-none md:text-[24px] lg:text-[24px] xl:text-[28px] 2xl:text-[32px]'>
+                    {new Date(project.dateCompleted).toLocaleDateString(
+                      'en-US',
+                      {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                        timeZone: 'UTC',
+                      }
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           {project.photoGallery && (

@@ -82,8 +82,8 @@ function NewsletterSignUpForm() {
 
 export default function Footer() {
   return (
-    <footer className='pb-8 pt-8 font-sans md:px-8 md:pt-16 xl:px-16 xl:pb-16'>
-      <div className='mx-auto max-w-[1576px] border-y-2 border-black bg-background px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
+    <footer className='pt-8 pb-8 font-sans md:px-8 md:pt-16 xl:px-16 xl:pb-16'>
+      <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
         <div className='flex flex-col items-center justify-between gap-5 bg-black/5 p-5 text-center text-xl sm:p-10 md:text-left md:text-2xl lg:flex-row lg:p-12'>
           <div className=''>Subscribe to our newsletter</div>
           <NewsletterSignUpForm />

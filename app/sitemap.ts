@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next'
-import { cmsFetch } from './data/client'
-import { GFNC_project } from './types'
+import { cmsFetch } from '../data/client'
+import { GFNC_project } from '../types'
 
 const defaultPage: MetadataRoute.Sitemap[0] = {
   url: 'https://www.thegoodfornothings.club',
