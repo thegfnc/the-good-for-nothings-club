@@ -77,7 +77,7 @@ export default function ProjectCard({
             <h2 className='text-[32px] sm:text-[40px]'>{project.title}</h2>
           </Link>
         </div>
-        <div className='portable-text text-2xl leading-tight'>
+        <div className='portable-text text-xl leading-tight'>
           <PortableText value={project.summary} />
         </div>
       </div>

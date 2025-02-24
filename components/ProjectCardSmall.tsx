@@ -34,7 +34,7 @@ export default function ProjectCardSmall({ project }: ProjectCardSmallProps) {
           width={mainMedia.asset.metadata.dimensions.width}
           height={mainMedia.asset.metadata.dimensions.height}
           alt={mainMedia.caption}
-          className={cn(`w-1/5 object-cover`)}
+          className='w-1/5 object-cover'
           priority={false}
           unoptimized
           placeholder={mainMedia.asset.metadata.lqip}

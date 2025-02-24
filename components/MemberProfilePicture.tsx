@@ -61,7 +61,7 @@ export default function MemberProfilePicture({
       />
       <h3 className='mt-6 text-[24px]'>{member.fullName}</h3>
       <div className='mt-1'>
-        <p className='text-base leading-tight'>
+        <p className='text-sm leading-tight'>
           Member #{String(member.memberNumber).padStart(3, '0')} - since{' '}
           {new Date(member.startDate).toLocaleDateString('en-US', {
             month: 'short',
@@ -69,7 +69,7 @@ export default function MemberProfilePicture({
             timeZone: 'UTC',
           })}
         </p>
-        <p className='text-base leading-tight'>
+        <p className='text-sm leading-tight font-light'>
           <em>{member.roles.join(', ').toLowerCase()}</em>
         </p>
       </div>
