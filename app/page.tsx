@@ -138,7 +138,7 @@ export default async function Home() {
             Projects
           </h2>
           <div className='mt-12 md:mt-20'>
-            <div className='grid grid-cols-1 gap-12 lg:grid-cols-2'>
+            <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
               {featuredProjectsData.map(project => {
                 return <ProjectCard key={project._id} project={project} />
               })}
@@ -161,7 +161,7 @@ export default async function Home() {
             Members
           </h2>
           <div className='mt-12 md:mt-20'>
-            <ul className='grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-x-6 md:gap-y-10 lg:grid-cols-3 2xl:grid-cols-5'>
+            <ul className='grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-x-8 md:gap-y-10 lg:grid-cols-3 2xl:grid-cols-5'>
               {membersData.map(member => (
                 <MemberProfilePicture key={member._id} member={member} />
               ))}
@@ -183,7 +183,7 @@ export default async function Home() {
           <h2 className='pt-6 text-[32px] font-black tracking-[-0.04em] md:pt-8 md:text-[48px] lg:text-[84px]'>
             Happenings
           </h2>
-          <div className='mt-12 grid grid-cols-1 gap-6 md:mt-20 md:gap-12 lg:grid-cols-2'>
+          <div className='mt-12 grid grid-cols-1 gap-8 md:mt-20 lg:grid-cols-2'>
             <Suspense fallback={<div>Loading...</div>}>
               <InstagramFeed feedId='y09WG1s5frlBs5IYL0XM' />
               <SpotifyPlaylistEmbed />

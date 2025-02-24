@@ -243,10 +243,10 @@ export default async function About() {
                 </li>
               </ol>
             </div>
-            <div className='min-w-[300px] xl:min-w-[500px]'>
+            <div className='min-w-[300px] xl:min-w-[480px]'>
               <h2 className='text-[30px] leading-snug font-bold'>Members</h2>
               <div className='mt-8'>
-                <ul className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:gap-x-6 md:gap-y-10 lg:grid-cols-1 xl:grid-cols-2'>
+                <ul className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:gap-x-8 md:gap-y-10 lg:grid-cols-1 xl:grid-cols-2'>
                   {membersData.map(member => (
                     <MemberProfilePicture key={member._id} member={member} />
                   ))}
