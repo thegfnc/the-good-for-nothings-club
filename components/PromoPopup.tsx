@@ -53,7 +53,7 @@ export default function PromoPopup() {
           <Link
             href='https://partiful.com/e/gBLpBXdII2sEThii00b8'
             target='_blank'
-            className='rounded-md border-2 border-black bg-black px-8 py-2 font-sans text-lg font-medium whitespace-nowrap text-white transition-colors hover:bg-green-300 hover:text-black hover:no-underline'
+            className='rounded-md border-2 border-black bg-green-300 px-8 py-2 font-sans text-lg font-medium whitespace-nowrap text-black transition-colors hover:bg-black hover:text-white hover:no-underline'
           >
             RSVP HERE
           </Link>
