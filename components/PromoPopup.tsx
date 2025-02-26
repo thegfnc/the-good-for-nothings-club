@@ -44,10 +44,10 @@ export default function PromoPopup() {
           <DialogTitle>Keep It Local, Yokels</DialogTitle>
         </DialogHeader>
         <Image
-          src='https://cdn.sanity.io/images/ojzttvlq/production/2affbd706eb015bf434cc4e77089822a06367534-2407x3607.png'
+          src='https://cdn.sanity.io/images/ojzttvlq/production/8b350ca9ef64e4df3a7ab74391b4b54542639982-2000x2997.png'
           alt='Flyer for Keep It Local, Yokels event'
-          height={2407}
-          width={3607}
+          height={2997}
+          width={2000}
         />
         <div className='flex justify-center'>
           <Link
