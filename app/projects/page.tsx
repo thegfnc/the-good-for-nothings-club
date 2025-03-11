@@ -74,13 +74,13 @@ const PROJECTION = `
 `
 
 const ALL_PROJECTS_QUERY = `
-  *[_type == 'GFNC_project' && status == $status ] | order(dateCompleted desc) | order(dateStarted desc) {
+  *[_type == 'GFNC_project' && status == $status ] | order(dateStarted desc) | order(dateCompleted desc) {
     ${PROJECTION}
   }
 `
 
 const FILTERED_PROJECTS_QUERY = `
-  *[_type == 'GFNC_project' && status == $status && type == $type] | order(dateCompleted desc) | order(dateStarted desc) {
+  *[_type == 'GFNC_project' && status == $status && type == $type] | order(dateStarted desc) | order(dateCompleted desc) {
     ${PROJECTION}
   }
 `

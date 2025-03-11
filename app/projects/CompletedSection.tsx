@@ -1,4 +1,3 @@
-import ProjectCard from '@/components/ProjectCard'
 import ProjectCardSmall from '@/components/ProjectCardSmall'
 import { GFNC_project } from '@/types'
 
