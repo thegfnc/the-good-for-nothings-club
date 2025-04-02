@@ -65,7 +65,7 @@ export default function InstagramFeed({ feedId }: { feedId: string }) {
           autoPlay={true}
           loop={true}
           className='h-full w-full object-cover'
-        ></video>
+        />
       )
     }
 
@@ -117,6 +117,7 @@ export default function InstagramFeed({ feedId }: { feedId: string }) {
         href={`https://www.instagram.com/${feed.username}`}
         className='bg-primary text-primary-foreground hover:bg-primary/90 items-center justify-center p-3 text-center font-sans text-xs tracking-[2px] whitespace-nowrap uppercase transition-colors hover:no-underline'
         target='_blank'
+        rel='noopener noreferrer'
       >
         Follow us on Instagram
       </a>

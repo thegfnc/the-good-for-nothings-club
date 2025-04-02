@@ -1,5 +1,5 @@
-import { TypedObject } from '@portabletext/types'
-import { SanityAssetDocument } from 'next-sanity'
+import type { TypedObject } from '@portabletext/types'
+import type { SanityAssetDocument } from 'next-sanity'
 
 export type Image = {
   _type: 'image'
