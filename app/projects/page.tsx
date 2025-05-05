@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { cn } from '../../lib/utils'
 import { cmsFetch } from '../../data/client'
-import { GFNC_project } from '../../types'
-import { Metadata, ResolvingMetadata } from 'next'
+import type { GFNC_project } from '../../types'
+import type { Metadata, ResolvingMetadata } from 'next'
 import InProgressSection from './InProgressSection'
 import CompletedSection from './CompletedSection'
 import ProjectCardSmall from '@/components/ProjectCardSmall'
@@ -12,19 +12,22 @@ const menuItems = [
     name: 'All',
   },
   {
-    name: 'Web',
+    name: 'Audio',
   },
   {
-    name: 'Video',
+    name: 'Build',
+  },
+  {
+    name: 'Event',
   },
   {
     name: 'Photo',
   },
   {
-    name: 'Audio',
+    name: 'Video',
   },
   {
-    name: 'Event',
+    name: 'Web',
   },
 ]
 
