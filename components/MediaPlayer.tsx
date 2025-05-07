@@ -22,7 +22,7 @@ export default function MediaPlayer({
   playsinline = false,
   volume = 0,
   muted = false,
-  className = '',
+  className = 'w-full',
 }: MediaPlayerProps) {
   return (
     <Suspense>
