@@ -16,4 +16,8 @@ Sentry.init({
   debug: false,
 
   spotlight: process.env.NODE_ENV === 'development',
+
+  _experiments: { enableLogs: true },
+
+  sendDefaultPii: true,
 })

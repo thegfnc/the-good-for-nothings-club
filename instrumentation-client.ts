@@ -9,8 +9,13 @@ Sentry.init({
 
   dsn: 'https://b09e651f10614ec57d486de1b4422648@o4506369040187392.ingest.us.sentry.io/4507098361430016',
 
+  sendDefaultPii: true,
+
   // Add optional integrations for additional features
-  integrations: [Sentry.replayIntegration()],
+  integrations: [
+    Sentry.browserTracingIntegration(),
+    Sentry.replayIntegration(),
+  ],
 
   // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
   tracesSampleRate: 1,
@@ -25,6 +30,8 @@ Sentry.init({
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
+
+  _experiments: { enableLogs: true },
 })
 
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart
