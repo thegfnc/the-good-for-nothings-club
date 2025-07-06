@@ -39,21 +39,19 @@ export default function MemberAvatarStack({
   if (!members || members.length === 0) return null
 
   const config = sizeConfig[size]
-  const displayMembers = members.slice(0, 4) // Show max 4 avatars
-  const remainingCount = members.length - displayMembers.length
 
   return (
     <TooltipProvider>
       <div className="flex items-center">
         <div className="flex items-center">
-          {displayMembers.map((member, index) => (
+          {members.map((member, index) => (
             <Tooltip key={member._id}>
               <TooltipTrigger asChild>
                 <Link
                   href={`/members/${member.slug.current}`}
                   className={`relative rounded-full border-2 border-black hover:border-gray-600 transition-colors ${index > 0 ? config.spacing : ''}`}
                   style={{
-                    zIndex: displayMembers.length - index,
+                    zIndex: members.length - index,
                     width: config.width,
                     height: config.width, // Use width for both to ensure perfect circle
                     display: 'block'
@@ -75,28 +73,6 @@ export default function MemberAvatarStack({
               </TooltipContent>
             </Tooltip>
           ))}
-          {remainingCount > 0 && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div
-                  className={`flex items-center justify-center rounded-full border-2 border-black bg-gray-100 ${config.spacing} ${config.textSize} font-medium text-gray-600`}
-                  style={{
-                    width: config.width,
-                    height: config.width, // Use width for both to ensure perfect circle
-                    zIndex: 0
-                  }}
-                >
-                  +{remainingCount}
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <div className="max-w-xs">
-                  <p className="font-medium mb-1">Additional members:</p>
-                  <p>{members.slice(4).map(m => m.fullName).join(', ')}</p>
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          )}
         </div>
       </div>
     </TooltipProvider>

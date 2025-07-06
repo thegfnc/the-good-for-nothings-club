@@ -23,7 +23,7 @@ export default function ProjectCardSmall({ project }: ProjectCardSmallProps) {
   return (
     <div
       key={project._id}
-      className='group relative flex flex-col justify-between gap-4 bg-black/8 p-4 transition-colors hover:bg-black/12'
+      className='group relative flex flex-col justify-between gap-4 bg-black/8 p-4 transition-all hover:bg-black/12 border-1 border-black/12 hover:border-black'
     >
       <div className='flex items-start gap-4'>
         <Image
@@ -44,7 +44,6 @@ export default function ProjectCardSmall({ project }: ProjectCardSmallProps) {
           <h2 className='relative z-10 text-[16px] leading-[1.1] font-bold sm:text-[20px]'>
             <Link
               href={`/projects/${project.slug.current}`}
-              className='group-hover:underline group-hover:underline-offset-2'
             >
               {project.title}
             </Link>
