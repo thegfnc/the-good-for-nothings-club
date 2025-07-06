@@ -5,6 +5,7 @@ import { PortableText } from 'next-sanity'
 import { cn } from '@/lib/utils'
 import getProjectDateString from '@/lib/getProjectDateString'
 import Link from 'next/link'
+import MemberAvatarStack from './MemberAvatarStack'
 
 type ProjectCardSmallProps = {
   project: GFNC_project
@@ -53,15 +54,20 @@ export default function ProjectCardSmall({ project }: ProjectCardSmallProps) {
           </div>
         </div>
       </div>
-      <div className='flex flex-wrap items-center gap-x-2 gap-y-1 font-sans text-sm leading-none font-bold uppercase'>
-        <span>{project.type}</span>
-        <span>·</span>
-        <span>{project.clientName}</span>
-        {date && (
-          <>
-            <span>·</span>
-            <span>{date}</span>
-          </>
+      <div className='flex flex-wrap items-center justify-between gap-x-2 gap-y-1'>
+        <div className='flex flex-wrap items-center gap-x-2 gap-y-1 font-sans text-sm leading-none font-bold uppercase'>
+          <span>{project.type}</span>
+          <span>·</span>
+          <span>{project.clientName}</span>
+          {date && (
+            <>
+              <span>·</span>
+              <span>{date}</span>
+            </>
+          )}
+        </div>
+        {project.membersInvolved && project.membersInvolved.length > 0 && (
+          <MemberAvatarStack members={project.membersInvolved} size="sm" />
         )}
       </div>
       <Link

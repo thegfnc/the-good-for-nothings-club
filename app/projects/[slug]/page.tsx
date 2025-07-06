@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic'
 import { Suspense, memo } from 'react'
 import { Metadata, ResolvingMetadata } from 'next'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
+import MemberAvatarStack from '@/components/MemberAvatarStack'
 
 type ProjectProps = {
   params: Promise<{
@@ -54,6 +55,28 @@ const PROJECT_SLUG_QUERY = `
           }
         }
       },
+    },
+    membersInvolved[]-> {
+      _id,
+      fullName,
+      slug,
+      profilePicture {
+        asset-> {
+          url,
+          metadata {
+            lqip,
+            dimensions {
+              height,
+              width
+            }
+          }
+        },
+        hotspot {
+          x,
+          y,
+        },
+        caption
+      }
     },
     summary,
     overview,
@@ -262,6 +285,17 @@ export default async function Project(props: ProjectProps) {
                         timeZone: 'UTC',
                       }
                     )}
+                  </div>
+                </div>
+              )}
+              {project.membersInvolved && project.membersInvolved.length > 0 && (
+                <div className='space-y-2 md:space-y-6'>
+                  <h3>Team</h3>
+                  <div className='space-y-4'>
+                    <MemberAvatarStack
+                      members={project.membersInvolved}
+                      size="md"
+                    />
                   </div>
                 </div>
               )}

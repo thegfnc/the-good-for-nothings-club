@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next'
 import { cmsFetch } from '../data/client'
-import { GFNC_project } from '../types'
+import { GFNC_project, GFNC_member } from '../types'
 
 const defaultPage: MetadataRoute.Sitemap[0] = {
   url: 'https://www.thegoodfornothings.club',
@@ -37,11 +37,24 @@ const ALL_PROJECTS_QUERY = `
   }
 `
 
+const ALL_MEMBERS_QUERY = `
+  *[_type == 'GFNC_member'] | order(startDate) {
+    _updatedAt,
+    slug
+  }
+`
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const projectsData = await cmsFetch<GFNC_project[]>({
-    query: ALL_PROJECTS_QUERY,
-    tags: ['GFNC_project'],
-  })
+  const [projectsData, membersData] = await Promise.all([
+    cmsFetch<GFNC_project[]>({
+      query: ALL_PROJECTS_QUERY,
+      tags: ['GFNC_project'],
+    }),
+    cmsFetch<GFNC_member[]>({
+      query: ALL_MEMBERS_QUERY,
+      tags: ['GFNC_member'],
+    }),
+  ])
 
   const projectPages: MetadataRoute.Sitemap = projectsData.map(project => ({
     url: `https://www.thegoodfornothings.club/projects/${project.slug.current}`,
@@ -50,5 +63,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }))
 
-  return [defaultPage, projectsPage, ...projectPages, aboutPage, contactPage]
+  const memberPages: MetadataRoute.Sitemap = membersData.map(member => ({
+    url: `https://www.thegoodfornothings.club/members/${member.slug.current}`,
+    lastModified: member._updatedAt ? new Date(member._updatedAt) : new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  }))
+
+  return [defaultPage, projectsPage, ...projectPages, ...memberPages, aboutPage, contactPage]
 }

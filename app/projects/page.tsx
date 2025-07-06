@@ -73,6 +73,28 @@ const PROJECTION = `
       }
     },
   },
+  membersInvolved[]-> {
+    _id,
+    fullName,
+    slug,
+    profilePicture {
+      asset-> {
+        url,
+        metadata {
+          lqip,
+          dimensions {
+            height,
+            width
+          }
+        }
+      },
+      hotspot {
+        x,
+        y,
+      },
+      caption
+    }
+  },
   summary
 `
 

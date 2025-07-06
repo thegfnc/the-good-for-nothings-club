@@ -5,6 +5,7 @@ import { getImageUrl } from '@/data/client'
 import Link from 'next/link'
 import { PortableText } from 'next-sanity'
 import getProjectDateString from '@/lib/getProjectDateString'
+import MemberAvatarStack from './MemberAvatarStack'
 
 type ProjectCardProps = {
   project: GFNC_project
@@ -80,6 +81,12 @@ export default function ProjectCard({
         <div className='portable-text text-xl leading-tight'>
           <PortableText value={project.summary} />
         </div>
+        {project.membersInvolved && project.membersInvolved.length > 0 && (
+          <div className='flex items-center justify-between'>
+            <span className='font-sans text-sm font-medium text-gray-600'>Team</span>
+            <MemberAvatarStack members={project.membersInvolved} size="sm" />
+          </div>
+        )}
       </div>
     </div>
   )
