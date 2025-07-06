@@ -28,11 +28,11 @@ export default function MediaPlayer({
     <Suspense>
       <div className={className}>
         <ReactPlayer
-          url={url}
+          src={url}
           playing={playing}
           controls={controls}
           loop={loop}
-          playsinline={playsinline}
+          playsInline={playsinline}
           volume={volume}
           muted={muted}
           width='100%'
