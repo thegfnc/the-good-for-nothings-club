@@ -6,7 +6,7 @@ import type { GFNC_member, GFNC_project } from '../types'
 import Link from 'next/link'
 import HeroBanner from '../components/HeroBanner'
 import MemberProfilePicture from '../components/MemberProfilePicture'
-import { ImArrowRight } from 'react-icons/im'
+import { FaArrowRight } from 'react-icons/fa'
 
 import ProjectCard from '@/components/ProjectCard'
 
@@ -147,11 +147,11 @@ export default async function Home() {
         </div>
         <div className='bg-background mx-auto max-w-(--page-max-width) border-b-2 border-black md:border-x-2'>
           <Link
-            className='group flex w-full items-center justify-center gap-2 py-4 text-center font-sans text-sm leading-none font-black uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
+            className='group flex w-full items-center justify-center gap-2 py-4 text-center font-sans text-sm leading-none font-extrabold uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
             href='/about'
           >
             <span>Learn More</span>{' '}
-            <ImArrowRight className='h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1' />
+            <FaArrowRight className='h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1' />
           </Link>
         </div>
       </section>
@@ -170,11 +170,11 @@ export default async function Home() {
         </div>
         <div className='bg-background mx-auto max-w-(--page-max-width) border-b-2 border-black md:border-x-2'>
           <Link
-            className='group flex w-full items-center justify-center gap-2 py-4 text-center font-sans text-sm leading-none font-black uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
+            className='group flex w-full items-center justify-center gap-2 py-4 text-center font-sans text-sm leading-none font-extrabold uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
             href='/projects'
           >
             <span>View All Projects</span>
-            <ImArrowRight className='h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1' />
+            <FaArrowRight className='h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1' />
           </Link>
         </div>
       </section>
@@ -193,11 +193,11 @@ export default async function Home() {
         </div>
         <div className='bg-background mx-auto max-w-(--page-max-width) border-b-2 border-black md:border-x-2'>
           <Link
-            className='group flex w-full items-center justify-center gap-2 py-4 text-center font-sans text-sm leading-none font-black uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
+            className='group flex w-full items-center justify-center gap-2 py-4 text-center font-sans text-sm leading-none font-extrabold uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
             href='/about'
           >
             <span>Learn More</span>
-            <ImArrowRight className='h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1' />
+            <FaArrowRight className='h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1' />
           </Link>
         </div>
       </section>

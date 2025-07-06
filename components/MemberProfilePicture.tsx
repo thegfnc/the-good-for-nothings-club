@@ -34,13 +34,13 @@ export default function MemberProfilePicture({
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      <Link href={`/members/${member.slug.current}`} className="block group">
+      <Link href={`/members/${member.slug.current}`} className='group block'>
         <Image
           src={profilePictureUrl}
           width={profilePicture.asset.metadata.dimensions.width}
           height={profilePicture.asset.metadata.dimensions.height}
           alt={profilePicture.caption}
-          className={`aspect-square border-2 border-black object-cover md:h-auto lg:aspect-auto transition-colors group-hover:border-gray-600 ${isHovering ? 'hidden' : 'block'}`}
+          className={`aspect-square border-2 border-black object-cover transition-colors group-hover:border-gray-600 md:h-auto lg:aspect-auto ${isHovering ? 'hidden' : 'block'}`}
           style={{
             objectPosition,
           }}
@@ -53,7 +53,7 @@ export default function MemberProfilePicture({
           width={hoverProfilePicture.asset.metadata.dimensions.width}
           height={hoverProfilePicture.asset.metadata.dimensions.height}
           alt={hoverProfilePicture.caption}
-          className={`aspect-square border-2 border-black object-cover md:h-auto lg:aspect-auto transition-colors group-hover:border-gray-600 ${isHovering ? 'block' : 'hidden'}`}
+          className={`aspect-square border-2 border-black object-cover transition-colors group-hover:border-gray-600 md:h-auto lg:aspect-auto ${isHovering ? 'block' : 'hidden'}`}
           style={{
             objectPosition,
           }}
@@ -61,20 +61,20 @@ export default function MemberProfilePicture({
           placeholder={hoverProfilePicture.asset.metadata.lqip}
           unoptimized
         />
-        <h3 className='mt-4 text-[24px] group-hover:underline'>{member.fullName}</h3>
-        <div className='mt-1'>
-          <p className='text-sm leading-tight'>
-            Member #{String(member.memberNumber).padStart(3, '0')} - since{' '}
-            {new Date(member.startDate).toLocaleDateString('en-US', {
-              month: 'short',
-              year: 'numeric',
-              timeZone: 'UTC',
-            })}
-          </p>
-          <p className='text-sm leading-tight font-light'>
-            <em>{member.roles.join(', ').toLowerCase()}</em>
-          </p>
-        </div>
+        <h3 className='mt-4 text-[24px] group-hover:underline'>
+          {member.fullName}
+        </h3>
+        <p className='mt-1 text-sm leading-tight font-semibold uppercase'>
+          Member #{String(member.memberNumber).padStart(3, '0')} - since{' '}
+          {new Date(member.startDate).toLocaleDateString('en-US', {
+            month: 'short',
+            year: 'numeric',
+            timeZone: 'UTC',
+          })}
+        </p>
+        <p className='mt-0.5 text-xs leading-tight font-light'>
+          {member.roles.join(', ').toLowerCase()}
+        </p>
       </Link>
     </li>
   )
