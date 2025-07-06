@@ -47,7 +47,13 @@ export type GFNC_member = {
   memberNumber: number
 }
 
-export type GFNC_projectType = 'Web' | 'Video' | 'Photo' | 'Audio' | 'Event' | 'Build'
+export type GFNC_projectType =
+  | 'Web'
+  | 'Video'
+  | 'Photo'
+  | 'Audio'
+  | 'Event'
+  | 'Build'
 
 export type GFNC_projectStatus =
   | 'In Progress'
