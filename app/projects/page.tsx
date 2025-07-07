@@ -73,6 +73,28 @@ const PROJECTION = `
       }
     },
   },
+  membersInvolved[]-> {
+    _id,
+    fullName,
+    slug,
+    profilePicture {
+      asset-> {
+        url,
+        metadata {
+          lqip,
+          dimensions {
+            height,
+            width
+          }
+        }
+      },
+      hotspot {
+        x,
+        y,
+      },
+      caption
+    }
+  },
   summary
 `
 
@@ -161,7 +183,7 @@ export default async function Projects(props: ProjectsProps) {
             <h1 className='text-[32px] leading-none font-black tracking-[-0.04em] md:text-[48px] lg:text-[96px]'>
               Projects
             </h1>
-            <ul className='flex max-w-full overflow-x-scroll border-2 border-black'>
+            <ul className='flex max-w-full overflow-x-scroll border-2 border-black rounded-full'>
               {menuItems.map(item => (
                 <li key={item.name}>
                   <Link

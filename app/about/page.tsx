@@ -9,6 +9,7 @@ const MEMBERS_QUERY = `
   *[_type == 'GFNC_member'] | order(startDate) {
     _id,
     fullName,
+    slug,
     profilePicture {
       asset-> {
         url,

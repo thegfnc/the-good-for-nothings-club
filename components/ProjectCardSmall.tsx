@@ -5,6 +5,8 @@ import { PortableText } from 'next-sanity'
 import { cn } from '@/lib/utils'
 import getProjectDateString from '@/lib/getProjectDateString'
 import Link from 'next/link'
+import MemberAvatarStack from './MemberAvatarStack'
+import { Badge } from './ui/badge'
 
 type ProjectCardSmallProps = {
   project: GFNC_project
@@ -22,9 +24,9 @@ export default function ProjectCardSmall({ project }: ProjectCardSmallProps) {
   return (
     <div
       key={project._id}
-      className='group relative flex flex-col justify-between gap-4 bg-black/8 p-4 transition-colors hover:bg-black/12'
+      className='group relative flex flex-col justify-between gap-5 border-1 border-black/15 bg-black/5 p-4 transition-all hover:border-black hover:bg-black/10'
     >
-      <div className='flex items-start gap-4'>
+      <div className='flex items-start gap-3'>
         <Image
           src={
             mainMedia.asset.extension === 'gif'
@@ -34,16 +36,16 @@ export default function ProjectCardSmall({ project }: ProjectCardSmallProps) {
           width={mainMedia.asset.metadata.dimensions.width}
           height={mainMedia.asset.metadata.dimensions.height}
           alt={mainMedia.caption}
-          className='w-1/5 object-cover'
+          className='w-1/4 object-cover'
           priority={false}
           unoptimized
           placeholder={mainMedia.asset.metadata.lqip}
         />
-        <div className='space-y-2'>
+        <div className='space-y-1'>
           <h2 className='relative z-10 text-[16px] leading-[1.1] font-bold sm:text-[20px]'>
             <Link
               href={`/projects/${project.slug.current}`}
-              className='group-hover:underline group-hover:underline-offset-2'
+              className='block hover:no-underline'
             >
               {project.title}
             </Link>
@@ -53,15 +55,16 @@ export default function ProjectCardSmall({ project }: ProjectCardSmallProps) {
           </div>
         </div>
       </div>
-      <div className='flex flex-wrap items-center gap-x-2 gap-y-1 font-sans text-sm leading-none font-bold uppercase'>
-        <span>{project.type}</span>
-        <span>·</span>
-        <span>{project.clientName}</span>
-        {date && (
-          <>
-            <span>·</span>
-            <span>{date}</span>
-          </>
+      <div className='flex items-end justify-between gap-x-2 gap-y-1'>
+        <div className='font-sans leading-none uppercase'>
+          <div className='text-sm font-bold text-balance leading-tighter'>{project.clientName}</div>
+          <div className='mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs'>
+            <Badge className='font-normal'>{project.type}</Badge>
+            {date && <span>{date}</span>}
+          </div>
+        </div>
+        {project.membersInvolved && project.membersInvolved.length > 0 && (
+          <MemberAvatarStack members={project.membersInvolved} size='sm' />
         )}
       </div>
       <Link

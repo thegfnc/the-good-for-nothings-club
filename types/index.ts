@@ -35,7 +35,11 @@ type VideoFile = {
 
 export type GFNC_member = {
   _id: string
+  _updatedAt?: string
   fullName: string
+  slug: {
+    current: string
+  }
   profilePicture: Image
   hoverProfilePicture: Image
   roles: string[]
@@ -43,7 +47,13 @@ export type GFNC_member = {
   memberNumber: number
 }
 
-export type GFNC_projectType = 'Web' | 'Video' | 'Photo' | 'Audio' | 'Event'
+export type GFNC_projectType =
+  | 'Web'
+  | 'Video'
+  | 'Photo'
+  | 'Audio'
+  | 'Event'
+  | 'Build'
 
 export type GFNC_projectStatus =
   | 'In Progress'
@@ -68,4 +78,5 @@ export type GFNC_project = {
   overview: TypedObject[]
   photoGallery: SanityAssetDocument[]
   caseStudy: TypedObject[]
+  membersInvolved: GFNC_member[]
 }

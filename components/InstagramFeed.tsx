@@ -88,17 +88,15 @@ export default function InstagramFeed({ feedId }: { feedId: string }) {
   })
 
   return (
-    <div className='flex flex-col justify-between gap-4 bg-white/75 p-4 font-sans'>
-      <div className='flex'>
-        <div className='w-28 shrink-0'>
-          <Image
-            src={feed.profilePictureUrl}
-            alt='@thegfnc Profile Picture'
-            width={100}
-            height={100}
-            className='aspect-square rounded-full'
-          />
-        </div>
+    <div className='flex flex-col justify-between gap-4 bg-white/70 p-4 font-sans rounded-xl'>
+      <div className='flex gap-4 grow-1'>
+        <Image
+          src={feed.profilePictureUrl}
+          alt='@thegfnc Profile Picture'
+          width={100}
+          height={100}
+          className='aspect-square h-full w-auto rounded-full'
+        />
         <div className='flex flex-col items-start justify-center gap-1'>
           <a
             href={`https://www.instagram.com/${feed.username}`}
@@ -112,10 +110,10 @@ export default function InstagramFeed({ feedId }: { feedId: string }) {
           </div>
         </div>
       </div>
-      <div className='grid grid-cols-2 gap-4 md:grid-cols-3'>{postEls}</div>
+      <div className='grid grid-cols-2 gap-2 sm:grid-cols-3'>{postEls}</div>
       <a
         href={`https://www.instagram.com/${feed.username}`}
-        className='bg-primary text-primary-foreground hover:bg-primary/90 items-center justify-center p-3 text-center font-sans text-xs tracking-[2px] whitespace-nowrap uppercase transition-colors hover:no-underline'
+        className='items-center justify-center border-2 border-black bg-transparent p-3 text-center font-sans text-sm font-medium tracking-[1px] whitespace-nowrap text-black uppercase transition-colors hover:bg-black hover:text-white hover:no-underline'
         target='_blank'
         rel='noopener noreferrer'
       >
