@@ -16,7 +16,7 @@ type MemberAvatarStackProps = {
 
 const sizeConfig = {
   sm: {
-    width: 32,
+    width: 28,
     textSize: 'text-xs',
     spacing: '-ml-2'
   },
@@ -49,7 +49,7 @@ export default function MemberAvatarStack({
               <TooltipTrigger asChild>
                 <Link
                   href={`/members/${member.slug.current}`}
-                  className={`relative rounded-full border-2 border-black hover:border-gray-600 transition-colors ${index > 0 ? config.spacing : ''}`}
+                  className={`relative rounded-full border-1 border-black/40 hover:border-gray-600 transition-colors ${index > 0 ? config.spacing : ''}`}
                   style={{
                     zIndex: members.length - index,
                     width: config.width,

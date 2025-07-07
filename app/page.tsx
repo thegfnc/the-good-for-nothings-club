@@ -6,7 +6,7 @@ import type { GFNC_member, GFNC_project } from '../types'
 import Link from 'next/link'
 import HeroBanner from '../components/HeroBanner'
 import MemberProfilePicture from '../components/MemberProfilePicture'
-import { FaArrowRight } from 'react-icons/fa'
+import { FaCaretRight } from 'react-icons/fa'
 
 import ProjectCard from '@/components/ProjectCard'
 
@@ -147,11 +147,11 @@ export default async function Home() {
         </div>
         <div className='bg-background mx-auto max-w-(--page-max-width) border-b-2 border-black md:border-x-2'>
           <Link
-            className='group flex w-full items-center justify-center gap-2 py-4 text-center font-sans text-sm leading-none font-extrabold uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
+            className='group flex w-full items-center justify-center gap-0.5 py-4 text-center font-sans text-sm leading-none font-extrabold uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
             href='/about'
           >
             <span>Learn More</span>{' '}
-            <FaArrowRight className='h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1' />
+            <FaCaretRight className='size-4.5 transition-transform duration-500 group-hover:translate-x-1' />
           </Link>
         </div>
       </section>
@@ -160,7 +160,7 @@ export default async function Home() {
           <h2 className='pt-6 text-[32px] font-black tracking-[-0.04em] md:pt-8 md:text-[48px] lg:text-[84px]'>
             Projects
           </h2>
-          <div className='mt-12 md:mt-20'>
+          <div className='mt-10 md:mt-18'>
             <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
               {featuredProjectsData.map(project => {
                 return <ProjectCard key={project._id} project={project} />
@@ -170,11 +170,11 @@ export default async function Home() {
         </div>
         <div className='bg-background mx-auto max-w-(--page-max-width) border-b-2 border-black md:border-x-2'>
           <Link
-            className='group flex w-full items-center justify-center gap-2 py-4 text-center font-sans text-sm leading-none font-extrabold uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
+            className='group flex w-full items-center justify-center gap-0.5 py-4 text-center font-sans text-sm leading-none font-extrabold uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
             href='/projects'
           >
             <span>View All Projects</span>
-            <FaArrowRight className='h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1' />
+            <FaCaretRight className='size-4.5 transition-transform duration-500 group-hover:translate-x-1' />
           </Link>
         </div>
       </section>
@@ -183,7 +183,7 @@ export default async function Home() {
           <h2 className='pt-6 text-[32px] font-black tracking-[-0.04em] md:pt-8 md:text-[48px] lg:text-[84px]'>
             Members
           </h2>
-          <div className='mt-12 md:mt-20'>
+          <div className='mt-10 md:mt-18'>
             <ul className='grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-x-8 md:gap-y-10 lg:grid-cols-3 2xl:grid-cols-5'>
               {membersData.map(member => (
                 <MemberProfilePicture key={member._id} member={member} />
@@ -193,11 +193,11 @@ export default async function Home() {
         </div>
         <div className='bg-background mx-auto max-w-(--page-max-width) border-b-2 border-black md:border-x-2'>
           <Link
-            className='group flex w-full items-center justify-center gap-2 py-4 text-center font-sans text-sm leading-none font-extrabold uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
+            className='group flex w-full items-center justify-center gap-0.5 py-4 text-center font-sans text-sm leading-none font-extrabold uppercase transition-colors hover:bg-black/10 hover:no-underline active:bg-black/20 md:py-8 md:text-base'
             href='/about'
           >
             <span>Learn More</span>
-            <FaArrowRight className='h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1' />
+            <FaCaretRight className='size-4.5 transition-transform duration-500 group-hover:translate-x-1' />
           </Link>
         </div>
       </section>
@@ -206,7 +206,7 @@ export default async function Home() {
           <h2 className='pt-6 text-[32px] font-black tracking-[-0.04em] md:pt-8 md:text-[48px] lg:text-[84px]'>
             Happenings
           </h2>
-          <div className='mt-12 grid grid-cols-1 gap-8 md:mt-20 lg:grid-cols-2'>
+          <div className='mt-10 grid grid-cols-1 gap-8 md:mt-18 lg:grid-cols-2'>
             <Suspense fallback={<div>Loading...</div>}>
               <InstagramFeed feedId='y09WG1s5frlBs5IYL0XM' />
               <SpotifyPlaylistEmbed />

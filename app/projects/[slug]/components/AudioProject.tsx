@@ -120,7 +120,7 @@ export default function AudioProject({ project }: AudioProjectProps) {
               )}
               {project.membersInvolved && project.membersInvolved.length > 0 && (
                 <div className='space-y-2 md:space-y-6'>
-                  <h3>Team</h3>
+                  <h3>Members Involved</h3>
                   <div className='space-y-4'>
                     <MemberAvatarStack
                       members={project.membersInvolved}

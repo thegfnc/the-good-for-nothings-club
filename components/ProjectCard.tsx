@@ -1,11 +1,11 @@
 import { GFNC_project } from '@/types'
-import MediaPlayer from './MediaPlayer'
 import Image from 'next/image'
 import { getImageUrl } from '@/data/client'
 import Link from 'next/link'
 import { PortableText } from 'next-sanity'
 import getProjectDateString from '@/lib/getProjectDateString'
 import MemberAvatarStack from './MemberAvatarStack'
+import { Badge } from './ui/badge'
 
 type ProjectCardProps = {
   project: GFNC_project
@@ -16,78 +16,65 @@ export default function ProjectCard({
   project,
   priority = false,
 }: ProjectCardProps) {
-  const mainMedia =
-    project.mainMedia.find(mainMedia => mainMedia._type === 'videoFile') ||
-    project.mainMedia.find(mainMedia => mainMedia._type === 'image')
+  const mainMedia = project.mainMedia.find(
+    mainMedia => mainMedia._type === 'image'
+  )
 
   if (!mainMedia) return null
 
   const date = getProjectDateString(project)
 
   return (
-    <div key={project._id} className='group flex flex-col gap-6'>
-      <div className='overflow-hidden border-2 border-black'>
-        <div className='relative transition-all duration-1000 group-hover:scale-[1.05]'>
-          {mainMedia._type === 'videoFile' ? (
-            <MediaPlayer
-              url={mainMedia.asset.url}
-              playing={mainMedia.playing}
-              controls={mainMedia.controls}
-              loop={mainMedia.loop}
-              playsinline={true}
-              volume={0}
-              muted={true}
-              className={`pointer-events-none aspect-video w-full`}
-            />
-          ) : (
-            <Image
-              src={
-                mainMedia.asset.extension === 'gif'
-                  ? getImageUrl(mainMedia).url()
-                  : getImageUrl(mainMedia).width(1600).quality(90).url()
-              }
-              width={mainMedia.asset.metadata.dimensions.width}
-              height={mainMedia.asset.metadata.dimensions.height}
-              alt={mainMedia.caption}
-              className={`aspect-video w-full object-cover object-top`}
-              priority={priority}
-              unoptimized
-              placeholder={mainMedia.asset.metadata.lqip}
-            />
-          )}
-          <Link
-            href={`/projects/${project.slug.current}`}
-            className='absolute top-0 left-0 h-full w-full bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10 active:opacity-20'
-          ></Link>
-        </div>
-      </div>
-      <div className='space-y-4'>
-        <div className='flex items-center gap-2 font-sans text-sm font-bold uppercase'>
-          <span>{project.type}</span>
-          <span>·</span>
-          <span>{project.clientName}</span>
-          {date && (
-            <>
-              <span>·</span>
-              <span>{date}</span>
-            </>
-          )}
-        </div>
-        <div>
-          <Link href={`/projects/${project.slug.current}`} className='block'>
-            <h2 className='text-[32px] sm:text-[40px]'>{project.title}</h2>
-          </Link>
-        </div>
-        <div className='portable-text text-xl leading-tight'>
-          <PortableText value={project.summary} />
-        </div>
-        {project.membersInvolved && project.membersInvolved.length > 0 && (
-          <div className='flex items-center justify-between'>
-            <span className='font-sans text-sm font-medium text-gray-600'>Team</span>
-            <MemberAvatarStack members={project.membersInvolved} size="sm" />
+    <div key={project._id} className="relative h-full flex flex-col group border-1 border-black/15 transition-colors hover:border-black">
+      <Image
+        src={
+          mainMedia.asset.extension === 'gif'
+            ? getImageUrl(mainMedia).url()
+            : getImageUrl(mainMedia).width(1600).quality(90).url()
+        }
+        width={mainMedia.asset.metadata.dimensions.width}
+        height={mainMedia.asset.metadata.dimensions.height}
+        alt={mainMedia.caption}
+        className='aspect-video object-cover object-top'
+        priority={priority}
+        unoptimized
+        placeholder={mainMedia.asset.metadata.lqip}
+      />
+      <div className='grow-1 relative flex flex-col justify-between gap-5 p-4 transition-colors bg-black/5 group-hover:bg-black/10'>
+        <div className='flex items-start gap-3'>
+          <div className='space-y-1'>
+            <h2 className='relative z-10 text-[20px] leading-[1.1] font-bold sm:text-[28px]'>
+              <Link
+                href={`/projects/${project.slug.current}`}
+                className='relative z-10 block hover:no-underline'
+              >
+                {project.title}
+              </Link>
+            </h2>
+            <div className='portable-text font-sans text-base leading-tight font-light tracking-wide'>
+              <PortableText value={project.summary} />
+            </div>
           </div>
-        )}
+        </div>
+        <div className='flex items-end justify-between gap-x-2 gap-y-1'>
+          <div className='font-sans leading-none uppercase'>
+            <div className='leading-tighter text-sm font-bold text-balance'>
+              {project.clientName}
+            </div>
+            <div className='mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs'>
+              <Badge className='font-normal'>{project.type}</Badge>
+              {date && <span>{date}</span>}
+            </div>
+          </div>
+          {project.membersInvolved && project.membersInvolved.length > 0 && (
+            <MemberAvatarStack members={project.membersInvolved} size='sm' />
+          )}
+        </div>
       </div>
+        <Link
+          href={`/projects/${project.slug.current}`}
+          className='absolute top-0 right-0 bottom-0 left-0'
+        />
     </div>
   )
 }

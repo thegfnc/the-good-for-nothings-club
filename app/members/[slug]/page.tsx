@@ -4,7 +4,7 @@ import { GFNC_member, GFNC_project } from '../../../types'
 import Image from 'next/image'
 import { Metadata, ResolvingMetadata } from 'next'
 import ProjectCardSmall from '@/components/ProjectCardSmall'
-import { ImArrowLeft } from 'react-icons/im'
+import { FaCaretLeft } from 'react-icons/fa6'
 
 type MemberProps = {
   params: Promise<{
@@ -184,10 +184,10 @@ export default async function Member(props: MemberProps) {
           <div className='px-4 pt-6 md:px-12 md:pt-12'>
             <Link
               href='/about'
-              className='inline-flex items-center gap-2 font-sans text-sm font-bold uppercase transition-colors hover:text-gray-600'
+              className='inline-flex items-center gap-1 font-sans text-sm font-bold uppercase'
             >
-              <ImArrowLeft className='h-3.5 w-3.5' />
-              Back to Members
+              <FaCaretLeft className='h-4.5 w-4.5' />
+              Back to About
             </Link>
           </div>
 
@@ -211,22 +211,22 @@ export default async function Member(props: MemberProps) {
               </div>
 
               {/* Member info */}
-              <div className='flex-1 space-y-6'>
+              <div className='flex-1 space-y-8'>
                 <div>
-                  <h1 className='text-[48px] leading-none font-black tracking-[-0.04em] lg:text-[84px]'>
+                  <h1 className='text-[32px] leading-none font-black tracking-[-0.04em] md:text-[48px] lg:text-[64px]'>
                     {member.fullName}
                   </h1>
                 </div>
 
-                <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2'>
+                <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2'>
                   <div>
                     <h3 className='mb-2 text-xl font-bold'>Member Number</h3>
-                    <p className='text-lg'>#{String(member.memberNumber).padStart(3, '0')}</p>
+                    <p className='text-xl'>#{String(member.memberNumber).padStart(3, '0')}</p>
                   </div>
 
                   <div>
                     <h3 className='mb-2 text-xl font-bold'>Member Since</h3>
-                    <p className='text-lg'>
+                    <p className='text-xl'>
                       {new Date(member.startDate).toLocaleDateString('en-US', {
                         month: 'long',
                         day: 'numeric',
@@ -260,10 +260,10 @@ export default async function Member(props: MemberProps) {
       {projectsData.length > 0 && (
         <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
           <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
-            <h2 className='pt-6 text-[32px] font-black tracking-[-0.04em] md:pt-8 md:text-[48px] lg:text-[84px]'>
-              Projects ({projectsData.length})
+            <h2 className='text-[32px] leading-none font-black tracking-[-0.04em] md:text-[48px] lg:text-[64px]'>
+              Projects <span className="font-normal text-3xl align-middle">({projectsData.length})</span>
             </h2>
-            <div className='mt-12 md:mt-20'>
+            <div className='mt-8 md:mt-12'>
               <div className='grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3'>
                 {projectsData.map((project) => (
                   <ProjectCardSmall key={project._id} project={project} />
