@@ -142,6 +142,10 @@
     @apply underline-offset-2;
   }
 
+  button {
+    @apply cursor-pointer;
+  }
+
   .portable-text {
     p:not(:first-child) {
       margin-top: 1.5rem;
