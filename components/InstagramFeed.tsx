@@ -88,7 +88,7 @@ export default function InstagramFeed({ feedId }: { feedId: string }) {
   })
 
   return (
-    <div className='flex flex-col justify-between gap-4 bg-white/70 p-4 font-sans rounded-xl'>
+    <div className='flex flex-col justify-between gap-4 bg-white/70 p-4 font-sans rounded-xl aspect-square'>
       <div className='flex gap-4 grow-1'>
         <Image
           src={feed.profilePictureUrl}
