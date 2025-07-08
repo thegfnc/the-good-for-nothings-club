@@ -188,7 +188,7 @@ export default async function Projects(props: ProjectsProps) {
                 <li key={item.name}>
                   <Link
                     className={cn(
-                      'block px-2 py-3 font-sans text-sm leading-tight font-black uppercase transition-colors hover:no-underline sm:px-6 sm:py-4 md:text-base lg:px-8',
+                      'block px-4 py-3 font-sans text-sm leading-tight font-black uppercase transition-colors hover:no-underline sm:px-6 sm:py-4 md:text-base lg:px-8',
                       item.name === type
                         ? 'bg-black text-white hover:bg-black'
                         : 'text-black hover:bg-black/10 active:bg-black/20'
