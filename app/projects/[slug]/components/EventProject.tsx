@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic'
 import { Suspense, memo } from 'react'
 import MemberAvatarStack from '@/components/MemberAvatarStack'
 import { Badge } from '@/components/ui/badge'
+import { getProjectStatusColor } from '@/lib/utils'
 
 const MediaPlayer = dynamic(() => import('@/components/MediaPlayer'))
 const PhotoGallery = dynamic(() => import('@/components/PhotoGallery'))
@@ -86,7 +87,8 @@ export default function EventProject({ project }: EventProjectProps) {
               <div className='space-y-2 md:space-y-6'>
                 <h3>Project Status</h3>
                 <div className='flex'>
-                  <Badge className="text-md">
+                  <Badge className="text-md flex items-center gap-2">
+                    <div className={`h-3 w-3 rounded-full border border-black ${getProjectStatusColor(project.status)}`}></div>
                     {project.status}
                   </Badge>
                 </div>
