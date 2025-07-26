@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { cn } from '../../lib/utils'
 import { cmsFetch } from '../../data/client'
-import type { GFNC_project } from '../../types'
+import type { GFNC_projectListItem } from '../../types'
 import type { Metadata, ResolvingMetadata } from 'next'
 import InProgressSection from './InProgressSection'
 import CompletedSection from './CompletedSection'
@@ -41,38 +41,24 @@ const PROJECTION = `
   clientName,
   slug,
   type,
+  status,
   dateStarted,
   dateCompleted,
-  mainMedia[] {
+  "mainImage": mainMedia[_type == 'image'][0] {
     ...,
-    _type == 'image' => {
-      ...,
-      asset-> {
-        extension,
-        url,
-        metadata {
-          lqip,
-          dimensions {
-            height,
-            width
-          }
+    asset-> {
+      extension,
+      url,
+      metadata {
+        lqip,
+        dimensions {
+          height,
+          width
         }
       }
-    },
-    _type == 'videoFile' => {
-      ...,
-      asset-> {
-        url,
-        metadata {
-          lqip,
-          dimensions {
-            height,
-            width
-          }
-        }
-      }
-    },
+    }
   },
+  "membersCount": count(membersInvolved),
   membersInvolved[]-> {
     _id,
     fullName,
@@ -91,21 +77,21 @@ const PROJECTION = `
       hotspot {
         x,
         y,
-      },
-      caption
+      }
     }
   },
   summary
 `
 
+// Single query to get all projects
 const ALL_PROJECTS_QUERY = `
-  *[_type == 'GFNC_project' && status == $status ] | order(dateStarted desc) | order(dateCompleted desc) {
+  *[_type == 'GFNC_project'] | order(dateStarted desc) | order(dateCompleted desc) {
     ${PROJECTION}
   }
 `
 
 const FILTERED_PROJECTS_QUERY = `
-  *[_type == 'GFNC_project' && status == $status && type == $type] | order(dateStarted desc) | order(dateCompleted desc) {
+  *[_type == 'GFNC_project' && type == $type] | order(dateStarted desc) | order(dateCompleted desc) {
     ${PROJECTION}
   }
 `
@@ -129,51 +115,26 @@ export async function generateMetadata(
   }
 }
 
-export default async function Projects(props: ProjectsProps) {
+export default async function ProjectsOptimized(props: ProjectsProps) {
   const searchParams = await props.searchParams
-  // If the search params type is empty or the type is not in the menu items,
-  // set the type to the default type
   const isDefaultType =
     !searchParams.type ||
     !menuItems.find(item => item.name === searchParams.type)
 
-  // If the search params type is the default type, set the type to the
-  // first menu item, otherwise set the type to the search param type
   const type = isDefaultType ? menuItems[0].name : searchParams.type
 
-  const [
-    inProgressProjectsData,
-    completedProjectsData,
-    pausedProjectsData,
-    canceledProjectsData,
-  ] = await Promise.all([
-    cmsFetch<GFNC_project[]>({
-      query: isDefaultType ? ALL_PROJECTS_QUERY : FILTERED_PROJECTS_QUERY,
-      tags: ['GFNC_project'],
-      params: isDefaultType
-        ? { status: 'In Progress' }
-        : { status: 'In Progress', type },
-    }),
-    cmsFetch<GFNC_project[]>({
-      query: isDefaultType ? ALL_PROJECTS_QUERY : FILTERED_PROJECTS_QUERY,
-      tags: ['GFNC_project'],
-      params: isDefaultType
-        ? { status: 'Completed' }
-        : { status: 'Completed', type },
-    }),
-    cmsFetch<GFNC_project[]>({
-      query: isDefaultType ? ALL_PROJECTS_QUERY : FILTERED_PROJECTS_QUERY,
-      tags: ['GFNC_project'],
-      params: isDefaultType ? { status: 'Paused' } : { status: 'Paused', type },
-    }),
-    cmsFetch<GFNC_project[]>({
-      query: isDefaultType ? ALL_PROJECTS_QUERY : FILTERED_PROJECTS_QUERY,
-      tags: ['GFNC_project'],
-      params: isDefaultType
-        ? { status: 'Canceled' }
-        : { status: 'Canceled', type },
-    }),
-  ])
+  // Single API call to get all projects
+  const allProjects = await cmsFetch<(GFNC_projectListItem & { status: string })[]>({
+    query: isDefaultType ? ALL_PROJECTS_QUERY : FILTERED_PROJECTS_QUERY,
+    tags: ['GFNC_project'],
+    params: isDefaultType ? {} : { type },
+  })
+
+  // Filter projects by status on the client side
+  const inProgressProjectsData = allProjects.filter(p => p.status === 'In Progress')
+  const completedProjectsData = allProjects.filter(p => p.status === 'Completed')
+  const pausedProjectsData = allProjects.filter(p => p.status === 'Paused')
+  const canceledProjectsData = allProjects.filter(p => p.status === 'Canceled')
 
   return (
     <main>
@@ -208,40 +169,52 @@ export default async function Projects(props: ProjectsProps) {
           </div>
         </div>
       </section>
-      <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
-        <InProgressSection projectsData={inProgressProjectsData} />
-      </section>
-      <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
-        <CompletedSection projectsData={completedProjectsData} />
-      </section>
+
+      {inProgressProjectsData.length > 0 && (
+        <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
+          <InProgressSection projectsData={inProgressProjectsData} />
+        </section>
+      )}
+
+      {completedProjectsData.length > 0 && (
+        <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
+          <CompletedSection projectsData={completedProjectsData} />
+        </section>
+      )}
+
       <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
         <div className='mx-auto grid max-w-(--page-max-width) grid-cols-1 gap-12 lg:grid-cols-2'>
-          <div className='bg-background mx-auto w-full max-w-(--page-max-width) border-y-2 border-black px-4 pt-6 md:border-x-2 md:px-12 md:pt-12'>
-            <div className='flex items-center gap-4'>
-              <div className='h-5 w-5 rounded-full border-2 border-black bg-yellow-300'></div>
-              <h2 className='text-[32px] leading-none font-black tracking-[-0.04em] md:text-[48px] xl:text-[64px]'>
-                Paused
-              </h2>
+          {pausedProjectsData.length > 0 && (
+            <div className='bg-background mx-auto w-full max-w-(--page-max-width) border-y-2 border-black px-4 pt-6 md:border-x-2 md:px-12 md:pt-12'>
+              <div className='flex items-center gap-4'>
+                <div className='h-5 w-5 rounded-full border-2 border-black bg-yellow-300'></div>
+                <h2 className='text-[32px] leading-none font-black tracking-[-0.04em] md:text-[48px] xl:text-[64px]'>
+                  Paused
+                </h2>
+              </div>
+              <div className='mt-8 grid max-h-[500px] grid-cols-1 gap-4 overflow-y-scroll pb-6 md:mt-12 md:pb-12'>
+                {pausedProjectsData.map(project => (
+                  <ProjectCardSmall key={project._id} project={project} />
+                ))}
+              </div>
             </div>
-            <div className='mt-8 grid max-h-[500px] grid-cols-1 gap-4 overflow-y-scroll pb-6 md:mt-12 md:pb-12'>
-              {pausedProjectsData.map(project => {
-                return <ProjectCardSmall key={project._id} project={project} />
-              })}
+          )}
+
+          {canceledProjectsData.length > 0 && (
+            <div className='bg-background mx-auto w-full max-w-(--page-max-width) border-y-2 border-black px-4 pt-6 md:border-x-2 md:px-12 md:pt-12'>
+              <div className='flex items-center gap-4'>
+                <div className='h-5 w-5 rounded-full border-2 border-black bg-red-300'></div>
+                <h2 className='text-[32px] leading-none font-black tracking-[-0.04em] md:text-[48px] xl:text-[64px]'>
+                  Canceled
+                </h2>
+              </div>
+              <div className='mt-8 grid max-h-[500px] grid-cols-1 gap-4 overflow-y-scroll pb-6 opacity-65 md:mt-12 md:pb-12'>
+                {canceledProjectsData.map(project => (
+                  <ProjectCardSmall key={project._id} project={project} />
+                ))}
+              </div>
             </div>
-          </div>
-          <div className='bg-background mx-auto w-full max-w-(--page-max-width) border-y-2 border-black px-4 pt-6 md:border-x-2 md:px-12 md:pt-12'>
-            <div className='flex items-center gap-4'>
-              <div className='h-5 w-5 rounded-full border-2 border-black bg-red-300'></div>
-              <h2 className='text-[32px] leading-none font-black tracking-[-0.04em] md:text-[48px] xl:text-[64px]'>
-                Canceled
-              </h2>
-            </div>
-            <div className='mt-8 grid max-h-[500px] grid-cols-1 gap-4 overflow-y-scroll pb-6 opacity-65 md:mt-12 md:pb-12'>
-              {canceledProjectsData.map(project => {
-                return <ProjectCardSmall key={project._id} project={project} />
-              })}
-            </div>
-          </div>
+          )}
         </div>
       </section>
     </main>

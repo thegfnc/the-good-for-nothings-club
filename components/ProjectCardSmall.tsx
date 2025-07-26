@@ -1,4 +1,4 @@
-import { GFNC_project } from '@/types'
+import { GFNC_project, GFNC_projectListItem } from '@/types'
 import Image from 'next/image'
 import { getImageUrl } from '@/data/client'
 import { PortableText } from 'next-sanity'
@@ -9,17 +9,24 @@ import MemberAvatarStack from './MemberAvatarStack'
 import { Badge } from './ui/badge'
 
 type ProjectCardSmallProps = {
-  project: GFNC_project
+  project: GFNC_project | GFNC_projectListItem
 }
 
 export default function ProjectCardSmall({ project }: ProjectCardSmallProps) {
-  const mainMedia = project.mainMedia.find(
-    mainMedia => mainMedia._type === 'image'
-  )
+  // Handle both optimized and full project types
+  const mainMedia = ('mainImage' in project && project.mainImage)
+    ? project.mainImage
+    : project.mainMedia?.find(media => media._type === 'image')
 
   if (!mainMedia) return null
 
-  const date = getProjectDateString(project)
+  // Create a compatible object for getProjectDateString
+  const projectForDate = {
+    dateStarted: project.dateStarted,
+    dateCompleted: project.dateCompleted,
+    type: project.type
+  }
+  const date = getProjectDateString(projectForDate as any)
 
   return (
     <div
@@ -31,15 +38,16 @@ export default function ProjectCardSmall({ project }: ProjectCardSmallProps) {
           src={
             mainMedia.asset.extension === 'gif'
               ? getImageUrl(mainMedia).url()
-              : getImageUrl(mainMedia).width(1600).quality(90).url()
+              : getImageUrl(mainMedia).width(400).quality(75).url()
           }
           width={mainMedia.asset.metadata.dimensions.width}
           height={mainMedia.asset.metadata.dimensions.height}
-          alt={mainMedia.caption}
+          alt={mainMedia.caption || project.title}
           className='w-1/4 object-cover'
           priority={false}
-          unoptimized
-          placeholder={mainMedia.asset.metadata.lqip}
+          loading="lazy"
+          placeholder="blur"
+          blurDataURL={mainMedia.asset.metadata.lqip}
         />
         <div className='space-y-1'>
           <h2 className='relative z-10 text-[16px] leading-[1.1] font-bold sm:text-[20px]'>

@@ -1,8 +1,8 @@
 import ProjectCardSmall from '@/components/ProjectCardSmall'
-import { GFNC_project } from '@/types'
+import { GFNC_projectListItem } from '@/types'
 
 type CompletedSectionProps = {
-  projectsData: GFNC_project[]
+  projectsData: GFNC_projectListItem[]
 }
 
 const CompletedSection = ({ projectsData }: CompletedSectionProps) => {

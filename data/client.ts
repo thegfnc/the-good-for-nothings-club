@@ -10,7 +10,7 @@ const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false,
+  useCdn: true,
 })
 
 const builder = imageUrlBuilder(client)
@@ -29,6 +29,7 @@ export async function cmsFetch<QueryResponse>({
   return client.fetch<QueryResponse>(query, params, {
     next: {
       tags,
+      revalidate: 3600, // Revalidate every hour
     },
   })
 }

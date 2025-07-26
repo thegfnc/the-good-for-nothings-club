@@ -80,3 +80,21 @@ export type GFNC_project = {
   caseStudy: TypedObject[]
   membersInvolved: GFNC_member[]
 }
+
+// Optimized type for projects list page
+export type GFNC_projectListItem = {
+  _id: string
+  title: string
+  clientName: string
+  slug: {
+    current: string
+  }
+  type: GFNC_projectType
+  dateStarted?: string
+  dateCompleted?: string
+  mainImage?: Image
+  mainMedia?: Array<Image | VideoFile> // Fallback for existing components
+  membersCount?: number
+  membersInvolved: GFNC_member[]
+  summary: TypedObject[]
+}

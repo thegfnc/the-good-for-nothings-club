@@ -6,6 +6,7 @@ import { PortableText } from 'next-sanity'
 import dynamic from 'next/dynamic'
 import { Suspense, memo } from 'react'
 import MemberAvatarStack from '@/components/MemberAvatarStack'
+import { Badge } from '@/components/ui/badge'
 
 const MediaPlayer = dynamic(() => import('@/components/MediaPlayer'))
 const PhotoGallery = dynamic(() => import('@/components/PhotoGallery'))
@@ -73,26 +74,27 @@ export default function PhotoProject({ project }: PhotoProjectProps) {
               <div className='space-y-2 md:space-y-6'>
                 <h3>Project Type</h3>
                 <div className='flex'>
-                  <Link
-                    href={`/projects?type=${project.type}`}
-                    className='block rounded-full bg-black px-4 py-3 font-sans text-white transition-colors hover:bg-black/80 hover:no-underline active:bg-black/70'
-                  >
-                    {project.type}
-                  </Link>
+                  <Badge className='hover:no-underline text-md' asChild>
+                    <Link
+                      href={`/projects?type=${project.type}`}
+                    >
+                      {project.type}
+                    </Link>
+                  </Badge>
                 </div>
               </div>
               <div className='space-y-2 md:space-y-6'>
                 <h3>Project Status</h3>
                 <div className='flex'>
-                  <div className='block rounded-full bg-black px-4 py-3 font-sans text-white transition-colors'>
+                  <Badge className="text-md">
                     {project.status}
-                  </div>
+                  </Badge>
                 </div>
               </div>
               {project.dateStarted && (
                 <div className='space-y-2 md:space-y-6'>
                   <h3>Date Started</h3>
-                  <div className='text-[20px] leading-none md:text-[24px] lg:text-[24px] xl:text-[28px] 2xl:text-[32px]'>
+                  <div className='text-[20px] leading-none md:text-[24px]'>
                     {new Date(project.dateStarted).toLocaleDateString('en-US', {
                       month: 'short',
                       day: 'numeric',
@@ -105,7 +107,7 @@ export default function PhotoProject({ project }: PhotoProjectProps) {
               {project.dateCompleted && (
                 <div className='space-y-2 md:space-y-6'>
                   <h3>Date Ended</h3>
-                  <div className='text-[20px] leading-none md:text-[24px] lg:text-[24px] xl:text-[28px] 2xl:text-[32px]'>
+                  <div className='text-[20px] leading-none md:text-[24px]'>
                     {new Date(project.dateCompleted).toLocaleDateString(
                       'en-US',
                       {
