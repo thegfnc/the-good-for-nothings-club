@@ -42,6 +42,10 @@ export default function InstagramFeed({ feedId }: { feedId: string }) {
     return <div>Loading...</div>
   }
 
+  const formattedFollowers = new Intl.NumberFormat('en-US').format(
+    feed.followersCount
+  )
+
   const postEls = feed.posts.map(post => {
     // IMAGE or CAROUSEL_ALBUM
     let mediaEl = (
@@ -106,7 +110,7 @@ export default function InstagramFeed({ feedId }: { feedId: string }) {
           </a>
           <div className='text-xs'>{feed.biography}</div>
           <div className='text-sm font-medium'>
-            {feed.followersCount} followers
+            {formattedFollowers} followers
           </div>
         </div>
       </div>
