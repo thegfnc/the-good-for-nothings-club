@@ -92,8 +92,8 @@ export default function InstagramFeed({ feedId }: { feedId: string }) {
   })
 
   return (
-    <div className='flex flex-col justify-between gap-4 bg-white/70 p-4 font-sans rounded-xl aspect-square'>
-      <div className='flex gap-4 grow-1'>
+    <div className='flex aspect-square flex-col justify-between gap-4 rounded-xl bg-white/70 p-4 font-sans'>
+      <div className='flex grow-1 gap-4'>
         <Image
           src={feed.profilePictureUrl}
           alt='@thegfnc Profile Picture'
