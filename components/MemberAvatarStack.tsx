@@ -7,7 +7,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from '@/components/ui/tooltip'
 
 type MemberAvatarStackProps = {
   members: GFNC_member[]
@@ -18,23 +18,23 @@ const sizeConfig = {
   sm: {
     width: 28,
     textSize: 'text-xs',
-    spacing: '-ml-2'
+    spacing: '-ml-2',
   },
   md: {
     width: 40,
     textSize: 'text-sm',
-    spacing: '-ml-3'
+    spacing: '-ml-3',
   },
   lg: {
     width: 48,
     textSize: 'text-base',
-    spacing: '-ml-4'
-  }
+    spacing: '-ml-4',
+  },
 }
 
 export default function MemberAvatarStack({
   members,
-  size = 'md'
+  size = 'md',
 }: MemberAvatarStackProps) {
   if (!members || members.length === 0) return null
 
@@ -42,28 +42,31 @@ export default function MemberAvatarStack({
 
   return (
     <TooltipProvider>
-      <div className="flex items-center">
-        <div className="flex items-center">
+      <div className='flex items-center'>
+        <div className='flex items-center'>
           {members.map((member, index) => (
             <Tooltip key={member._id}>
               <TooltipTrigger asChild>
                 <Link
                   href={`/members/${member.slug.current}`}
-                  className={`relative rounded-full border-1 border-black/40 hover:border-gray-600 transition-colors ${index > 0 ? config.spacing : ''}`}
+                  className={`relative rounded-full border-1 border-black/40 transition-colors hover:border-gray-600 ${index > 0 ? config.spacing : ''}`}
                   style={{
                     zIndex: members.length - index,
                     width: config.width,
                     height: config.width, // Use width for both to ensure perfect circle
-                    display: 'block'
+                    display: 'block',
                   }}
                 >
                   <Image
-                    src={getImageUrl(member.profilePicture).width(config.width * 2).quality(90).url()}
+                    src={getImageUrl(member.profilePicture)
+                      .width(config.width * 2)
+                      .quality(90)
+                      .url()}
                     width={config.width}
                     height={config.width} // Use width for both to ensure perfect circle
                     alt={member.fullName}
-                    className="rounded-full object-cover w-full h-full"
-                    placeholder="blur"
+                    className='h-full w-full rounded-full object-cover'
+                    // placeholder="blur" // Next.js recommends removing for images smaller than 40x40 to improve performance
                     blurDataURL={member.profilePicture.asset.metadata.lqip}
                   />
                 </Link>

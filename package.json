@@ -21,7 +21,7 @@
     "@sanity/client": "^7.11.2",
     "@sanity/image-url": "^1.2.0",
     "@sanity/react-loader": "^1.11.19",
-    "@sentry/nextjs": "^9.46.0",
+    "@sentry/nextjs": "^10.15.0",
     "@types/lodash.debounce": "^4.0.9",
     "@vercel/analytics": "^1.5.0",
     "@vis.gl/react-google-maps": "^1.5.5",
