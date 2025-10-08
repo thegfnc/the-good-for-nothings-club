@@ -61,7 +61,7 @@ export default function Header() {
           </SheetContent>
         </Sheet>
 
-        {MENU_ITEMS.map((item, index) => (
+        {MENU_ITEMS.map(item => (
           <Link
             key={item.href}
             href={item.href}

@@ -3,7 +3,14 @@ import { GFNC_project } from '../../../types'
 import { toPlainText } from '@portabletext/toolkit'
 import { Metadata, ResolvingMetadata } from 'next'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
-import { WebProject, VideoProject, PhotoProject, AudioProject, EventProject, BuildProject } from './components'
+import {
+  WebProject,
+  VideoProject,
+  PhotoProject,
+  AudioProject,
+  EventProject,
+  BuildProject,
+} from './components'
 
 type ProjectProps = {
   params: Promise<{
@@ -19,6 +26,7 @@ const PROJECT_SLUG_QUERY = `
     slug,
     type,
     status,
+    mainLink,
     dateStarted,
     dateCompleted,
     mainMedia[] {

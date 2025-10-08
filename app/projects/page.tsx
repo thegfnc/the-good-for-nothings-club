@@ -42,6 +42,7 @@ const PROJECTION = `
   slug,
   type,
   status,
+  mainLink,
   dateStarted,
   dateCompleted,
   "mainImage": mainMedia[_type == 'image'][0] {
@@ -124,15 +125,21 @@ export default async function ProjectsOptimized(props: ProjectsProps) {
   const type = isDefaultType ? menuItems[0].name : searchParams.type
 
   // Single API call to get all projects
-  const allProjects = await cmsFetch<(GFNC_projectListItem & { status: string })[]>({
+  const allProjects = await cmsFetch<
+    (GFNC_projectListItem & { status: string })[]
+  >({
     query: isDefaultType ? ALL_PROJECTS_QUERY : FILTERED_PROJECTS_QUERY,
     tags: ['GFNC_project'],
     params: isDefaultType ? {} : { type },
   })
 
   // Filter projects by status on the client side
-  const inProgressProjectsData = allProjects.filter(p => p.status === 'In Progress')
-  const completedProjectsData = allProjects.filter(p => p.status === 'Completed')
+  const inProgressProjectsData = allProjects.filter(
+    p => p.status === 'In Progress'
+  )
+  const completedProjectsData = allProjects.filter(
+    p => p.status === 'Completed'
+  )
   const pausedProjectsData = allProjects.filter(p => p.status === 'Paused')
   const canceledProjectsData = allProjects.filter(p => p.status === 'Canceled')
 
@@ -144,7 +151,7 @@ export default async function ProjectsOptimized(props: ProjectsProps) {
             <h1 className='text-[32px] leading-none font-black tracking-[-0.04em] md:text-[48px] lg:text-[96px]'>
               Projects
             </h1>
-            <ul className='flex max-w-full overflow-x-scroll border-2 border-black rounded-full'>
+            <ul className='flex max-w-full overflow-x-scroll rounded-full border-2 border-black'>
               {menuItems.map(item => (
                 <li key={item.name}>
                   <Link

@@ -71,6 +71,7 @@ export type GFNC_project = {
   }
   type: GFNC_projectType
   status: GFNC_projectStatus
+  mainLink?: string | null
   dateStarted?: string
   dateCompleted?: string
   mainMedia: Array<Image | VideoFile>
@@ -90,6 +91,7 @@ export type GFNC_projectListItem = {
     current: string
   }
   type: GFNC_projectType
+  mainLink?: string | null
   dateStarted?: string
   dateCompleted?: string
   mainImage?: Image

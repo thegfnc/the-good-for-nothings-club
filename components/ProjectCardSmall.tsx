@@ -2,7 +2,6 @@ import { GFNC_project, GFNC_projectListItem } from '@/types'
 import Image from 'next/image'
 import { getImageUrl } from '@/data/client'
 import { PortableText } from 'next-sanity'
-import { cn } from '@/lib/utils'
 import getProjectDateString from '@/lib/getProjectDateString'
 import Link from 'next/link'
 import MemberAvatarStack from './MemberAvatarStack'
@@ -14,9 +13,10 @@ type ProjectCardSmallProps = {
 
 export default function ProjectCardSmall({ project }: ProjectCardSmallProps) {
   // Handle both optimized and full project types
-  const mainMedia = ('mainImage' in project && project.mainImage)
-    ? project.mainImage
-    : project.mainMedia?.find(media => media._type === 'image')
+  const mainMedia =
+    'mainImage' in project && project.mainImage
+      ? project.mainImage
+      : project.mainMedia?.find(media => media._type === 'image')
 
   if (!mainMedia) return null
 
@@ -24,7 +24,7 @@ export default function ProjectCardSmall({ project }: ProjectCardSmallProps) {
   const projectForDate = {
     dateStarted: project.dateStarted,
     dateCompleted: project.dateCompleted,
-    type: project.type
+    type: project.type,
   }
   const date = getProjectDateString(projectForDate as any)
 
@@ -45,8 +45,8 @@ export default function ProjectCardSmall({ project }: ProjectCardSmallProps) {
           alt={mainMedia.caption || project.title}
           className='w-1/4 object-cover'
           priority={false}
-          loading="lazy"
-          placeholder="blur"
+          loading='lazy'
+          placeholder='blur'
           blurDataURL={mainMedia.asset.metadata.lqip}
         />
         <div className='space-y-1'>
@@ -65,7 +65,9 @@ export default function ProjectCardSmall({ project }: ProjectCardSmallProps) {
       </div>
       <div className='flex items-end justify-between gap-x-2 gap-y-1'>
         <div className='font-sans leading-none uppercase'>
-          <div className='text-sm font-bold text-balance leading-tighter'>{project.clientName}</div>
+          <div className='leading-tighter text-sm font-bold text-balance'>
+            {project.clientName}
+          </div>
           <div className='mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs'>
             <Badge className='font-normal'>{project.type}</Badge>
             {date && <span>{date}</span>}

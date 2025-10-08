@@ -8,6 +8,7 @@ import { Suspense, memo } from 'react'
 import MemberAvatarStack from '@/components/MemberAvatarStack'
 import { Badge } from '@/components/ui/badge'
 import { getProjectStatusColor } from '@/lib/utils'
+import { Button } from '@/components/ui/Button'
 
 const MediaPlayer = dynamic(() => import('@/components/MediaPlayer'))
 const PhotoGallery = dynamic(() => import('@/components/PhotoGallery'))
@@ -20,6 +21,16 @@ export default function EventProject({ project }: EventProjectProps) {
   const mainMedia =
     project.mainMedia.find(mainMedia => mainMedia._type === 'videoFile') ||
     project.mainMedia.find(mainMedia => mainMedia._type === 'image')
+
+  const mainLinkHostname = project.mainLink
+    ? (() => {
+        try {
+          return new URL(project.mainLink).hostname.replace(/^www\./, '')
+        } catch {
+          return null
+        }
+      })()
+    : null
 
   if (!mainMedia) return null
 
@@ -75,10 +86,8 @@ export default function EventProject({ project }: EventProjectProps) {
               <div className='space-y-2 md:space-y-6'>
                 <h3>Project Type</h3>
                 <div className='flex'>
-                  <Badge className='hover:no-underline text-md' asChild>
-                    <Link
-                      href={`/projects?type=${project.type}`}
-                    >
+                  <Badge className='text-md hover:no-underline' asChild>
+                    <Link href={`/projects?type=${project.type}`}>
                       {project.type}
                     </Link>
                   </Badge>
@@ -87,8 +96,10 @@ export default function EventProject({ project }: EventProjectProps) {
               <div className='space-y-2 md:space-y-6'>
                 <h3>Project Status</h3>
                 <div className='flex'>
-                  <Badge className="text-md flex items-center gap-2">
-                    <div className={`h-3 w-3 rounded-full border border-black ${getProjectStatusColor(project.status)}`}></div>
+                  <Badge className='text-md flex items-center gap-2'>
+                    <div
+                      className={`h-3 w-3 rounded-full border border-black ${getProjectStatusColor(project.status)}`}
+                    ></div>
                     {project.status}
                   </Badge>
                 </div>
@@ -109,17 +120,34 @@ export default function EventProject({ project }: EventProjectProps) {
                   </div>
                 </div>
               )}
-              {project.membersInvolved && project.membersInvolved.length > 0 && (
+              {project.mainLink && (
                 <div className='space-y-2 md:space-y-6'>
-                  <h3>Members Involved</h3>
-                  <div className='space-y-4'>
-                    <MemberAvatarStack
-                      members={project.membersInvolved}
-                      size="md"
-                    />
-                  </div>
+                  <h3>RSVP Link</h3>
+                  <Button asChild size='lg'>
+                    <Link
+                      href={project.mainLink}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
+                      {mainLinkHostname
+                        ? `Visit ${mainLinkHostname}`
+                        : 'Open Link'}
+                    </Link>
+                  </Button>
                 </div>
               )}
+              {project.membersInvolved &&
+                project.membersInvolved.length > 0 && (
+                  <div className='space-y-2 md:space-y-6'>
+                    <h3>Members Involved</h3>
+                    <div className='space-y-4'>
+                      <MemberAvatarStack
+                        members={project.membersInvolved}
+                        size='md'
+                      />
+                    </div>
+                  </div>
+                )}
             </div>
           </div>
           {project.photoGallery && (

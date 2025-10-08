@@ -2,7 +2,7 @@
 
 import MemberProfilePicture from '@/components/MemberProfilePicture'
 import { cmsFetch } from '@/data/client'
-import { GFNC_member, GFNC_project } from '@/types'
+import { GFNC_member } from '@/types'
 import { Metadata, ResolvingMetadata } from 'next'
 
 const MEMBERS_QUERY = `
@@ -47,7 +47,6 @@ const MEMBERS_QUERY = `
 `
 
 export async function generateMetadata(
-  params: {},
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { openGraph } = await parent

@@ -17,6 +17,7 @@ const FEATURED_PROJECTS_QUERY = `
     clientName,
     slug,
     type,
+    mainLink,
     dateCompleted,
     mainMedia[] {
       ...,

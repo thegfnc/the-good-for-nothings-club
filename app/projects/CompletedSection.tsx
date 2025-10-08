@@ -15,7 +15,7 @@ const CompletedSection = ({ projectsData }: CompletedSectionProps) => {
         </h2>
       </div>
       <div className='mt-8 grid grid-cols-1 gap-4 md:mt-12 md:gap-8 lg:grid-cols-2 xl:grid-cols-3'>
-        {projectsData.map((project, index) => {
+        {projectsData.map(project => {
           return <ProjectCardSmall key={project._id} project={project} />
         })}
       </div>

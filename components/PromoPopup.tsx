@@ -1,62 +1,215 @@
 'use client'
 
-const PROMO_VERSION = 1 // Increment this to show the promo popup again
-const PROMO_POPUP_KEY = `promoPopupDismissed_V${PROMO_VERSION}`
-const POPUP_DELAY = 1000
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
 
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { Button } from '@/components/ui/Button'
+
+const POPUP_DELAY = 1000
+const PROMO_POPUP_KEY = 'promoPopupDismissedEvent'
+
+type UpcomingEvent = {
+  id: string
+  title: string
+  clientName: string
+  slug: string
+  mainLink?: string | null
+  date: string
+  summary: string
+  projectUrl: string
+  ctaUrl: string
+  image?: {
+    url: string
+    width: number
+    height: number
+    lqip: string
+    caption: string
+  }
+}
+
+function getDismissalValue(event: UpcomingEvent) {
+  return `${event.id}:${event.date}`
+}
 
 export default function PromoPopup() {
   const [isOpen, setIsOpen] = useState(false)
+  const [event, setEvent] = useState<UpcomingEvent | null>(null)
 
   useEffect(() => {
-    const hasSeenPromo = localStorage.getItem(PROMO_POPUP_KEY)
+    let isMounted = true
+    let timer: ReturnType<typeof setTimeout>
 
-    if (!hasSeenPromo) {
-      const timer = setTimeout(() => {
-        setIsOpen(true)
-      }, POPUP_DELAY)
+    async function loadEvent() {
+      try {
+        const response = await fetch('/api/events/upcoming', {
+          cache: 'no-store',
+        })
 
-      return () => clearTimeout(timer) // Cleanup timeout on unmount
+        if (!response.ok) return
+
+        const data: { event: UpcomingEvent | null } = await response.json()
+
+        if (!isMounted || !data.event) return
+
+        setEvent(data.event)
+
+        const dismissedValue = localStorage.getItem(PROMO_POPUP_KEY)
+
+        if (dismissedValue === getDismissalValue(data.event)) {
+          return
+        }
+
+        timer = setTimeout(() => {
+          if (isMounted) {
+            setIsOpen(true)
+          }
+        }, POPUP_DELAY)
+      } catch (error) {
+        console.error('Failed to load promo event:', error)
+      }
+    }
+
+    loadEvent()
+
+    return () => {
+      isMounted = false
+
+      if (timer) {
+        clearTimeout(timer)
+      }
     }
   }, [])
 
-  function handleOpenChange(open: boolean) {
-    if (!open) {
-      localStorage.setItem(PROMO_POPUP_KEY, 'true')
+  const formattedDate = useMemo(() => {
+    if (!event?.date) return null
+
+    const utcDate = new Date(`${event.date}T00:00:00Z`)
+
+    if (Number.isNaN(utcDate.getTime())) {
+      return null
     }
 
-    setIsOpen(open)
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+      timeZone: 'UTC',
+    }).format(utcDate)
+  }, [event?.date])
+
+  const primaryHref = event?.ctaUrl ?? event?.projectUrl ?? '#'
+  let primaryLabel = 'View Event Details'
+  let primaryTarget: '_blank' | undefined
+  let primaryRel: string | undefined
+
+  if (primaryHref.startsWith('http')) {
+    primaryTarget = '_blank'
+    primaryRel = 'noopener noreferrer'
+
+    try {
+      primaryLabel = `RSVP Here`
+    } catch (error) {
+      console.error('Failed to parse event link hostname:', error)
+      primaryLabel = 'Open Link'
+    }
+  }
+
+  const showSecondaryLink = Boolean(
+    event?.projectUrl && primaryHref !== event.projectUrl
+  )
+
+  const handleOpenChange = useCallback(
+    (open: boolean) => {
+      if (!open && event) {
+        localStorage.setItem(PROMO_POPUP_KEY, getDismissalValue(event))
+      }
+
+      setIsOpen(open)
+    },
+    [event]
+  )
+
+  const handleDismiss = useCallback(() => {
+    handleOpenChange(false)
+  }, [handleOpenChange])
+
+  if (!event) {
+    return null
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className='max-h-screen overflow-y-scroll'>
-        <DialogHeader>
-          <DialogTitle>Keep It Local, Yokels</DialogTitle>
-        </DialogHeader>
-        <Image
-          src='https://cdn.sanity.io/images/ojzttvlq/production/8b350ca9ef64e4df3a7ab74391b4b54542639982-2000x2997.png'
-          alt='Flyer for Keep It Local, Yokels event'
-          height={2997}
-          width={2000}
-        />
-        <div className='flex justify-center'>
-          <Link
-            href='https://partiful.com/e/gBLpBXdII2sEThii00b8'
-            target='_blank'
-            className='rounded-md border-2 border-black bg-green-300 px-8 py-2 font-sans text-lg font-medium whitespace-nowrap text-black transition-colors hover:bg-black hover:text-white hover:no-underline'
-          >
-            RSVP HERE
-          </Link>
+      <DialogContent className='max-h-[90vh] !max-w-3xl overflow-y-auto border-black bg-white p-4 sm:p-10'>
+        <div className='space-y-10'>
+          <DialogHeader className='gap-1 text-center'>
+            <DialogTitle className='text-[28px] leading-none font-black tracking-tight sm:text-[36px]'>
+              {event.title}
+            </DialogTitle>
+            <DialogDescription className='font-sans text-sm text-black/75 uppercase'>
+              {formattedDate
+                ? `${formattedDate} • ${event.clientName}`
+                : event.clientName}
+            </DialogDescription>
+          </DialogHeader>
+          <div className='grid grid-cols-2 gap-8'>
+            {event.image && (
+              <div className='overflow-hidden border-2 border-black'>
+                <Image
+                  src={event.image.url}
+                  alt={event.image.caption}
+                  width={event.image.width}
+                  height={event.image.height}
+                  placeholder='blur'
+                  blurDataURL={event.image.lqip}
+                  className='h-auto w-full object-cover'
+                />
+              </div>
+            )}
+            <div className='flex flex-col justify-center gap-10'>
+              {event.summary && (
+                <p className='font-sans text-[20px] leading-tight text-balance text-black/80'>
+                  {event.summary}
+                </p>
+              )}
+              <div className='flex flex-col justify-center gap-3'>
+                {showSecondaryLink && (
+                  <Button
+                    asChild
+                    variant='default'
+                    size='lg'
+                    className='hover:no-underline'
+                  >
+                    <Link href={event.projectUrl} onClick={handleDismiss}>
+                      View Event Page
+                    </Link>
+                  </Button>
+                )}
+                <Button
+                  asChild
+                  size='lg'
+                  variant='outline'
+                  className='hover:no-underline'
+                >
+                  <Link
+                    href={primaryHref}
+                    target={primaryTarget}
+                    rel={primaryRel}
+                    onClick={handleDismiss}
+                  >
+                    {primaryLabel}
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
