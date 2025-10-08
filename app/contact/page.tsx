@@ -3,9 +3,10 @@ import Link from 'next/link'
 import ContactUsForm from './ContactUsForm'
 import SocialMediaLinks from '../../components/SocialMediaLinks'
 import Map from '../../components/Map'
-import { Metadata, ResolvingMetadata } from 'next'
+import type { Metadata, ResolvingMetadata } from 'next'
 
 export async function generateMetadata(
+  _props: unknown,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { openGraph } = await parent
