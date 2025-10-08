@@ -147,19 +147,19 @@ export default function PromoPopup() {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className='max-h-[90vh] !max-w-3xl overflow-y-auto border-black bg-white p-4 sm:p-10'>
-        <div className='space-y-10'>
+      <DialogContent className='max-h-[90vh] !max-w-3xl overflow-y-auto border-black bg-white px-4 py-14 sm:p-10'>
+        <div className='space-y-8'>
           <DialogHeader className='gap-1 text-center'>
-            <DialogTitle className='text-[28px] leading-none font-black tracking-tight sm:text-[36px]'>
+            <DialogTitle className='text-[32px] leading-none font-black tracking-tight sm:text-[36px]'>
               {event.title}
             </DialogTitle>
-            <DialogDescription className='font-sans text-sm text-black/75 uppercase'>
+            <DialogDescription className='font-sans text-xs text-black/75 uppercase md:text-sm'>
               {formattedDate
                 ? `${formattedDate} • ${event.clientName}`
                 : event.clientName}
             </DialogDescription>
           </DialogHeader>
-          <div className='grid grid-cols-2 gap-8'>
+          <div className='grid grid-cols-1 gap-8 md:grid-cols-2'>
             {event.image && (
               <div className='overflow-hidden border-2 border-black'>
                 <Image
@@ -173,7 +173,7 @@ export default function PromoPopup() {
                 />
               </div>
             )}
-            <div className='flex flex-col justify-center gap-10'>
+            <div className='flex flex-col justify-center gap-8 md:gap-10'>
               {event.summary && (
                 <p className='font-sans text-[20px] leading-tight text-balance text-black/80'>
                   {event.summary}
