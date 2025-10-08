@@ -83,6 +83,22 @@ export default function EventProject({ project }: EventProjectProps) {
               </div>
             </div>
             <div className='w-full max-w-[300px] space-y-6 md:space-y-12'>
+              {project.mainLink && (
+                <div className='space-y-2 md:space-y-6'>
+                  <h3>RSVP Here</h3>
+                  <Button asChild size='lg'>
+                    <Link
+                      href={project.mainLink}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
+                      {mainLinkHostname
+                        ? `Visit ${mainLinkHostname}`
+                        : 'Open Link'}
+                    </Link>
+                  </Button>
+                </div>
+              )}
               <div className='space-y-2 md:space-y-6'>
                 <h3>Project Type</h3>
                 <div className='flex'>
@@ -118,22 +134,6 @@ export default function EventProject({ project }: EventProjectProps) {
                       }
                     )}
                   </div>
-                </div>
-              )}
-              {project.mainLink && (
-                <div className='space-y-2 md:space-y-6'>
-                  <h3>RSVP Link</h3>
-                  <Button asChild size='lg'>
-                    <Link
-                      href={project.mainLink}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                    >
-                      {mainLinkHostname
-                        ? `Visit ${mainLinkHostname}`
-                        : 'Open Link'}
-                    </Link>
-                  </Button>
                 </div>
               )}
               {project.membersInvolved &&
