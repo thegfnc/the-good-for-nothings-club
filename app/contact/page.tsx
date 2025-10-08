@@ -6,7 +6,6 @@ import Map from '../../components/Map'
 import { Metadata, ResolvingMetadata } from 'next'
 
 export async function generateMetadata(
-  params: {},
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { openGraph } = await parent

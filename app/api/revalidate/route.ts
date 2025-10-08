@@ -32,8 +32,8 @@ export async function POST(req: NextRequest) {
     console.log('Revalidated: ', body._type)
 
     return NextResponse.json({ body })
-  } catch (err: any) {
+  } catch (err: Error | unknown) {
     console.error(err)
-    return new Response(err.message, { status: 500 })
+    return new Response((err as Error).message, { status: 500 })
   }
 }

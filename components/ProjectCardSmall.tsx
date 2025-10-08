@@ -26,7 +26,7 @@ export default function ProjectCardSmall({ project }: ProjectCardSmallProps) {
     dateCompleted: project.dateCompleted,
     type: project.type,
   }
-  const date = getProjectDateString(projectForDate as any)
+  const date = getProjectDateString(projectForDate as GFNC_project)
 
   return (
     <div

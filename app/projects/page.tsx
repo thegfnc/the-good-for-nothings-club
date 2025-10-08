@@ -98,7 +98,6 @@ const FILTERED_PROJECTS_QUERY = `
 `
 
 export async function generateMetadata(
-  params: {},
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { openGraph } = await parent
