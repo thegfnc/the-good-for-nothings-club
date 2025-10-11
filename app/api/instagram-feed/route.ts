@@ -1,12 +1,12 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import type * as Behold from '@behold/types'
 
-export const revalidate = 3600 // Cache for 1 hour
+export const dynamic = 'force-dynamic'
+export const revalidate = 0 // Allow query-string access without static rendering
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
-    const feedId = searchParams.get('feedId')
+    const feedId = request.nextUrl.searchParams.get('feedId')
 
     if (!feedId) {
       return NextResponse.json(
