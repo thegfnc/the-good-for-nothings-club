@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     // If the `_type` is `page`, then all `client.fetch` calls with
     // `{next: {tags: ['page']}}` will be revalidated
-    revalidateTag(body._type)
+    revalidateTag(body._type, 'max')
     console.log('Revalidated: ', body._type)
 
     return NextResponse.json({ body })
