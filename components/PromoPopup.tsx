@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -88,7 +88,7 @@ export default function PromoPopup() {
     }
   }, [])
 
-  const formattedDate = useMemo(() => {
+  const formattedDate = (() => {
     if (!event?.date) return null
 
     const utcDate = new Date(`${event.date}T00:00:00Z`)
@@ -103,7 +103,7 @@ export default function PromoPopup() {
       year: 'numeric',
       timeZone: 'UTC',
     }).format(utcDate)
-  }, [event?.date])
+  })()
 
   const primaryHref = event?.ctaUrl ?? event?.projectUrl ?? '#'
   let primaryLabel = 'View Event Details'
