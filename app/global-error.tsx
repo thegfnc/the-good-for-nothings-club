@@ -1,6 +1,5 @@
 'use client'
 
-import Error from 'next/error'
 import posthog from 'posthog-js'
 import { useEffect } from 'react'
 
@@ -11,7 +10,12 @@ type GlobalErrorProps = {
 
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
   useEffect(() => {
-    if (posthog.__loaded) posthog.captureException(error)
+    if (posthog.__loaded) {
+      posthog.captureException(error, {
+        digest: error.digest,
+        boundary: 'global-error',
+      })
+    }
   }, [error])
 
   return (

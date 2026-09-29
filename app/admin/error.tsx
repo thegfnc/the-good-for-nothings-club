@@ -21,7 +21,12 @@ export default function AdminError({
   reset: () => void
 }) {
   useEffect(() => {
-    if (posthog.__loaded) posthog.captureException(error)
+    if (posthog.__loaded) {
+      posthog.captureException(error, {
+        digest: error.digest,
+        boundary: 'admin-error',
+      })
+    }
   }, [error])
 
   return (
