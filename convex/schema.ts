@@ -113,6 +113,38 @@ export default defineSchema({
   /** Users/sessions/accounts for the /admin sign-in — see convex/auth.ts. */
   ...authTables,
 
+  /**
+   * Convex Auth's users table (same fields and indexes) plus admin
+   * bookkeeping for invites — see convex/users.ts.
+   */
+  users: defineTable({
+    name: v.optional(v.string()),
+    image: v.optional(v.string()),
+    email: v.optional(v.string()),
+    emailVerificationTime: v.optional(v.number()),
+    phone: v.optional(v.string()),
+    phoneVerificationTime: v.optional(v.number()),
+    isAnonymous: v.optional(v.boolean()),
+    /** Who sent the invite; absent for admins seeded via ADMIN_ALLOWED_EMAILS. */
+    invitedBy: v.optional(v.id('users')),
+    invitedAt: v.optional(v.number()),
+    /** Last time the admin shell loaded for them; absent = invite not yet accepted. */
+    lastSeenAt: v.optional(v.number()),
+  })
+    .index('email', ['email'])
+    .index('phone', ['phone']),
+
+  /**
+   * A pending invite, consumed when the account is created. Only the
+   * authenticated invite action writes these; convex/auth.ts lets an
+   * email sign up if it's here or in ADMIN_ALLOWED_EMAILS.
+   */
+  adminInvites: defineTable({
+    email: v.string(),
+    name: v.optional(v.string()),
+    invitedBy: v.id('users'),
+  }).index('by_email', ['email']),
+
   /** Mirrors inquirySchema in data/schemas.ts, which validates at the API edge. */
   inquiries: defineTable({
     kind: v.union(

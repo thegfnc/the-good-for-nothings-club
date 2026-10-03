@@ -2,8 +2,8 @@
 
 import { useAuthActions } from '@convex-dev/auth/react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense, useState } from 'react'
 
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -16,12 +16,27 @@ type Mode = 'signIn' | 'forgotPassword' | 'resetPassword'
  * seeded for allowlisted emails only (see convex/auth.ts). "Forgot
  * password" emails an 8-digit code, which is entered here with a new
  * password ('reset' → 'reset-verification' flows on the Password provider).
+ *
+ * Invite links land on ?setup=<email>: the same code flow, worded as
+ * account setup. Invited accounts are created with a random password, so
+ * this is how a new admin picks theirs (see convex/users.ts).
  */
 export default function AdminLoginPage() {
+  // useSearchParams needs a Suspense boundary to prerender.
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
+  )
+}
+
+function LoginForm() {
   const { signIn } = useAuthActions()
   const router = useRouter()
-  const [mode, setMode] = useState<Mode>('signIn')
-  const [email, setEmail] = useState('')
+  const setupEmail = useSearchParams().get('setup')
+  const isSetup = setupEmail !== null
+  const [mode, setMode] = useState<Mode>(isSetup ? 'forgotPassword' : 'signIn')
+  const [email, setEmail] = useState(setupEmail ?? '')
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
@@ -46,7 +61,11 @@ export default function AdminLoginPage() {
         GFNC
       </Link>
       <h2 className='mb-6 text-center text-[28px] font-black tracking-[-0.03em]'>
-        {mode === 'signIn' ? 'Sign in' : 'Reset password'}
+        {mode === 'signIn'
+          ? 'Sign in'
+          : isSetup
+            ? 'Set up your account'
+            : 'Reset password'}
       </h2>
 
       {mode === 'signIn' && (
@@ -111,7 +130,9 @@ export default function AdminLoginPage() {
           className='flex flex-col gap-4'
         >
           <p className='font-sans text-sm text-black/70'>
-            Enter your email and we&apos;ll send you an 8-digit reset code.
+            {isSetup
+              ? "Confirm your email and we'll send you an 8-digit code to set your password."
+              : "Enter your email and we'll send you an 8-digit reset code."}
           </p>
           <label className='flex flex-col gap-1'>
             <span className={fieldLabelClassName}>Email</span>
@@ -126,7 +147,7 @@ export default function AdminLoginPage() {
           </label>
           {error && <p className='font-sans text-sm text-red-600'>{error}</p>}
           <Button type='submit' disabled={submitting}>
-            Email me a reset code
+            {isSetup ? 'Email me a setup code' : 'Email me a reset code'}
           </Button>
           <button
             type='button'
@@ -172,7 +193,9 @@ export default function AdminLoginPage() {
             />
           </label>
           <label className='flex flex-col gap-1'>
-            <span className={fieldLabelClassName}>New password</span>
+            <span className={fieldLabelClassName}>
+              {isSetup ? 'Choose a password' : 'New password'}
+            </span>
             <Input
               name='newPassword'
               type='password'
@@ -182,7 +205,7 @@ export default function AdminLoginPage() {
           </label>
           {error && <p className='font-sans text-sm text-red-600'>{error}</p>}
           <Button type='submit' disabled={submitting}>
-            Set new password & sign in
+            {isSetup ? 'Set password & sign in' : 'Set new password & sign in'}
           </Button>
           <button
             type='button'

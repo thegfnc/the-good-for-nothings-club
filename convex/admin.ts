@@ -15,9 +15,11 @@ import { inquiryStatusValidator, memberRoleValidator } from './schema'
  * signed-in user (accounts are allowlist-only — see convex/auth.ts). CMS
  * content stays read-only by design: the admin is a viewer, not an editor.
  */
-async function requireUser(ctx: QueryCtx | MutationCtx) {
+export async function requireUser(ctx: QueryCtx | MutationCtx) {
   const userId = await getAuthUserId(ctx)
-  if (userId === null) {
+  // The JWT outlives a removed admin (up to its expiry), so also require
+  // the user row to still exist - removal deletes it (convex/users.ts).
+  if (userId === null || (await ctx.db.get(userId)) === null) {
     throw new Error('Not authenticated')
   }
   return userId

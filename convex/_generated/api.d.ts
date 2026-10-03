@@ -18,6 +18,7 @@ import type * as legacy from "../legacy.js";
 import type * as maintenance from "../maintenance.js";
 import type * as members from "../members.js";
 import type * as projects from "../projects.js";
+import type * as users from "../users.js";
 
 import type {
   ApiFromModules,
@@ -36,6 +37,7 @@ declare const fullApi: ApiFromModules<{
   maintenance: typeof maintenance;
   members: typeof members;
   projects: typeof projects;
+  users: typeof users;
 }>;
 
 /**
