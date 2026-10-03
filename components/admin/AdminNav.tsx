@@ -1,9 +1,10 @@
 'use client'
 
 import { useAuthActions } from '@convex-dev/auth/react'
-import { Authenticated, useQuery } from 'convex/react'
+import { Authenticated, useMutation, useQuery } from 'convex/react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 import { api } from '@/convex/_generated/api'
 import type { Pipeline } from '@/data/schemas'
@@ -23,6 +24,14 @@ const contentLinks = [
   { href: '/admin/content/projects', label: 'Projects' },
   { href: '/admin/content/members', label: 'Members' },
   { href: '/admin/content/media', label: 'Media' },
+]
+
+const planLinks = [
+  { href: '/admin/plan/rates', label: 'Rates' },
+  { href: '/admin/plan/financials', label: 'Financials' },
+  { href: '/admin/plan/business', label: 'Business' },
+  { href: '/admin/plan/operations', label: 'Operations' },
+  { href: '/admin/plan/documents', label: 'Documents' },
 ]
 
 /**
@@ -52,6 +61,13 @@ function NavContent() {
   const { signOut } = useAuthActions()
   // Active-count badges for the inquiry boards; shared cache with the pages.
   const summary = useQuery(api.admin.pipelineSummary, {})
+  // Marks an invited admin active on first load, then tracks last seen
+  // (throttled server-side). Lives here for the same <Authenticated> reason
+  // as the badge query above.
+  const touch = useMutation(api.users.touch)
+  useEffect(() => {
+    touch().catch(() => {})
+  }, [touch])
 
   const linkClassName = (active: boolean) =>
     cn(
@@ -119,6 +135,25 @@ function NavContent() {
               {link.label}
             </Link>
           ))}
+        </NavGroup>
+        <NavGroup label='Plan'>
+          {planLinks.map(link => (
+            <Link
+              key={link.href}
+              className={linkClassName(pathname === link.href)}
+              href={link.href}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </NavGroup>
+        <NavGroup label='Settings'>
+          <Link
+            className={linkClassName(pathname === '/admin/users')}
+            href='/admin/users'
+          >
+            Admins
+          </Link>
         </NavGroup>
         <div className='flex md:-mx-3 md:mt-auto md:flex-col md:border-t-2 md:border-black md:px-3 md:py-3'>
           <Link href='/' className={footerLinkClassName}>
