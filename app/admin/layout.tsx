@@ -1,13 +1,16 @@
 import { ConvexAuthNextjsServerProvider } from '@convex-dev/auth/nextjs/server'
 import type { Metadata } from 'next'
+import { connection } from 'next/server'
 import { ReactNode } from 'react'
 
 import AdminNav from '@/components/admin/AdminNav'
 import AdminProviders from '@/components/admin/AdminProviders'
 
-// The Convex Auth provider reads the session cookies, so every admin page
-// renders per request. That's fine for a private, auth-gated app: let it
-// block rather than stream a public static shell.
+// The Convex Auth provider reads the session cookies and checks token
+// expiry with Date.now(), so every admin page renders per request. That's
+// fine for a private, auth-gated app: let it block rather than stream a
+// public static shell. connection() marks the render as request-time up
+// front, which is what lets the provider read the clock.
 export const instant = false
 
 export const metadata: Metadata = {
@@ -22,7 +25,12 @@ export const metadata: Metadata = {
  * column scrolls on its own. On mobile it falls back to normal document
  * scrolling under a sticky nav bar.
  */
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default async function AdminLayout({
+  children,
+}: {
+  children: ReactNode
+}) {
+  await connection()
   return (
     <ConvexAuthNextjsServerProvider>
       <AdminProviders>
