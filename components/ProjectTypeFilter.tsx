@@ -4,8 +4,11 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { type ReactNode, ViewTransition } from 'react'
 
-import { PROJECT_TYPES } from '@/lib/projectTypes'
-import { cn } from '@/lib/utils'
+import {
+  MENU_LINK_ACTIVE,
+  MENU_LINK_IDLE,
+  PROJECT_TYPES,
+} from '@/lib/projectTypes'
 import type { GFNC_projectType } from '@/types'
 
 const ALL = 'All'
@@ -14,13 +17,13 @@ const ALL = 'All'
  * /projects filtering happens here, in the browser, so the page itself can
  * be fully static: the server renders every project once (cached Convex
  * data) and the ?type= filter only toggles a data attribute that the CSS
- * from projectTypeFilterCss() (lib/projectTypes.ts) keys off. Switching types is a client
- * navigation with no server render.
+ * from projectTypeFilterCss() (lib/projectTypes.ts) keys off. Switching
+ * types is a client navigation with no server render.
  *
  * During the prerender useSearchParams() suspends, so the static HTML is
- * the Suspense fallback: the unfiltered listing and the "All" menu. A
- * filtered URL loaded cold shows everything until hydration applies the
- * filter; the canonical /projects is unaffected.
+ * the Suspense fallback: the unfiltered listing and the "All" menu. On a
+ * cold load of a filtered URL, projectTypeFilterScript() applies the
+ * filter to that HTML before first paint; hydration then takes over.
  */
 function useSelectedType() {
   const type = useSearchParams().get('type')
@@ -34,12 +37,8 @@ export function TypeMenu({ selected }: { selected?: GFNC_projectType }) {
       {[ALL, ...PROJECT_TYPES].map(name => (
         <li key={name}>
           <Link
-            className={cn(
-              'block px-4 py-3 font-sans text-sm leading-tight font-black uppercase transition-colors hover:no-underline sm:px-6 sm:py-4 md:text-base lg:px-8',
-              name === active
-                ? 'bg-black text-white hover:bg-black'
-                : 'text-black hover:bg-black/10 active:bg-black/20'
-            )}
+            data-project-type-link={name}
+            className={name === active ? MENU_LINK_ACTIVE : MENU_LINK_IDLE}
             href={name === ALL ? '/projects' : `/projects?type=${name}`}
             scroll={false}
           >

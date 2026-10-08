@@ -15,10 +15,6 @@ const nextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
 
-  // Memoizes components at build time, so hand-written useMemo/useCallback
-  // isn't needed. The Rust port runs inside Turbopack (no Babel plugin).
-  reactCompiler: true,
-
   // Dev only: browser console warnings and errors also print in the
   // terminal running `next dev`, where agents can see them.
   logging: {
@@ -26,7 +22,6 @@ const nextConfig = {
   },
 
   experimental: {
-    turbopackRustReactCompiler: true,
     // Nudge during dev/build when a Next release fixes a vulnerability in
     // the installed version. 'security' is the default; set explicitly so
     // the policy is visible here.

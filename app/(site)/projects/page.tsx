@@ -1,6 +1,9 @@
 import { Suspense } from 'react'
 import { getProjectsListPage } from '@/lib/content'
-import { projectTypeFilterCss } from '@/lib/projectTypes'
+import {
+  projectTypeFilterCss,
+  projectTypeFilterScript,
+} from '@/lib/projectTypes'
 import type { GFNC_projectListItem } from '@/types'
 import type { Metadata, ResolvingMetadata } from 'next'
 import InProgressSection from './InProgressSection'
@@ -58,9 +61,10 @@ export default function Projects() {
       {/* The fallback (the unfiltered listing) is what prerenders; the
           filter reads the query string in the browser. Both slots get the
           same element, so the RSC payload carries the listing once. */}
-      <Suspense fallback={listing}>
+      <Suspense fallback={<div id='projects-listing'>{listing}</div>}>
         <FilteredListing>{listing}</FilteredListing>
       </Suspense>
+      <script dangerouslySetInnerHTML={{ __html: projectTypeFilterScript() }} />
     </main>
   )
 }

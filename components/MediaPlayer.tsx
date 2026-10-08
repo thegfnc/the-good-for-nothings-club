@@ -1,7 +1,6 @@
 'use client'
 
-import { Suspense, use, useState } from 'react'
-import { browser } from 'react-dom'
+import { Suspense, useState, useSyncExternalStore } from 'react'
 import ReactPlayer from 'react-player'
 
 import WidgetBoundary from './WidgetBoundary'
@@ -24,16 +23,10 @@ type MediaPlayerProps = {
   clickToPlay?: boolean
 }
 
-/**
- * react-player v3 SSRs its players as web components with declarative
- * shadow DOM (<youtube-video> etc). Hydrating that markup is timing-
- * sensitive (slow clients, render bots especially, hit React #418 and the
- * whole tree gets client-regenerated anyway), so the player renders in the
- * browser only. The Suspense fallback is the server HTML and keeps the box.
- * A player that throws shows a retry instead of taking down the page.
- */
+const emptySubscribe = () => () => {}
+
+/** A player that throws shows a retry instead of taking down the page. */
 export default function MediaPlayer(props: MediaPlayerProps) {
-  const className = props.className ?? 'w-full'
   return (
     <WidgetBoundary
       label='video'
@@ -41,14 +34,12 @@ export default function MediaPlayer(props: MediaPlayerProps) {
       fallbackText='Open the video'
       className='flex aspect-video w-full flex-col items-center justify-center gap-3 border-2 border-black p-6 text-center font-sans'
     >
-      <Suspense fallback={<div className={className} />}>
-        <BrowserPlayer {...props} className={className} />
-      </Suspense>
+      <Player {...props} />
     </WidgetBoundary>
   )
 }
 
-function BrowserPlayer({
+function Player({
   url,
   playing = false,
   controls = false,
@@ -59,8 +50,19 @@ function BrowserPlayer({
   className = 'w-full',
   clickToPlay = false,
 }: MediaPlayerProps) {
-  use(browser('react-player hydration is timing-sensitive'))
   const [started, setStarted] = useState(false)
+
+  // react-player v3 SSRs its players as web components with declarative
+  // shadow DOM (<youtube-video> etc). Hydrating that markup is timing-
+  // sensitive - slow clients (render bots especially) hit React #418 and the
+  // whole tree gets client-regenerated anyway - so skip SSR entirely and
+  // mount the player after hydration. The wrapper div keeps the box.
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  )
+  if (!mounted) return <div className={className} />
 
   if (clickToPlay && !started) {
     return (

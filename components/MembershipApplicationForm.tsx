@@ -2,8 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Check, Loader2, X } from 'lucide-react'
-import { Suspense, use, useEffect } from 'react'
-import { browser } from 'react-dom'
+import { useEffect, useSyncExternalStore } from 'react'
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -371,12 +370,7 @@ export default function MembershipApplicationForm({
           <FormLabel className={fieldLabelClassName}>
             Social links (optional)
           </FormLabel>
-          {/* Field-array rows get crypto.randomUUID() keys during render,
-              which can't run in a prerender. The fallback is the same
-              single empty row, so the swap after hydration is invisible. */}
-          <Suspense fallback={<SocialLinksFallback />}>
-            <SocialLinks />
-          </Suspense>
+          <SocialLinksAfterMount />
         </div>
         <FormField
           name='portfolio'
@@ -483,11 +477,22 @@ export default function MembershipApplicationForm({
 
 type SocialLinksValues = Pick<ApplicationValues, 'socials'>
 
-/** Browser-only: react-hook-form keys field-array rows with
- * crypto.randomUUID(), which Cache Components won't evaluate during the
- * prerender. */
+const noopSubscribe = () => () => {}
+
+/** react-hook-form keys field-array rows with crypto.randomUUID() during
+ * render, which Cache Components won't evaluate in a prerender. So the
+ * server (and the hydration pass) render a static stand-in with the same
+ * markup, and the real rows mount right after hydration. */
+function SocialLinksAfterMount() {
+  const mounted = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false
+  )
+  return mounted ? <SocialLinks /> : <SocialLinksFallback />
+}
+
 function SocialLinks() {
-  use(browser('Field-array keys use crypto.randomUUID()'))
   const form = useFormContext<SocialLinksValues>()
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -554,14 +559,27 @@ function SocialLinks() {
 }
 
 function SocialLinksFallback() {
+  // Same markup as one row plus the add button, so nothing shifts when the
+  // real rows mount after hydration.
   return (
-    <div className='mt-2'>
-      <Input
-        type='text'
-        placeholder='https://'
-        aria-label='Social link 1'
-        readOnly
-      />
-    </div>
+    <>
+      <div className='mt-2 space-y-2'>
+        <Input
+          type='text'
+          placeholder='https://'
+          aria-label='Social link 1'
+          readOnly
+        />
+      </div>
+      <button
+        type='button'
+        className='mt-2 ml-2 cursor-pointer font-sans text-xs font-bold tracking-[0.08em] uppercase'
+      >
+        +{' '}
+        <span className='underline underline-offset-2 hover:no-underline'>
+          Add another
+        </span>
+      </button>
+    </>
   )
 }
