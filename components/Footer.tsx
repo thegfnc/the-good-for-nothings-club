@@ -1,107 +1,10 @@
 'use client'
 
-import { Check, Loader2 } from 'lucide-react'
-import { Input } from './ui/Input'
 import { Button } from './ui/Button'
+import NewsletterSignUpForm from './NewsletterSignUpForm'
 import SocialMediaLinks from './SocialMediaLinks'
 import ScrollTopLink from './ScrollTopLink'
-import { useForm } from 'react-hook-form'
 import { clubhouse, clubhouseMapsUrl } from '../data/location'
-import { newsletterSignUpSchema } from '../data/schemas'
-import { captureEvent } from '../lib/analytics'
-import { useFormTracking } from '../lib/form-tracking'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { Form, FormControl, FormField, FormItem, FormMessage } from './ui/Form'
-import { Alert, AlertDescription, AlertTitle } from './ui/Alert'
-
-function NewsletterSignUpForm() {
-  const form = useForm<z.infer<typeof newsletterSignUpSchema>>({
-    resolver: zodResolver(newsletterSignUpSchema),
-    defaultValues: {
-      email: '',
-    },
-  })
-
-  useFormTracking('newsletter_sign_up', form)
-
-  async function onSubmit(values: z.infer<typeof newsletterSignUpSchema>) {
-    const response = await fetch('/api/newsletter-sign-up', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ...values }),
-    })
-
-    if (!response.ok) {
-      form.setError('root', {
-        message:
-          'Something went wrong. Email us at hello@thegoodfornothings.club.',
-      })
-      throw new Error('Newsletter sign-up failed')
-    }
-
-    captureEvent('newsletter_signed_up')
-  }
-
-  const { isSubmitting, isSubmitSuccessful, errors } = form.formState
-
-  return isSubmitSuccessful ? (
-    <Alert>
-      <Check className='h-4 w-4' />
-      <AlertTitle>Success</AlertTitle>
-      <AlertDescription>
-        Thank you for subscribing to our newsletter.{' '}
-      </AlertDescription>
-    </Alert>
-  ) : (
-    <Form {...form}>
-      <form
-        onSubmit={e =>
-          form
-            .handleSubmit(onSubmit)(e)
-            .catch(() => {})
-        }
-        className='flex w-full flex-col gap-2 @sm:flex-row @sm:flex-wrap @sm:gap-0'
-      >
-        <FormField
-          name='email'
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className='@sm:min-w-0 @sm:flex-1'>
-              <FormControl>
-                <Input
-                  type='email'
-                  id='email'
-                  required
-                  maxLength={256}
-                  autoComplete='email'
-                  placeholder='Enter your email'
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button
-          type='submit'
-          disabled={isSubmitting}
-          className='w-full @sm:w-auto'
-        >
-          {isSubmitting && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
-          Subscribe
-        </Button>
-        {errors.root && (
-          <p className='text-destructive mt-2 w-full font-sans text-sm font-medium'>
-            {errors.root.message}
-          </p>
-        )}
-      </form>
-    </Form>
-  )
-}
 
 // Site map, two columns. The wordmark covers Home. (/projects is still
 // live, just unlinked.)
@@ -119,7 +22,13 @@ const FOOTER_LINKS = [
   { href: '/contact', text: 'Contact' },
 ]
 
-export default function Footer() {
+/**
+ * A client component so every page's RSC payload carries one reference to
+ * it instead of its whole serialized tree (twice, with Partial
+ * Prefetching). The year comes from the server layout, which reads it from
+ * a daily cache (lib/copyrightYear.ts).
+ */
+export default function Footer({ year }: { year: number }) {
   return (
     <footer className='pt-8 pb-8 font-sans md:px-8 md:pt-16 xl:px-16 xl:pb-16'>
       <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black md:border-x-2'>
@@ -182,8 +91,7 @@ export default function Footer() {
         </div>
         <div className='flex flex-col-reverse items-center justify-between gap-4 border-t-2 border-black px-4 py-5 md:flex-row md:px-12'>
           <div className='text-center text-sm'>
-            &copy; {new Date().getFullYear()} The Good for Nothings Club LLC.
-            All rights reserved.
+            &copy; {year} The Good for Nothings Club LLC. All rights reserved.
           </div>
           <div className='text-xl'>
             <SocialMediaLinks />

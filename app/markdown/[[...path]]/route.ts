@@ -1,8 +1,11 @@
-import { fetchQuery } from 'convex/nextjs'
-import { api } from '@/convex/_generated/api'
-import type { Id } from '@/convex/_generated/dataModel'
 import { leadershipSlugs, pastMemberSlugs } from '@/data/leadership'
-import type { GFNC_member, GFNC_project, GFNC_projectListItem } from '@/types'
+import {
+  getListedMembers,
+  getMember,
+  getProject,
+  getProjectsByMember,
+  getProjectsListPage,
+} from '@/lib/content'
 import { STATIC_MARKDOWN, aboutMarkdown } from '@/lib/markdown/pages'
 import {
   memberMarkdown,
@@ -20,11 +23,10 @@ import { notFoundMarkdown } from '@/lib/markdown/site'
  * to look next), which is what agents need to recover.
  */
 
-// Rendered per request: the static pages are cheap, the Convex-backed ones
-// need fresh data, and a 404/503 must never be cached for an hour.
-export const dynamic = 'force-dynamic'
-
-type Params = { params: Promise<{ path?: string[] }> }
+// Rendered per request (the path is a dynamic param). The Convex-backed
+// pages read through the same cache as the HTML pages (lib/content.ts), so
+// both variants show the same content. Failed reads throw and are never
+// cached, so a 503 can't stick.
 
 const MARKDOWN_HEADERS = {
   'Content-Type': 'text/markdown; charset=utf-8',
@@ -43,7 +45,10 @@ function markdown(
   })
 }
 
-export async function GET(_request: Request, { params }: Params) {
+export async function GET(
+  _request: Request,
+  { params }: RouteContext<'/markdown/[[...path]]'>
+) {
   const segments = (await params).path ?? []
   const pathname = '/' + segments.map(decodeURIComponent).join('/')
   const canonical = `https://thegoodfornothings.club${pathname}`
@@ -54,9 +59,7 @@ export async function GET(_request: Request, { params }: Params) {
 
   try {
     if (pathname === '/about') {
-      const members = (await fetchQuery(api.members.bySlugs, {
-        slugs: [...leadershipSlugs, ...pastMemberSlugs],
-      })) as unknown as GFNC_member[]
+      const members = await getListedMembers()
       const founding = members.filter(m =>
         leadershipSlugs.includes(m.slug.current)
       )
@@ -67,18 +70,14 @@ export async function GET(_request: Request, { params }: Params) {
     }
 
     if (pathname === '/projects') {
-      const data = (await fetchQuery(api.projects.listPage, {})) as unknown as {
-        projects: Omit<GFNC_projectListItem, 'membersInvolved'>[]
-      }
+      const data = await getProjectsListPage()
       return markdown(projectsIndexMarkdown(data.projects), 200, {
         'Content-Location': canonical,
       })
     }
 
     if (segments.length === 2 && segments[0] === 'projects') {
-      const project = (await fetchQuery(api.projects.bySlug, {
-        slug: segments[1],
-      })) as unknown as GFNC_project | null
+      const project = await getProject(segments[1])
       if (project)
         return markdown(projectMarkdown(project), 200, {
           'Content-Location': canonical,
@@ -86,13 +85,9 @@ export async function GET(_request: Request, { params }: Params) {
     }
 
     if (segments.length === 2 && segments[0] === 'members') {
-      const member = (await fetchQuery(api.members.bySlug, {
-        slug: segments[1],
-      })) as unknown as GFNC_member | null
+      const member = await getMember(segments[1])
       if (member) {
-        const projects = (await fetchQuery(api.projects.byMemberId, {
-          memberId: member._id as Id<'members'>,
-        })) as unknown as GFNC_project[]
+        const projects = await getProjectsByMember(member._id)
         return markdown(memberMarkdown(member, projects), 200, {
           'Content-Location': canonical,
         })

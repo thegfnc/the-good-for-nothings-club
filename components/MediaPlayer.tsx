@@ -3,7 +3,7 @@
 import { Suspense, useState, useSyncExternalStore } from 'react'
 import ReactPlayer from 'react-player'
 
-const emptySubscribe = () => () => {}
+import WidgetBoundary from './WidgetBoundary'
 
 type MediaPlayerProps = {
   url: string
@@ -23,7 +23,23 @@ type MediaPlayerProps = {
   clickToPlay?: boolean
 }
 
-export default function MediaPlayer({
+const emptySubscribe = () => () => {}
+
+/** A player that throws shows a retry instead of taking down the page. */
+export default function MediaPlayer(props: MediaPlayerProps) {
+  return (
+    <WidgetBoundary
+      label='video'
+      fallbackHref={props.url}
+      fallbackText='Open the video'
+      className='flex aspect-video w-full flex-col items-center justify-center gap-3 border-2 border-black p-6 text-center font-sans'
+    >
+      <Player {...props} />
+    </WidgetBoundary>
+  )
+}
+
+function Player({
   url,
   playing = false,
   controls = false,
@@ -65,7 +81,7 @@ export default function MediaPlayer({
           >
             <path d='M8 5v14l11-7z' />
           </svg>
-          <span className='font-sans text-sm font-black uppercase tracking-[1px]'>
+          <span className='font-sans text-sm font-black tracking-[1px] uppercase'>
             Play video
           </span>
         </button>

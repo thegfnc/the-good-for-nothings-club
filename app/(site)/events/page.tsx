@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Metadata, ResolvingMetadata } from 'next'
+import { cacheLife } from 'next/cache'
 
 import GroupLabel from '@/components/GroupLabel'
 import InquiryDialog from '@/components/InquiryDialog'
@@ -17,9 +18,7 @@ import {
 import { eventsJsonLd } from '@/lib/structuredData'
 import { PAGE_META } from '@/data/site'
 
-// Recompute the upcoming schedule daily. This is also what rolls one-off
-// events from the calendar into Past Events without any edits.
-export const revalidate = 86400
+export const ensureStatic = 'navigation'
 
 export async function generateMetadata(
   _props: unknown,
@@ -61,7 +60,12 @@ type CalendarEntry = {
   url?: string
 }
 
-export default function Events() {
+export default async function Events() {
+  // Recompute the upcoming schedule daily. This is also what rolls one-off
+  // events from the calendar into Past Events without any edits. `now` is
+  // captured when the cache entry is built, not per request.
+  'use cache'
+  cacheLife('days')
   const now = new Date()
   const { upcoming: upcomingSpecials, past } = splitSpecialEvents(now)
   // Three upcoming dates for each recurring event.

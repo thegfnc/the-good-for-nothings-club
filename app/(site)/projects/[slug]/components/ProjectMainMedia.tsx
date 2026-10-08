@@ -1,5 +1,7 @@
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
+import { ViewTransition } from 'react'
+import { projectImageTransition } from '@/lib/viewTransitions'
 import { getImageUrl } from '@/data/client'
 import { getGifVideo } from '@/data/gifVideos'
 import GifVideo from '@/components/GifVideo'
@@ -9,10 +11,15 @@ const MediaPlayer = dynamic(() => import('@/components/MediaPlayer'))
 
 type ProjectMainMediaProps = {
   mainMedia: GFNC_image | VideoFile
+  /** Pairs an image hero with its project card for the morph transition. */
+  slug: string
 }
 
 /** The hero media block shared by every project detail template. */
-export default function ProjectMainMedia({ mainMedia }: ProjectMainMediaProps) {
+export default function ProjectMainMedia({
+  mainMedia,
+  slug,
+}: ProjectMainMediaProps) {
   if (mainMedia._type === 'videoFile') {
     return (
       <MediaPlayer
@@ -28,9 +35,25 @@ export default function ProjectMainMedia({ mainMedia }: ProjectMainMediaProps) {
     )
   }
 
+  // Video heroes don't morph: the card always shows an image, and a still
+  // stretching into a player reads as a glitch rather than continuity.
+  return (
+    <ViewTransition
+      name={projectImageTransition(slug)}
+      share='morph'
+      default='none'
+    >
+      <HeroImage mainMedia={mainMedia} />
+    </ViewTransition>
+  )
+}
+
+function HeroImage({ mainMedia }: { mainMedia: GFNC_image }) {
   const gifVideo = getGifVideo(mainMedia.asset.url)
   if (gifVideo) {
-    return <GifVideo video={gifVideo} alt={mainMedia.caption} className='w-full' />
+    return (
+      <GifVideo video={gifVideo} alt={mainMedia.caption} className='w-full' />
+    )
   }
 
   return (
@@ -45,7 +68,8 @@ export default function ProjectMainMedia({ mainMedia }: ProjectMainMediaProps) {
       alt={mainMedia.caption}
       className={`w-full`}
       sizes='(min-width: 1440px) 1440px, 100vw'
-      priority
+      loading='eager'
+      fetchPriority='high'
       placeholder={mainMedia.asset.metadata.lqip}
     />
   )

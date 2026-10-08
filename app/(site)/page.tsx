@@ -5,6 +5,9 @@ import Link from 'next/link'
 import HeroBanner from '@/components/HeroBanner'
 import { FaCaretRight } from 'react-icons/fa'
 import { homeCopy, homeOffering } from '@/data/home'
+import WidgetBoundary from '@/components/WidgetBoundary'
+
+export const ensureStatic = 'navigation'
 
 export default function Home() {
   return (
@@ -63,8 +66,20 @@ export default function Home() {
           </h2>
           <div className='mt-10 grid grid-cols-1 gap-8 md:mt-14 lg:grid-cols-2'>
             <Suspense fallback={<div>Loading...</div>}>
-              <InstagramFeed feedId='y09WG1s5frlBs5IYL0XM' />
-              <SpotifyPlaylistEmbed />
+              <WidgetBoundary
+                label='Instagram feed'
+                fallbackHref='https://www.instagram.com/thegfnc/'
+                fallbackText='See it on Instagram'
+              >
+                <InstagramFeed feedId='y09WG1s5frlBs5IYL0XM' />
+              </WidgetBoundary>
+              <WidgetBoundary
+                label='playlist'
+                fallbackHref='https://open.spotify.com/playlist/62Qrlx4xvolQWc7GCprAi0'
+                fallbackText='Listen on Spotify'
+              >
+                <SpotifyPlaylistEmbed />
+              </WidgetBoundary>
             </Suspense>
           </div>
         </div>

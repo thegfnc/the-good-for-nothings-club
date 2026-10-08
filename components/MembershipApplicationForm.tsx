@@ -2,8 +2,8 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Check, Loader2, X } from 'lucide-react'
-import { useEffect } from 'react'
-import { useFieldArray, useForm } from 'react-hook-form'
+import { useEffect, useSyncExternalStore } from 'react'
+import { useFieldArray, useForm, useFormContext } from 'react-hook-form'
 import { z } from 'zod'
 
 import { facilities, storefrontCopy } from '../data/facilities'
@@ -125,11 +125,6 @@ export default function MembershipApplicationForm({
       message: '',
       mailingList: false,
     },
-  })
-
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: 'socials',
   })
 
   const tier = form.watch('tier')
@@ -375,59 +370,7 @@ export default function MembershipApplicationForm({
           <FormLabel className={fieldLabelClassName}>
             Social links (optional)
           </FormLabel>
-          <div className='mt-2 space-y-2'>
-            {fields.map((socialField, index) => (
-              <FormField
-                key={socialField.id}
-                name={`socials.${index}.handle`}
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <div className='flex items-center gap-2'>
-                        <Input
-                          type='text'
-                          maxLength={100}
-                          placeholder='https://'
-                          aria-label={`Social link ${index + 1}`}
-                          {...field}
-                        />
-                        {index > 0 && (
-                          <button
-                            type='button'
-                            aria-label={`Remove social link ${index + 1}`}
-                            onClick={() => remove(index)}
-                            className='hover:bg-black/70/10 transition-colo60 cursor-pointer p-1'
-                          >
-                            <X className='h-4 w-4' />
-                          </button>
-                        )}
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            ))}
-          </div>
-          {fields.length < MAX_SOCIALS && (
-            <button
-              type='button'
-              onClick={() => {
-                // Read the live store: rapid clicks can batch into one
-                // render, letting a stale fields.length exceed the cap.
-                if (form.getValues('socials').length < MAX_SOCIALS) {
-                  append({ handle: '' })
-                }
-              }}
-              className='mt-2 ml-2 cursor-pointer font-sans text-xs font-bold tracking-[0.08em] uppercase'
-            >
-              +{' '}
-              <span className='underline underline-offset-2 hover:no-underline'>
-                Add another
-              </span>
-            </button>
-          )}
+          <SocialLinksAfterMount />
         </div>
         <FormField
           name='portfolio'
@@ -529,5 +472,114 @@ export default function MembershipApplicationForm({
         </Button>
       </form>
     </Form>
+  )
+}
+
+type SocialLinksValues = Pick<ApplicationValues, 'socials'>
+
+const noopSubscribe = () => () => {}
+
+/** react-hook-form keys field-array rows with crypto.randomUUID() during
+ * render, which Cache Components won't evaluate in a prerender. So the
+ * server (and the hydration pass) render a static stand-in with the same
+ * markup, and the real rows mount right after hydration. */
+function SocialLinksAfterMount() {
+  const mounted = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false
+  )
+  return mounted ? <SocialLinks /> : <SocialLinksFallback />
+}
+
+function SocialLinks() {
+  const form = useFormContext<SocialLinksValues>()
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: 'socials',
+  })
+
+  return (
+    <>
+      <div className='mt-2 space-y-2'>
+        {fields.map((socialField, index) => (
+          <FormField
+            key={socialField.id}
+            name={`socials.${index}.handle`}
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <div className='flex items-center gap-2'>
+                    <Input
+                      type='text'
+                      maxLength={100}
+                      placeholder='https://'
+                      aria-label={`Social link ${index + 1}`}
+                      {...field}
+                    />
+                    {index > 0 && (
+                      <button
+                        type='button'
+                        aria-label={`Remove social link ${index + 1}`}
+                        onClick={() => remove(index)}
+                        className='hover:bg-black/70/10 transition-colo60 cursor-pointer p-1'
+                      >
+                        <X className='h-4 w-4' />
+                      </button>
+                    )}
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        ))}
+      </div>
+      {fields.length < MAX_SOCIALS && (
+        <button
+          type='button'
+          onClick={() => {
+            // Read the live store: rapid clicks can batch into one
+            // render, letting a stale fields.length exceed the cap.
+            if (form.getValues('socials').length < MAX_SOCIALS) {
+              append({ handle: '' })
+            }
+          }}
+          className='mt-2 ml-2 cursor-pointer font-sans text-xs font-bold tracking-[0.08em] uppercase'
+        >
+          +{' '}
+          <span className='underline underline-offset-2 hover:no-underline'>
+            Add another
+          </span>
+        </button>
+      )}
+    </>
+  )
+}
+
+function SocialLinksFallback() {
+  // Same markup as one row plus the add button, so nothing shifts when the
+  // real rows mount after hydration.
+  return (
+    <>
+      <div className='mt-2 space-y-2'>
+        <Input
+          type='text'
+          placeholder='https://'
+          aria-label='Social link 1'
+          readOnly
+        />
+      </div>
+      <button
+        type='button'
+        className='mt-2 ml-2 cursor-pointer font-sans text-xs font-bold tracking-[0.08em] uppercase'
+      >
+        +{' '}
+        <span className='underline underline-offset-2 hover:no-underline'>
+          Add another
+        </span>
+      </button>
+    </>
   )
 }

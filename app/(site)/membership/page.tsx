@@ -8,6 +8,8 @@ import SectionHeading from '@/components/SectionHeading'
 import { membershipCopy, membershipTiers } from '@/data/membership'
 import { PAGE_META } from '@/data/site'
 
+export const ensureStatic = 'navigation'
+
 export async function generateMetadata(
   _props: unknown,
   parent: ResolvingMetadata

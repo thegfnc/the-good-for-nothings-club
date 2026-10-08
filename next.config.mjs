@@ -6,6 +6,28 @@ const nextConfig = {
   // default trailing-slash redirect would 308 them and break capture.
   skipTrailingSlashRedirect: true,
 
+  // Cache Components: nothing is cached unless it's marked 'use cache'.
+  // Convex's fetchQuery always sends cache: 'no-store', so before this the
+  // route-level `revalidate` exports were silently ignored and every
+  // project, member, and about page rendered on each request. Cached data
+  // helpers live in lib/content.ts. Partial Prefetching goes with it: links
+  // prefetch one reusable shell per route instead of one per link.
+  cacheComponents: true,
+  partialPrefetching: true,
+
+  // Dev only: browser console warnings and errors also print in the
+  // terminal running `next dev`, where agents can see them.
+  logging: {
+    browserToTerminal: 'warn',
+  },
+
+  experimental: {
+    // Nudge during dev/build when a Next release fixes a vulnerability in
+    // the installed version. 'security' is the default; set explicitly so
+    // the policy is visible here.
+    agentUpgrade: 'security',
+  },
+
   images: {
     // Page content maxes out at --page-max-width (1440px), so nothing ever
     // renders wider than 1440 CSS px. Dropping the default 2048/3840 rungs

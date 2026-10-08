@@ -5,10 +5,12 @@ import { useEffect } from 'react'
 
 type GlobalErrorProps = {
   error: Error & { digest?: string }
-  reset: () => void
+  /** Re-fetches and re-renders, unlike reset(), which only re-renders on
+   * the client and can't recover from a failed server render. */
+  retry: () => void
 }
 
-export default function GlobalError({ error, reset }: GlobalErrorProps) {
+export default function GlobalError({ error, retry }: GlobalErrorProps) {
   useEffect(() => {
     if (posthog.__loaded) {
       posthog.captureException(error, {
@@ -22,7 +24,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
     <html>
       <body>
         <h2>Something went wrong!</h2>
-        <button onClick={() => reset()}>Try again</button>
+        <button onClick={() => retry()}>Try again</button>
       </body>
     </html>
   )

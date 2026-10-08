@@ -37,7 +37,7 @@ export default function PhotoProject({ project }: PhotoProjectProps) {
             </h2>
           </div>
           <div className='flex items-center justify-center border-y-2 border-black'>
-            <ProjectMainMedia mainMedia={mainMedia} />
+            <ProjectMainMedia mainMedia={mainMedia} slug={project.slug.current} />
           </div>
           <div className='mx-4 my-6 flex flex-col justify-between gap-6 md:mx-12 md:my-12 md:gap-16 lg:flex-row'>
             <div className='space-y-2 md:space-y-6'>

@@ -3,6 +3,7 @@
 import { Authenticated, useQuery } from 'convex/react'
 import Image from 'next/image'
 
+import RefreshPublicSite from '@/components/admin/RefreshPublicSite'
 import { api } from '@/convex/_generated/api'
 
 function Projects() {
@@ -76,6 +77,9 @@ function Projects() {
 export default function AdminProjectsPage() {
   return (
     <Authenticated>
+      <div className='mb-4 flex justify-end'>
+        <RefreshPublicSite />
+      </div>
       <Projects />
     </Authenticated>
   )

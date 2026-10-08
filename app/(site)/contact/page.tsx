@@ -3,6 +3,7 @@ import Link from 'next/link'
 import InquiryForm from '@/components/InquiryForm'
 import { clubhouseAddressLine, clubhouseMapsUrl } from '@/data/location'
 import Map from '@/components/Map'
+import WidgetBoundary from '@/components/WidgetBoundary'
 import OfferCard from '@/components/OfferCard'
 import PageShell from '@/components/PageShell'
 import SectionHeading from '@/components/SectionHeading'
@@ -11,6 +12,8 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import { contactCopy } from '@/data/contact'
 import { CONTACT_EMAIL } from '@/data/site'
 import { PAGE_META } from '@/data/site'
+
+export const ensureStatic = 'navigation'
 
 export async function generateMetadata(
   _props: unknown,
@@ -59,7 +62,14 @@ export default async function Contact() {
             {clubhouseAddressLine}
           </Link>
           <div className='mt-6 aspect-video overflow-hidden border-2 border-black'>
-            <Map />
+            <WidgetBoundary
+              label='map'
+              fallbackHref={clubhouseMapsUrl}
+              fallbackText='Open in Google Maps'
+              className='flex h-full flex-col items-center justify-center gap-3 p-6 text-center font-sans'
+            >
+              <Map />
+            </WidgetBoundary>
           </div>
         </div>
 

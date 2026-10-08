@@ -1,48 +1,25 @@
-import { fetchQuery } from 'convex/nextjs'
-import Link from 'next/link'
-import { cn } from '@/lib/utils'
-import { api } from '@/convex/_generated/api'
-import type {
-  GFNC_memberCard,
-  GFNC_projectListItem,
-  GFNC_projectType,
-} from '@/types'
+import { Suspense } from 'react'
+import { getProjectsListPage } from '@/lib/content'
+import {
+  projectTypeFilterCss,
+  projectTypeFilterScript,
+} from '@/lib/projectTypes'
+import type { GFNC_projectListItem } from '@/types'
 import type { Metadata, ResolvingMetadata } from 'next'
 import InProgressSection from './InProgressSection'
 import CompletedSection from './CompletedSection'
 import ProjectCardSmall from '@/components/ProjectCardSmall'
 import { PAGE_META } from '@/data/site'
+import {
+  FilteredListing,
+  SelectedTypeMenu,
+  TypeMenu,
+} from '@/components/ProjectTypeFilter'
 
-// Regenerate hourly — matches the old cmsFetch revalidate window.
-export const revalidate = 3600
-
-const menuItems = [
-  {
-    name: 'All',
-  },
-  {
-    name: 'Audio',
-  },
-  {
-    name: 'Build',
-  },
-  {
-    name: 'Event',
-  },
-  {
-    name: 'Photo',
-  },
-  {
-    name: 'Video',
-  },
-  {
-    name: 'Web',
-  },
-]
-
-type ProjectsProps = {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}
+// Fully prerendered: every project renders once from cached Convex data
+// (lib/content.ts), and the ?type= filter is applied in the browser
+// (components/ProjectTypeFilter.tsx), so no request needs a server render.
+export const ensureStatic = 'navigation'
 
 export async function generateMetadata(
   _props: unknown,
@@ -63,26 +40,37 @@ export async function generateMetadata(
   }
 }
 
-export default async function ProjectsOptimized(props: ProjectsProps) {
-  const searchParams = await props.searchParams
-  const isDefaultType =
-    !searchParams.type ||
-    !menuItems.find(item => item.name === searchParams.type)
+export default function Projects() {
+  const listing = <ProjectsListing />
+  return (
+    <main>
+      <style>{projectTypeFilterCss()}</style>
+      <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
+        <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
+          <div className='flex flex-col items-center justify-between gap-8 pt-6 md:pt-8'>
+            <h1 className='text-[32px] leading-none font-black tracking-[-0.04em] md:text-[48px] lg:text-[96px]'>
+              Projects
+            </h1>
+            <Suspense fallback={<TypeMenu />}>
+              <SelectedTypeMenu />
+            </Suspense>
+          </div>
+        </div>
+      </section>
 
-  const type = isDefaultType ? menuItems[0].name : searchParams.type
+      {/* The fallback (the unfiltered listing) is what prerenders; the
+          filter reads the query string in the browser. Both slots get the
+          same element, so the RSC payload carries the listing once. */}
+      <Suspense fallback={<div id='projects-listing'>{listing}</div>}>
+        <FilteredListing>{listing}</FilteredListing>
+      </Suspense>
+      <script dangerouslySetInnerHTML={{ __html: projectTypeFilterScript() }} />
+    </main>
+  )
+}
 
-  // Single API call: projects carry memberIds; members come deduplicated in
-  // a top-level array. (The cast covers Convex's loose portable-text typing;
-  // the shape itself mirrors the listPage projection — see types/index.ts.)
-  const data = (await fetchQuery(
-    api.projects.listPage,
-    isDefaultType ? {} : { type: type as GFNC_projectType }
-  )) as unknown as {
-    members: GFNC_memberCard[]
-    projects: (Omit<GFNC_projectListItem, 'membersInvolved'> & {
-      memberIds: string[]
-    })[]
-  }
+async function ProjectsListing() {
+  const data = await getProjectsListPage()
 
   // Resolve ids to the shared member instances. Every card referencing a
   // member gets the same object, so React Flight serializes each member
@@ -96,7 +84,8 @@ export default async function ProjectsOptimized(props: ProjectsProps) {
     })
   )
 
-  // Filter projects by status on the client side
+  // Group by status. The ?type= filter is applied in the browser
+  // (components/ProjectTypeFilter.tsx).
   const inProgressProjectsData = allProjects.filter(
     p => p.status === 'In Progress'
   )
@@ -107,55 +96,26 @@ export default async function ProjectsOptimized(props: ProjectsProps) {
   const canceledProjectsData = allProjects.filter(p => p.status === 'Canceled')
 
   return (
-    <main>
-      <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
-        <div className='bg-background mx-auto max-w-(--page-max-width) border-y-2 border-black px-4 py-6 md:border-x-2 md:px-12 md:py-12'>
-          <div className='flex flex-col items-center justify-between gap-8 pt-6 md:pt-8'>
-            <h1 className='text-[32px] leading-none font-black tracking-[-0.04em] md:text-[48px] lg:text-[96px]'>
-              Projects
-            </h1>
-            <ul className='flex max-w-full overflow-x-scroll rounded-full border-2 border-black'>
-              {menuItems.map(item => (
-                <li key={item.name}>
-                  <Link
-                    className={cn(
-                      'block px-4 py-3 font-sans text-sm leading-tight font-black uppercase transition-colors hover:no-underline sm:px-6 sm:py-4 md:text-base lg:px-8',
-                      item.name === type
-                        ? 'bg-black text-white hover:bg-black'
-                        : 'text-black hover:bg-black/10 active:bg-black/20'
-                    )}
-                    href={
-                      item.name !== menuItems[0].name
-                        ? `/projects?type=${item.name}`
-                        : '/projects'
-                    }
-                    scroll={false}
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
+    <>
       {inProgressProjectsData.length > 0 && (
-        <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
+        <section data-project-group className='pt-8 md:px-8 md:pt-16 xl:px-16'>
           <InProgressSection projectsData={inProgressProjectsData} />
         </section>
       )}
 
       {completedProjectsData.length > 0 && (
-        <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
+        <section data-project-group className='pt-8 md:px-8 md:pt-16 xl:px-16'>
           <CompletedSection projectsData={completedProjectsData} />
         </section>
       )}
 
-      <section className='pt-8 md:px-8 md:pt-16 xl:px-16'>
+      <section data-project-group className='pt-8 md:px-8 md:pt-16 xl:px-16'>
         <div className='mx-auto grid max-w-(--page-max-width) grid-cols-1 gap-12 lg:grid-cols-2'>
           {pausedProjectsData.length > 0 && (
-            <div className='bg-background mx-auto w-full max-w-(--page-max-width) border-y-2 border-black px-4 pt-6 md:border-x-2 md:px-12 md:pt-12'>
+            <div
+              data-project-group
+              className='bg-background mx-auto w-full max-w-(--page-max-width) border-y-2 border-black px-4 pt-6 md:border-x-2 md:px-12 md:pt-12'
+            >
               <div className='flex items-center gap-4'>
                 <div className='h-5 w-5 rounded-full border-2 border-black bg-yellow-300'></div>
                 <h2 className='text-[32px] leading-none font-black tracking-[-0.04em] md:text-[48px] xl:text-[64px]'>
@@ -171,7 +131,10 @@ export default async function ProjectsOptimized(props: ProjectsProps) {
           )}
 
           {canceledProjectsData.length > 0 && (
-            <div className='bg-background mx-auto w-full max-w-(--page-max-width) border-y-2 border-black px-4 pt-6 md:border-x-2 md:px-12 md:pt-12'>
+            <div
+              data-project-group
+              className='bg-background mx-auto w-full max-w-(--page-max-width) border-y-2 border-black px-4 pt-6 md:border-x-2 md:px-12 md:pt-12'
+            >
               <div className='flex items-center gap-4'>
                 <div className='h-5 w-5 rounded-full border-2 border-black bg-red-300'></div>
                 <h2 className='text-[32px] leading-none font-black tracking-[-0.04em] md:text-[48px] xl:text-[64px]'>
@@ -187,6 +150,6 @@ export default async function ProjectsOptimized(props: ProjectsProps) {
           )}
         </div>
       </section>
-    </main>
+    </>
   )
 }
