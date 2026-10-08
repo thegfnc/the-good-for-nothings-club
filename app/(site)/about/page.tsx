@@ -5,19 +5,18 @@ import { FaCaretDown } from 'react-icons/fa'
 import MemberProfilePicture from '@/components/MemberProfilePicture'
 import PageShell from '@/components/PageShell'
 import SectionHeading from '@/components/SectionHeading'
-import { fetchQuery } from 'convex/nextjs'
-import { api } from '@/convex/_generated/api'
 import {
   leadershipCopy,
   leadershipSlugs,
   pastMemberSlugs,
 } from '@/data/leadership'
-import { GFNC_member } from '@/types'
+import { getListedMembers } from '@/lib/content'
 import { aboutCopy, aboutItems } from '@/data/about'
 import { PAGE_META } from '@/data/site'
 
-// Regenerate hourly — matches the old cmsFetch revalidate window.
-export const revalidate = 3600
+// Member list comes from cached Convex data (refreshed hourly, see
+// lib/content.ts); the rest of the page is static copy.
+export const ensureStatic = 'navigation'
 
 export async function generateMetadata(
   _props: unknown,
@@ -39,9 +38,7 @@ export async function generateMetadata(
 }
 
 export default async function About() {
-  const membersData = (await fetchQuery(api.members.bySlugs, {
-    slugs: [...leadershipSlugs, ...pastMemberSlugs],
-  })) as unknown as GFNC_member[]
+  const membersData = await getListedMembers()
 
   const founding = membersData.filter(member =>
     leadershipSlugs.includes(member.slug.current)

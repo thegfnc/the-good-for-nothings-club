@@ -1,10 +1,11 @@
 import { getImageUrl } from '@/data/client'
-import { GFNC_project, Image } from '@/types'
+import { Image } from '@/types'
 import { toPlainText } from '@portabletext/toolkit'
-import { fetchQuery } from 'convex/nextjs'
 import { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
-import { api } from '@/convex/_generated/api'
+import { Suspense } from 'react'
+import DetailFallback from '@/components/DetailFallback'
+import { getProject, getProjectsForSitemap } from '@/lib/content'
 import {
   WebProject,
   VideoProject,
@@ -14,14 +15,18 @@ import {
   BuildProject,
 } from './components'
 
-// Regenerate hourly — matches the old cmsFetch revalidate window.
-export const revalidate = 3600
+// Every project page is prerendered from cached Convex data (refreshed
+// hourly, see lib/content.ts). A project added after the deploy renders on
+// its first visit, which waits for the full page rather than streaming a
+// fallback, and is cached from then on.
+export const ensureStatic = 'navigation'
 
-type ProjectProps = {
-  params: Promise<{
-    slug: string
-  }>
+export async function generateStaticParams() {
+  const projects = await getProjectsForSitemap()
+  return projects.map(project => ({ slug: project.slug.current }))
 }
+
+type ProjectProps = PageProps<'/projects/[slug]'>
 
 export async function generateMetadata(
   props: ProjectProps,
@@ -34,9 +39,7 @@ export async function generateMetadata(
   const { openGraph } = await parent
   const pathname = '/projects/' + slug
 
-  const project = (await fetchQuery(api.projects.bySlug, {
-    slug,
-  })) as unknown as GFNC_project | null
+  const project = await getProject(slug)
 
   if (!project) notFound()
 
@@ -70,13 +73,21 @@ export async function generateMetadata(
   }
 }
 
-export default async function Project(props: ProjectProps) {
-  const params = await props.params
-  const { slug } = params
+// params are awaited inside Suspense so every project shares one App Shell
+// (the frame in DetailFallback), which a plain <Link> prefetches and shows
+// the instant it's clicked.
+export default function Project(props: ProjectProps) {
+  return (
+    <Suspense fallback={<DetailFallback />}>
+      <ProjectContent params={props.params} />
+    </Suspense>
+  )
+}
 
-  const project = (await fetchQuery(api.projects.bySlug, {
-    slug,
-  })) as unknown as GFNC_project | null
+async function ProjectContent({ params }: Pick<ProjectProps, 'params'>) {
+  const { slug } = await params
+
+  const project = await getProject(slug)
 
   if (!project) notFound()
 

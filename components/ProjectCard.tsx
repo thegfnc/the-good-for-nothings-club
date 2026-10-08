@@ -11,12 +11,12 @@ import { Badge } from './ui/badge'
 
 type ProjectCardProps = {
   project: GFNC_project
-  priority?: boolean
+  preload?: boolean
 }
 
 export default function ProjectCard({
   project,
-  priority = false,
+  preload = false,
 }: ProjectCardProps) {
   const mainMedia = project.mainMedia.find(
     mainMedia => mainMedia._type === 'image'
@@ -46,7 +46,7 @@ export default function ProjectCard({
           height={mainMedia.asset.metadata.dimensions.height}
           alt={mainMedia.caption}
           className='aspect-video object-cover object-top'
-          priority={priority}
+          preload={preload}
           placeholder={mainMedia.asset.metadata.lqip}
         />
       )}

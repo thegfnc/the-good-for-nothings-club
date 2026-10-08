@@ -1,9 +1,10 @@
 'use client'
 
-import { Suspense, useState, useSyncExternalStore } from 'react'
+import { Suspense, use, useState } from 'react'
+import { browser } from 'react-dom'
 import ReactPlayer from 'react-player'
 
-const emptySubscribe = () => () => {}
+import WidgetBoundary from './WidgetBoundary'
 
 type MediaPlayerProps = {
   url: string
@@ -23,7 +24,31 @@ type MediaPlayerProps = {
   clickToPlay?: boolean
 }
 
-export default function MediaPlayer({
+/**
+ * react-player v3 SSRs its players as web components with declarative
+ * shadow DOM (<youtube-video> etc). Hydrating that markup is timing-
+ * sensitive (slow clients, render bots especially, hit React #418 and the
+ * whole tree gets client-regenerated anyway), so the player renders in the
+ * browser only. The Suspense fallback is the server HTML and keeps the box.
+ * A player that throws shows a retry instead of taking down the page.
+ */
+export default function MediaPlayer(props: MediaPlayerProps) {
+  const className = props.className ?? 'w-full'
+  return (
+    <WidgetBoundary
+      label='video'
+      fallbackHref={props.url}
+      fallbackText='Open the video'
+      className='flex aspect-video w-full flex-col items-center justify-center gap-3 border-2 border-black p-6 text-center font-sans'
+    >
+      <Suspense fallback={<div className={className} />}>
+        <BrowserPlayer {...props} className={className} />
+      </Suspense>
+    </WidgetBoundary>
+  )
+}
+
+function BrowserPlayer({
   url,
   playing = false,
   controls = false,
@@ -34,19 +59,8 @@ export default function MediaPlayer({
   className = 'w-full',
   clickToPlay = false,
 }: MediaPlayerProps) {
+  use(browser('react-player hydration is timing-sensitive'))
   const [started, setStarted] = useState(false)
-
-  // react-player v3 SSRs its players as web components with declarative
-  // shadow DOM (<youtube-video> etc). Hydrating that markup is timing-
-  // sensitive - slow clients (render bots especially) hit React #418 and the
-  // whole tree gets client-regenerated anyway - so skip SSR entirely and
-  // mount the player after hydration. The wrapper div keeps the box.
-  const mounted = useSyncExternalStore(
-    emptySubscribe,
-    () => true,
-    () => false
-  )
-  if (!mounted) return <div className={className} />
 
   if (clickToPlay && !started) {
     return (
@@ -65,7 +79,7 @@ export default function MediaPlayer({
           >
             <path d='M8 5v14l11-7z' />
           </svg>
-          <span className='font-sans text-sm font-black uppercase tracking-[1px]'>
+          <span className='font-sans text-sm font-black tracking-[1px] uppercase'>
             Play video
           </span>
         </button>

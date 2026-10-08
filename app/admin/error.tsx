@@ -15,10 +15,11 @@ import { Button } from '@/components/ui/Button'
  */
 export default function AdminError({
   error,
-  reset,
+  retry,
 }: {
   error: Error & { digest?: string }
-  reset: () => void
+  /** Re-fetches and re-renders (reset() only re-renders on the client). */
+  retry: () => void
 }) {
   useEffect(() => {
     if (posthog.__loaded) {
@@ -39,7 +40,7 @@ export default function AdminError({
         while, your session may have lapsed — sign in again.
       </p>
       <div className='flex flex-col gap-3'>
-        <Button type='button' onClick={reset}>
+        <Button type='button' onClick={() => retry()}>
           Try again
         </Button>
         <a

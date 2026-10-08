@@ -5,6 +5,11 @@ import { ReactNode } from 'react'
 import AdminNav from '@/components/admin/AdminNav'
 import AdminProviders from '@/components/admin/AdminProviders'
 
+// The Convex Auth provider reads the session cookies, so every admin page
+// renders per request. That's fine for a private, auth-gated app: let it
+// block rather than stream a public static shell.
+export const instant = false
+
 export const metadata: Metadata = {
   title: 'Admin',
   robots: { index: false, follow: false },

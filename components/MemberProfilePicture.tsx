@@ -68,7 +68,7 @@ export default function MemberProfilePicture({
           style={{
             objectPosition,
           }}
-          priority={true}
+          loading='eager'
           placeholder={profilePicture.asset.metadata.lqip}
         />
       )}
@@ -93,7 +93,7 @@ export default function MemberProfilePicture({
           style={{
             objectPosition,
           }}
-          priority={true}
+          loading='eager'
           placeholder={hoverProfilePicture.asset.metadata.lqip}
         />
       )}

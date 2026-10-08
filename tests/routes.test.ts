@@ -4,6 +4,10 @@ const fetchQuery = vi.fn()
 vi.mock('convex/nextjs', () => ({
   fetchQuery: (...args: unknown[]) => fetchQuery(...args),
 }))
+// 'use cache' is a no-op string outside Next's compiler, but cacheLife and
+// cacheTag throw without the cacheComponents runtime. Stub them so the
+// handlers run as plain functions.
+vi.mock('next/cache', () => ({ cacheLife: () => {}, cacheTag: () => {} }))
 
 import { GET as markdownGET } from '@/app/markdown/[[...path]]/route'
 import { GET as llmsGET } from '@/app/llms.txt/route'
@@ -94,7 +98,7 @@ describe('llms routes', () => {
       true
     )
 
-    const full = llmsFullGET()
+    const full = await llmsFullGET()
     const body = await full.text()
     expect(body).toContain('## When to use this site')
     expect(body).toContain('# Facilities')

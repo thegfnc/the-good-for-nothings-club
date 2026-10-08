@@ -1,7 +1,10 @@
 import { MetadataRoute } from 'next'
-import { fetchQuery } from 'convex/nextjs'
-import { api } from '../convex/_generated/api'
-import { leadershipSlugs, pastMemberSlugs } from '../data/leadership'
+import { cacheLife, cacheTag } from 'next/cache'
+import {
+  CONTENT_TAG,
+  getMembersForSitemap,
+  getProjectsForSitemap,
+} from '@/lib/content'
 
 const defaultPage: MetadataRoute.Sitemap[0] = {
   url: 'https://thegoodfornothings.club',
@@ -60,11 +63,15 @@ const contactPage: MetadataRoute.Sitemap[0] = {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Cached with the content it lists; the `new Date()` fallbacks below are
+  // captured when the entry is built.
+  'use cache'
+  cacheLife('hours')
+  cacheTag(CONTENT_TAG)
+
   const [projectsData, membersData] = await Promise.all([
-    fetchQuery(api.projects.forSitemap, {}),
-    fetchQuery(api.members.forSitemap, {
-      slugs: [...leadershipSlugs, ...pastMemberSlugs],
-    }),
+    getProjectsForSitemap(),
+    getMembersForSitemap(),
   ])
 
   const projectPages: MetadataRoute.Sitemap = projectsData.map(project => ({

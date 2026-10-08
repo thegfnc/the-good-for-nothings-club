@@ -1,24 +1,29 @@
 import Link from 'next/link'
 import { getImageUrl } from '@/data/client'
-import { GFNC_member, GFNC_project } from '@/types'
-import { fetchQuery } from 'convex/nextjs'
-import { api } from '@/convex/_generated/api'
-import { Id } from '@/convex/_generated/dataModel'
+import {
+  getMember,
+  getProjectsByMember,
+  listedMemberSlugs,
+} from '@/lib/content'
 import Image from 'next/image'
 import { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
+import DetailFallback from '@/components/DetailFallback'
 import ProjectCardSmall from '@/components/ProjectCardSmall'
 import { pastMemberSlugs } from '@/data/leadership'
 import { FaCaretLeft } from 'react-icons/fa6'
 
-// Regenerate hourly — matches the old cmsFetch revalidate window.
-export const revalidate = 3600
+// Prerendered from cached Convex data (refreshed hourly, see
+// lib/content.ts). Only leadership and past members are linked anywhere;
+// any other member slug renders on first visit and is cached after.
+export const ensureStatic = 'navigation'
 
-type MemberProps = {
-  params: Promise<{
-    slug: string
-  }>
+export function generateStaticParams() {
+  return listedMemberSlugs.map(slug => ({ slug }))
 }
+
+type MemberProps = PageProps<'/members/[slug]'>
 
 export async function generateMetadata(
   props: MemberProps,
@@ -30,9 +35,7 @@ export async function generateMetadata(
   const { openGraph } = await parent
   const pathname = '/members/' + slug
 
-  const member = (await fetchQuery(api.members.bySlug, {
-    slug,
-  })) as unknown as GFNC_member | null
+  const member = await getMember(slug)
 
   if (!member) notFound()
 
@@ -65,21 +68,26 @@ export async function generateMetadata(
   }
 }
 
-export default async function Member(props: MemberProps) {
-  const params = await props.params
-  const { slug } = params
+// params are awaited inside Suspense so every member page shares one App
+// Shell (DetailFallback), shown the instant a link is clicked.
+export default function Member(props: MemberProps) {
+  return (
+    <Suspense fallback={<DetailFallback />}>
+      <MemberContent params={props.params} />
+    </Suspense>
+  )
+}
+
+async function MemberContent({ params }: Pick<MemberProps, 'params'>) {
+  const { slug } = await params
 
   // First get the member data
-  const member = (await fetchQuery(api.members.bySlug, {
-    slug,
-  })) as unknown as GFNC_member | null
+  const member = await getMember(slug)
 
   if (!member) notFound()
 
   // Then get the projects data using the member ID
-  const projectsData = (await fetchQuery(api.projects.byMemberId, {
-    memberId: member._id as Id<'members'>,
-  })) as unknown as GFNC_project[]
+  const projectsData = await getProjectsByMember(member._id)
 
   const objectPosition = `${(member.profilePicture.hotspot?.x || 1) * 100}% ${(member.profilePicture.hotspot?.y || 1) * 100}%`
 
@@ -111,7 +119,8 @@ export default async function Member(props: MemberProps) {
                   sizes='(min-width: 1024px) 33vw, 100vw'
                   className='w-full border-2 border-black object-cover'
                   style={{ objectPosition }}
-                  priority
+                  loading='eager'
+                  fetchPriority='high'
                   placeholder='blur'
                   blurDataURL={member.profilePicture.asset.metadata.lqip}
                 />

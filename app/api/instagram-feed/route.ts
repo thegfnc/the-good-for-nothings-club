@@ -1,20 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import type * as Behold from '@behold/types'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0 // Allow query-string access without static rendering
-
 export async function GET(request: NextRequest) {
+  // Read before the try: the query string is request data, and reading it
+  // during the build's prerender throws a bail-out the catch would log.
+  const feedId = request.nextUrl.searchParams.get('feedId')
+
+  if (!feedId) {
+    return NextResponse.json({ error: 'Feed ID is required' }, { status: 400 })
+  }
+
   try {
-    const feedId = request.nextUrl.searchParams.get('feedId')
-
-    if (!feedId) {
-      return NextResponse.json(
-        { error: 'Feed ID is required' },
-        { status: 400 }
-      )
-    }
-
     const response = await fetch(`https://feeds.behold.so/${feedId}`, {
       headers: {
         'Content-Type': 'application/json',

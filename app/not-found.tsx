@@ -1,5 +1,6 @@
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
+import { copyrightYear } from '@/lib/copyrightYear'
 
 import SiteNotFound from './(site)/not-found'
 
@@ -11,12 +12,12 @@ export { metadata } from './(site)/not-found'
  * Header and Footer. A notFound() thrown from a site page is caught inside
  * the (site) layout instead and renders app/(site)/not-found.tsx directly.
  */
-export default function NotFound() {
+export default async function NotFound() {
   return (
     <>
       <Header />
       <SiteNotFound />
-      <Footer />
+      <Footer year={await copyrightYear()} />
     </>
   )
 }

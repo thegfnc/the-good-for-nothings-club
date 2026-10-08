@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "if [ -n \"$CONVEX_DEPLOY_KEY\" ]; then npx convex deploy --cmd-url-env-var-name NEXT_PUBLIC_CONVEX_URL --cmd 'next build'; else next build; fi",
     "start": "next start",
     "lint": "eslint .",
@@ -17,6 +17,7 @@
     "@convex-dev/aggregate": "^0.3.1",
     "@convex-dev/auth": "^0.0.96",
     "@hookform/resolvers": "^5.9.1",
+    "@next/third-parties": "^16.4.0",
     "@portabletext/react": "^8.0.1",
     "@portabletext/toolkit": "^6.0.0",
     "@portabletext/types": "^4.0.2",

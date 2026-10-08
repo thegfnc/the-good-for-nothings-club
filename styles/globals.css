@@ -274,3 +274,32 @@
     block-size: auto;
   }
 }
+
+/* View transitions (React <ViewTransition>, see lib/viewTransitions.ts).
+   Project card image -> project hero: a 400ms morph with a slight blur to
+   hide resampling. Unnamed content just crossfades. */
+::view-transition-group(.morph) {
+  animation-duration: 400ms;
+}
+::view-transition-image-pair(.morph) {
+  animation-name: via-blur;
+}
+@keyframes via-blur {
+  30% {
+    filter: blur(3px);
+  }
+}
+
+/* Clicks during a transition reach the live page instead of the overlay. */
+::view-transition {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}

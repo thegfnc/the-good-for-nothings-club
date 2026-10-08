@@ -1,13 +1,15 @@
 import { GFNC_project, GFNC_projectListItem } from '@/types'
 import Image from 'next/image'
+import { ViewTransition } from 'react'
 import { getImageUrl } from '@/data/client'
 import { getGifVideo } from '@/data/gifVideos'
 import GifVideo from './GifVideo'
 import { PortableText } from '@portabletext/react'
 import getProjectDateString from '@/lib/getProjectDateString'
-import Link from 'next/link'
+import IntentPrefetchLink from './IntentPrefetchLink'
 import MemberAvatarStack from './MemberAvatarStack'
 import { Badge } from './ui/badge'
+import { projectImageTransition } from '@/lib/viewTransitions'
 
 type ProjectCardSmallProps = {
   project: GFNC_project | GFNC_projectListItem
@@ -35,40 +37,47 @@ export default function ProjectCardSmall({ project }: ProjectCardSmallProps) {
   return (
     <div
       key={project._id}
+      data-project-type={project.type}
       className='group relative flex flex-col justify-between gap-5 border-1 border-black/15 bg-black/5 p-4 transition-all hover:border-black hover:bg-black/10'
     >
       <div className='flex items-start gap-3'>
-        {gifVideo ? (
-          <GifVideo
-            video={gifVideo}
-            alt={mainMedia.caption || project.title}
-            className='w-1/4 object-cover'
-          />
-        ) : (
-          <Image
-            src={
-              mainMedia.asset.extension === 'gif'
-                ? getImageUrl(mainMedia).url()
-                : getImageUrl(mainMedia).width(400).quality(75).url()
-            }
-            width={mainMedia.asset.metadata.dimensions.width}
-            height={mainMedia.asset.metadata.dimensions.height}
-            alt={mainMedia.caption || project.title}
-            className='w-1/4 object-cover'
-            priority={false}
-            loading='lazy'
-            placeholder='blur'
-            blurDataURL={mainMedia.asset.metadata.lqip}
-          />
-        )}
+        {/* Morphs into the project page's hero image on navigation. */}
+        <ViewTransition
+          name={projectImageTransition(project.slug.current)}
+          share='morph'
+          default='none'
+        >
+          {gifVideo ? (
+            <GifVideo
+              video={gifVideo}
+              alt={mainMedia.caption || project.title}
+              className='w-1/4 object-cover'
+            />
+          ) : (
+            <Image
+              src={
+                mainMedia.asset.extension === 'gif'
+                  ? getImageUrl(mainMedia).url()
+                  : getImageUrl(mainMedia).width(400).quality(75).url()
+              }
+              width={mainMedia.asset.metadata.dimensions.width}
+              height={mainMedia.asset.metadata.dimensions.height}
+              alt={mainMedia.caption || project.title}
+              className='w-1/4 object-cover'
+              loading='lazy'
+              placeholder='blur'
+              blurDataURL={mainMedia.asset.metadata.lqip}
+            />
+          )}
+        </ViewTransition>
         <div className='space-y-1'>
           <h2 className='relative z-10 text-[16px] leading-[1.1] font-bold sm:text-[20px]'>
-            <Link
+            <IntentPrefetchLink
               href={`/projects/${project.slug.current}`}
               className='block hover:no-underline'
             >
               {project.title}
-            </Link>
+            </IntentPrefetchLink>
           </h2>
           <div className='portable-text font-sans text-sm leading-tight font-light tracking-wide'>
             <PortableText value={project.summary} />
@@ -89,7 +98,7 @@ export default function ProjectCardSmall({ project }: ProjectCardSmallProps) {
           <MemberAvatarStack members={project.membersInvolved} size='sm' />
         )}
       </div>
-      <Link
+      <IntentPrefetchLink
         href={`/projects/${project.slug.current}`}
         className='absolute top-0 right-0 bottom-0 left-0'
       />
